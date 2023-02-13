@@ -23,8 +23,8 @@ SOFTWARE.*/
 #ifndef MAIN_
 #define MAIN_
 
-#include"../Control-Module/controller_tasks.hpp"
-#include"../PTAM/temp_access_mem.hpp"
+#include"../system/sys_controller.h"
+#include"PTAM/temp_access_mem.h"
 #include"util/defi.h"
 
 //Through spi interface, ECU recieves instructions from main computer
@@ -37,7 +37,7 @@ void setup(){
     Serial.begin(9600);
     CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
     //CTobj -> pin_setup();
-    CTobj -> GSE_comms_setup();
+    //CTobj -> GSE_comms_setup();
     CTobj -> _init_();
     delete CTobj;
 }

@@ -3,7 +3,7 @@
 
 /*MIT License
 
-Copyright (c) 2020 Nyameaama Gambrah
+Copyright (c) 2023 Limitless Aeronautics
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ SOFTWARE.*/
 #include"../Communication-Module/External_RF/g_comms.h"
 #include"engine_tasks.hpp"
 #include"../Module-Router/route.hpp"
-#include"../Communication-Module/SubController_SPI/requests.hpp"
 #include<SPI.h>
 
 class CONTROLLER_TASKS {

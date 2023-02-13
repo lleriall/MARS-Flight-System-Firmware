@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2020 Nyameaama Gambrah
+Copyright (c) 2023 limitless Aeronautics
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,7 @@ SOFTWARE.*/
 //Variable noting whether engine has already been prepped
 uint8_t prep;
 //Variable noting whether engine has been started
-uint8_t engineStarted;
-
-//Engine Burn time
-double engine_burn_duration_secs;
+uint8_t droneStarted;
 
 //Setup pins based on config
 void CONTROLLER_TASKS::pin_setup(){
@@ -82,7 +79,7 @@ void CONTROLLER_TASKS::_PREP_(){
         prep = 1;
     }else{
         //Do nothing.
-        //Engine already prepped
+        //Drone already prepped
     }
     delete obj;
 }
@@ -161,7 +158,7 @@ void CONTROLLER_TASKS::reset_(){
     prep = 0;
 
     //Reset engine started tag
-    engineStarted = 0;
+    droneStarted = 0;
 }
 
 //If output = 1, strings match

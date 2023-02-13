@@ -1,3 +1,6 @@
+#ifndef _IMU_D
+#define _IMU_D
+
 /*Copyright (c) 2023 Limitless Aeronautics
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -105,3 +108,5 @@ class MPU6050{
 
   float accCoef, gyroCoef;
 };
+
+#endif #_IMU_D
