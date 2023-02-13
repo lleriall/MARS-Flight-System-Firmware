@@ -55,6 +55,9 @@ void CONTROLLER_TASKS::_init_(){
     //SPI.begin();
     //SENSORS
 
+    //Rotate wing servos to default 
+
+
     REQUESTS *reqObj = new REQUESTS();
     interrupts();
     //attachInterrupt(digitalPinToInterrupt(0),reqObj -> dPassthroughInterrupt,HIGH);
@@ -157,7 +160,7 @@ void CONTROLLER_TASKS::reset_(){
     //Reset prep tag
     prep = 0;
 
-    //Reset engine started tag
+    //Reset drone started tag
     droneStarted = 0;
 }
 
