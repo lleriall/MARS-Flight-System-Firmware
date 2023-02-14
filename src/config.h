@@ -1,6 +1,3 @@
-#ifndef _WINGC
-#define _WINGC
-
 /*MIT License
 
 Copyright (c) 2023 Limitless Aeronautics
@@ -23,21 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include"../util/defi.h"
-#include"../drivers/motors/_motors.h"
-
-#define INDIVIDUAL (uint8_t) 0
-#define SIMULTANEOUS (uint8_t) 1
-
-class _WING_DYNAMICS{
-    public:
-        uint8_t _translateRight(uint8_t range, uint8_t _mode=1);
-
-        uint8_t _translateLeft(uint8_t range, uint8_t _mode=1);
-
-        uint8_t _translateUp(uint8_t range, uint8_t mode=1);
-
-        uint8_t _translateDown(uint8_t range, uint8_t mode=1);
-};
-
-#endif #_WINGC
+#define _version 1.0
+#define _FleftMotorNeutralPoint 90
+#define _FrightMotorNeutralPoint 90
+#define _RleftMotorNeutralPoint 90
+#define _RrightMotorNeutralPoint 90

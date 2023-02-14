@@ -19,3 +19,48 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
+
+#include"_wingDynamics.h"
+
+uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode=1){
+    _motors *obj = new _motors();
+    //Lateral
+    if(_mode == 1){
+        for(uint8_t i = obj -> returnServoPos(); i <= range;i++){
+            obj -> adjustServoFWRIGHT(i);
+            obj -> adjustServoRWRIGHT(i);
+        }
+    }
+    if(_mode == 0){
+        obj -> adjustServoFWRIGHT(range);
+        obj -> adjustServoRWRIGHT(range);
+    }
+    delete obj;
+}
+
+uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode=1){
+    _motors *obj = new _motors();
+    if(_mode == 1){
+        for(uint8_t i = obj -> returnServoPos(); i <= range; i++){
+            obj -> adjustServoFWLEFT(i);
+            obj -> adjustServoRWLEFT(i);
+        }
+    }
+    if(_mode == 0){
+        obj -> adjustServoFWLEFT(range);
+        obj -> adjustServoRWLEFT(range);
+    }
+}
+
+uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t mode=1){
+    _motors *obj = new _motors();
+    if(_mode == 1){
+        for(uint8_t i = obj -> returnServoPos(); i <=  range; i++){
+            
+        }
+    }
+}
+
+uint8_t _WING_DYNAMICS::_translateDown(uint8_t range,uint8_t mode=1){
+
+}

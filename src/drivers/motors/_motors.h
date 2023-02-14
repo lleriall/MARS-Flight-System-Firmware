@@ -25,6 +25,8 @@ SOFTWARE.*/
 
 #include"../../util/defi.h"
 
+uint8_t servoPos = 0;
+
 class _motors {
     public:
         _motors();
@@ -38,14 +40,14 @@ class _motors {
 
         uint8_t adjustServoRWRIGHT(uint8_t range);
 
-        uint8_t mainThrottle(uint8_t range );
+        uint8_t mainThrottle(uint8_t range);
+
+        uint8_t returnServoPos();
 
     private:
         uint8_t _init();
     
         uint8_t computeOptimumDelay(uint8_t delta);
-
-        uint8_t returnServoPos();
 
 };
 
