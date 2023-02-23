@@ -88,7 +88,7 @@ void CONTROLLER_TASKS::_PREP_(){
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
-    
+    //Get Gyro Data
 }
 
 //For manual testing, implement bypass to respond to sensor and motor

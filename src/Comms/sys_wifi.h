@@ -19,3 +19,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
+
+#include <esp_now.h>
+#include"../util/defi.h"
+
+class _peerComms {
+    public:
+        void peer_initialize(char* peer);
+
+        void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
+
+        void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len);
+};
