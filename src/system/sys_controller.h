@@ -23,10 +23,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include"../Utility/definitions.hpp"
+#include"../util/defi.h"
 #include"../Communication-Module/External_RF/g_comms.h"
-#include"engine_tasks.hpp"
-#include"../Module-Router/route.hpp"
 #include<SPI.h>
 
 class CONTROLLER_TASKS {
@@ -34,7 +32,7 @@ class CONTROLLER_TASKS {
         //Setup Pins
         void pin_setup();
 
-        //Reset all tag so engine can be preconditioned for another fire
+        //Reset all tags
         void reset_();
 
         //If output = 1, strings match
