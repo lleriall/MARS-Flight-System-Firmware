@@ -30,8 +30,9 @@ uint8_t PTAM::PTAM_ADD_BASE_DOUBLE(char* baseID,double data){
     char* converted;
     itoa(data,converted,10);
     //Add to floating point array
-    floatingP[0] = baseID;
-    floatingP[1] = converted;
+    floatingP[floatingP_LEN - 2] = baseID;
+    floatingP[floatingP_LEN - 1] = converted;
+    floatingP_LEN += 2;
     return sizeof(data);
 }
 
@@ -40,8 +41,9 @@ uint8_t PTAM::PTAM_ADD_BASE_8(char* baseID,uint8_t data){
     char* converted;
     itoa(data,converted,10);
     //Add to eight_bit array
-    eight_bit[0] = baseID;
-    eight_bit[1] = converted;
+    eight_bit[eight_bit_LEN - 2] = baseID;
+    eight_bit[eight_bit_LEN - 1] = converted;
+    eight_bit_LEN += 2;
     return sizeof(data);
 }
 
@@ -50,15 +52,17 @@ uint8_t PTAM::PTAM_ADD_BASE_32(char* baseID,uint32_t data){
     char* converted;
     itoa(data,converted,10);
     //Add to thirtytwo_bit array
-    thirtytwo_bit[0] = baseID;
-    thirtytwo_bit[1] = converted;
+    thirtytwo_bit[thirtytwo_bit_LEN - 2] = baseID;
+    thirtytwo_bit[thirtytwo_bit_LEN - 1] = converted;
+    thirtytwo_bit_LEN += 2;
     return sizeof(data);
 }
 
 uint8_t PTAM::PTAM_ADD_BASE_CHAR(char* baseID,char* data){
     //Add to character array
-    character[0] = baseID;
-    character[1] = data;
+    character[character_LEN - 2] = baseID;
+    character[character_LEN - 1] = data;
+    character_LEN += 2;
     return sizeof(data);
 }
 

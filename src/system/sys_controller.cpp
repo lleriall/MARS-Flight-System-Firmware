@@ -47,8 +47,23 @@ void CONTROLLER_TASKS::GSE_comms_setup(){
 //Start comms and attach RF interrupt 
 //ATTACH PIN NUMBERS
 void CONTROLLER_TASKS::_init_(){
+    //SET PID PROCESSES
+    PROPORTIONAL_INTEGRAL_DERIVATIVE *_pobj = new PROPORTIONAL_INTEGRAL_DERIVATIVE();
+    //ROLL RIGHT
+    _pobj -> createPIDinstance("rollRight",0,0,0); //<- Gains
+    //ROLL LEFT
+    _pobj -> createPIDinstance("rollLeft",0,0,0);
+    //PITCH UP
+    _pobj -> createPIDinstance("pitchUp",0,0,0);
+    //PITCH DOWN
+    _pobj -> createPIDinstance("pitchDown",0,0,0);
+    delete _pobj;
+    //INIT MOTORS
+    _motors *_mobj = new _motors();
+    _mobj -> init();
+    delete _mobj;
     //Start Serial Communication
-    //Serial.begin(9600);
+    Serial.begin(9600);
     //Setup pins - SPI,sensors
     //SPI
     //pin_setup();
@@ -88,7 +103,11 @@ void CONTROLLER_TASKS::_PREP_(){
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
-    //Get Gyro Data
+    //Get waypoint
+    
+    _FLIGHT *use = new _FLIGHT();
+
+    delete use;
 }
 
 //For manual testing, implement bypass to respond to sensor and motor
@@ -103,7 +122,7 @@ void CONTROLLER_TASKS::_bypass_(char* sbc_id){
     if(sbc_id){
         //bypass
         //Open valve
-        //ReqObj -> controllerRequest(sbc_id,1);
+        
         //Close valve
         //ReqObj -> controllerRequest(sbc_id,0);
     }else{
@@ -122,6 +141,9 @@ uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
     if(compareX(recieve_telemetry(),"IDLE")){
         change = 1;
     }
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("state",0);
+    delete PTAM;
     return change;
 }
 
@@ -132,6 +154,9 @@ uint8_t CONTROLLER_TASKS::SWITCH2PREP(){
     if(compareX(recieve_telemetry(),"PREP")){
         change = 1;
     }
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("state",1);
+    delete ptObject;
     return change;
 }
 
@@ -142,6 +167,9 @@ uint8_t CONTROLLER_TASKS::SWITCH2ARMED(){
     if(compareX(recieve_telemetry(),"ARMED")){
         change = 1;
     }
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("state",2);
+    delete ptObject;
     return change;
 }
 
@@ -152,6 +180,9 @@ uint8_t CONTROLLER_TASKS::SWITCH2BYPASS(){
     if(compareX(recieve_telemetry(),"BYPASS")){
         change = 1;
     }
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("state",3);
+    delete ptObject;
     return change;
 }
 

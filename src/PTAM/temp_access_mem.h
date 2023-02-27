@@ -41,6 +41,11 @@ static char* eight_bit[length];
 static char* thirtytwo_bit[length];
 static char* character[length];
 
+uint8_t floatingP_LEN = 0;
+uint8_t eight_bit_LEN = 0;
+uint8_t thirtytwo_bit_LEN = 0;
+uint8_t character_LEN = 0;
+
 class PTAM {
     public:
         //Method to add data to program temp access memory

@@ -25,6 +25,10 @@ SOFTWARE.*/
 
 #include"../util/defi.h"
 #include"../Communication-Module/External_RF/g_comms.h"
+#include"flight_tasks.h"
+#include"../Control/_pid.h"
+#include"../drivers/motors/_motors.h"
+#include"../PTAM/temp_access_mem.h"
 #include<SPI.h>
 
 class CONTROLLER_TASKS {
@@ -72,7 +76,7 @@ class CONTROLLER_TASKS {
         //Change state to bypass
         uint8_t SWITCH2BYPASS();
 
-        //Change engine state definition 
+        //Change drone state definition 
         //Used for interrupt handlers to change engine state
         void CHANGE_STATE_DEFINITON();     
 
