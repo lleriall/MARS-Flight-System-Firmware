@@ -34,7 +34,7 @@ void _peerComms::peer_initialize(char* peer){
 
   // Once ESPNow is successfully Init, we will register for Send CB to
   // get the status of Trasnmitted packet
-  esp_now_register_send_cb(OnDataSent);
+  //esp_now_register_send_cb(OnDataSent);
   
   // Register peer
   memcpy(peerInfo.peer_addr, broadcastAddress, 6);
@@ -47,10 +47,11 @@ void _peerComms::peer_initialize(char* peer){
     return;
   }
   // Register for a callback function that will be called when data is received
-  esp_now_register_recv_cb(OnDataRecv);
+  //esp_now_register_recv_cb(OnDataRecv);
 }
 
 void _peerComms::OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  String success;
   Serial.print("\r\nLast Packet Send Status:\t");
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
   if (status ==0){

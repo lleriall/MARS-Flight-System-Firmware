@@ -22,7 +22,7 @@ SOFTWARE.*/
 
 #include "_motors.h"
 
-_motors(){
+_motors::_motors(){
     _init();
 }
 
@@ -31,13 +31,13 @@ uint8_t _motors::adjustServoFWLEFT(uint8_t range){
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(_outPin,HIGH);
     delay(opT);
-    return (1)
+    return (1);
 }
 
 uint8_t _motors::adjustServoFWRIGHT(uint8_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
-    digitalWrite(_outPin, HIGH);
+    digitalWrite(outPin, HIGH);
     delay(opT);
     return (1);
 }
@@ -45,7 +45,7 @@ uint8_t _motors::adjustServoFWRIGHT(uint8_t range){
 uint8_t _motors::adjustServoRWLEFT(uint8_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
-    digitalWrite(_outPin, HIGH);
+    digitalWrite(outPin, HIGH);
     delay(opT);
     return (1);
 }
@@ -53,7 +53,7 @@ uint8_t _motors::adjustServoRWLEFT(uint8_t range){
 uint8_t _motors::adjustServoRWRIGHT(uint8_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
-    digitalWrite(_outPin, HIGH);
+    digitalWrite(outPin, HIGH);
     delay(opT);
     return (1);
 }

@@ -22,7 +22,7 @@ SOFTWARE.*/
 
 #include"_wingDynamics.h"
 
-uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode=1){
+uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode){
     _motors *obj = new _motors();
     //Lateral
     if(_mode == 1){
@@ -38,7 +38,7 @@ uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode=1){
     delete obj;
 }
 
-uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode=1){
+uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode){
     _motors *obj = new _motors();
     if(_mode == 1){
         for(uint8_t i = obj -> returnServoPos(); i <= range; i++){
@@ -52,7 +52,7 @@ uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode=1){
     }
 }
 
-uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t mode=1){
+uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t _mode){
     _motors *obj = new _motors();
     if(_mode == 1){
         for(uint8_t i = obj -> returnServoPos(); i <=  range; i++){
@@ -61,6 +61,6 @@ uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t mode=1){
     }
 }
 
-uint8_t _WING_DYNAMICS::_translateDown(uint8_t range,uint8_t mode=1){
+uint8_t _WING_DYNAMICS::_translateDown(uint8_t range,uint8_t mode){
 
 }

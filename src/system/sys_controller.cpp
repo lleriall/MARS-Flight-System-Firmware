@@ -20,7 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include"controller_tasks.hpp"
+#include"sys_controller.h"
 
 //Variable noting whether engine has already been prepped
 uint8_t prep;
@@ -58,10 +58,6 @@ void CONTROLLER_TASKS::_init_(){
     //PITCH DOWN
     _pobj -> createPIDinstance("pitchDown",0,0,0);
     delete _pobj;
-    //INIT MOTORS
-    _motors *_mobj = new _motors();
-    _mobj -> init();
-    delete _mobj;
     //Start Serial Communication
     Serial.begin(9600);
     //Setup pins - SPI,sensors
@@ -73,11 +69,11 @@ void CONTROLLER_TASKS::_init_(){
     //Rotate wing servos to default 
 
 
-    REQUESTS *reqObj = new REQUESTS();
+    //REQUESTS *reqObj = new REQUESTS();
     interrupts();
     //attachInterrupt(digitalPinToInterrupt(0),reqObj -> dPassthroughInterrupt,HIGH);
     //attachInterrupt(digitalPinToInterrupt(0),reqObj -> controllerReceiveInterrupt,HIGH);
-    delete reqObj;
+    //delete reqObj;
 
 }
 
@@ -87,8 +83,8 @@ void CONTROLLER_TASKS::_IDLE_(){
 
 //Telemetry checks, peripheral checks
 void CONTROLLER_TASKS::_PREP_(){
-    DRONE_TASKS *obj = new DRONE_TASKS();
-    if(prep != 1)
+    //DRONE_TASKS *obj = new DRONE_TASKS();
+    if(prep != 1){
         
         //Delay 30 seconds for possible ground interrupt
 
@@ -99,7 +95,7 @@ void CONTROLLER_TASKS::_PREP_(){
         //Do nothing.
         //Drone already prepped
     }
-    delete obj;
+    //delete obj;
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -118,7 +114,7 @@ void CONTROLLER_TASKS::_ARMED_(){
 //No function overloading possible so search SBC table to 
 //determine if return or non-return peripheral !! needs attention !!
 void CONTROLLER_TASKS::_bypass_(char* sbc_id){
-    REQUESTS *ReqObj = new REQUESTS();
+    //REQUESTS *ReqObj = new REQUESTS();
     if(sbc_id){
         //bypass
         //Open valve
@@ -128,7 +124,7 @@ void CONTROLLER_TASKS::_bypass_(char* sbc_id){
     }else{
         //Sensor bypass
         //Request sensor data
-        double data = ReqObj -> controllerRequest(sbc_id,2);
+        //double data = ReqObj -> controllerRequest(sbc_id,2);
         //transmit_telemetry(data);
     }
 }
@@ -143,7 +139,7 @@ uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
     }
     PTAM *ptObject = new PTAM();
     ptObject -> PTAM_ADD_BASE_8("state",0);
-    delete PTAM;
+    delete ptObject;
     return change;
 }
 
@@ -204,3 +200,5 @@ uint8_t CONTROLLER_TASKS::compareX(char* x, char* y){
         return 1;
     }
 }
+
+char* CONTROLLER_TASKS::recieve_telemetry(){}

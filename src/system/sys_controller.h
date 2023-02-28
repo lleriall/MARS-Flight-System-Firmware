@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 #include"../util/defi.h"
-#include"../Communication-Module/External_RF/g_comms.h"
+//#include"../Communication-Module/External_RF/g_comms.h"
 #include"flight_tasks.h"
 #include"../Control/_pid.h"
 #include"../drivers/motors/_motors.h"
@@ -41,6 +41,8 @@ class CONTROLLER_TASKS {
 
         //If output = 1, strings match
         uint8_t compareX(char* x, char* y);
+
+        char* recieve_telemetry();
 
     public: 
         //Setup NodeMCU wifi comms

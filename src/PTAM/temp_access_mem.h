@@ -23,7 +23,7 @@ SOFTWARE.*/
 #ifndef PTAM_
 #define PTAM_
 
-#include"../utils/defi.h"
+#include"../util/defi.h"
 /*
     PTAM implementation is a series of statically allocated 1D arrays
     which correspond to their respective data type

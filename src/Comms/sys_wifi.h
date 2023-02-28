@@ -21,7 +21,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 #include <esp_now.h>
+#include <WiFi.h>
 #include"../util/defi.h"
+
+String success;
+esp_now_peer_info_t peerInfo;
+typedef struct struct_message {
+    float temp;
+    float hum;
+    float pres;
+} struct_message;
+
+struct_message incomingReadings;
+
+uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 class _peerComms {
     public:

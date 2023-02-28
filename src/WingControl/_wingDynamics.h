@@ -31,13 +31,13 @@ SOFTWARE.*/
 
 class _WING_DYNAMICS{
     public:
-        uint8_t _translateRight(uint8_t range, uint8_t _mode=1);
+        uint8_t _translateRight(uint8_t range, uint8_t _mode);
 
-        uint8_t _translateLeft(uint8_t range, uint8_t _mode=1);
+        uint8_t _translateLeft(uint8_t range, uint8_t _mode);
 
-        uint8_t _translateUp(uint8_t range, uint8_t mode=1);
+        uint8_t _translateUp(uint8_t range, uint8_t mode);
 
-        uint8_t _translateDown(uint8_t range, uint8_t mode=1);
+        uint8_t _translateDown(uint8_t range, uint8_t mode);
 };
 
-#endif #_WINGC
+#endif //_WINGC

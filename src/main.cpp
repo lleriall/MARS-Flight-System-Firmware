@@ -23,7 +23,7 @@ SOFTWARE.*/
 #ifndef MAIN_
 #define MAIN_
 
-#include"../system/sys_controller.h"
+#include"system/sys_controller.h"
 #include"PTAM/temp_access_mem.h"
 #include"util/defi.h"
 
