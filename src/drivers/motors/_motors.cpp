@@ -31,6 +31,9 @@ uint8_t _motors::adjustServoFWLEFT(uint8_t range){
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(_outPin,HIGH);
     delay(opT);
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("SFL",range);
+    delete ptObject;
     return (1);
 }
 
@@ -39,6 +42,9 @@ uint8_t _motors::adjustServoFWRIGHT(uint8_t range){
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("SFR",range);
+    delete ptObject;
     return (1);
 }
 
@@ -47,6 +53,9 @@ uint8_t _motors::adjustServoRWLEFT(uint8_t range){
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("SRL",range);
+    delete ptObject;
     return (1);
 }
 
@@ -55,11 +64,17 @@ uint8_t _motors::adjustServoRWRIGHT(uint8_t range){
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("SRR",range);
+    delete ptObject;
     return (1);
 }
 
 uint8_t _motors::mainThrottle(uint8_t range){
 
+    PTAM *ptObject = new PTAM();
+    ptObject -> PTAM_ADD_BASE_8("Throttle",range);
+    delete ptObject;
 }
 
 uint8_t _motors::_init(){

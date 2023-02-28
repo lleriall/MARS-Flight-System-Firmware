@@ -61,20 +61,18 @@ void CONTROLLER_TASKS::_init_(){
     //Start Serial Communication
     Serial.begin(9600);
     //Setup pins - SPI,sensors
-    //SPI
     //pin_setup();
     //SPI.begin();
     //SENSORS
 
-    //Rotate wing servos to default 
-
-
-    //REQUESTS *reqObj = new REQUESTS();
-    interrupts();
-    //attachInterrupt(digitalPinToInterrupt(0),reqObj -> dPassthroughInterrupt,HIGH);
-    //attachInterrupt(digitalPinToInterrupt(0),reqObj -> controllerReceiveInterrupt,HIGH);
-    //delete reqObj;
-
+    //Rotate wing servos to default
+    uint8_t defaultP = 0;
+    _motors *_mObj = new _motors();
+    _mObj -> adjustServoFWLEFT(defaultP);
+    _mObj -> adjustServoFWRIGHT(defaultP);
+    _mObj -> adjustServoRWLEFT(defaultP);
+    _mObj -> adjustServoRWRIGHT(defaultP);
+    delete _mObj;
 }
 
 void CONTROLLER_TASKS::_IDLE_(){
@@ -83,7 +81,7 @@ void CONTROLLER_TASKS::_IDLE_(){
 
 //Telemetry checks, peripheral checks
 void CONTROLLER_TASKS::_PREP_(){
-    //DRONE_TASKS *obj = new DRONE_TASKS();
+
     if(prep != 1){
         
         //Delay 30 seconds for possible ground interrupt
@@ -114,29 +112,26 @@ void CONTROLLER_TASKS::_ARMED_(){
 //No function overloading possible so search SBC table to 
 //determine if return or non-return peripheral !! needs attention !!
 void CONTROLLER_TASKS::_bypass_(char* sbc_id){
-    //REQUESTS *ReqObj = new REQUESTS();
     if(sbc_id){
         //bypass
-        //Open valve
         
-        //Close valve
-        //ReqObj -> controllerRequest(sbc_id,0);
     }else{
         //Sensor bypass
         //Request sensor data
-        //double data = ReqObj -> controllerRequest(sbc_id,2);
-        //transmit_telemetry(data);
+        //
     }
 }
  //Sensor bypass
 
 //CHange state to idle
 uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
+    _telemetry *tObj = new _telemetry();
     //Change variable
     uint8_t change = 0;
-    if(compareX(recieve_telemetry(),"IDLE")){
+    if(compareX(tObj -> getLastRequest(),"IDLE")){
         change = 1;
     }
+    delete tObj;
     PTAM *ptObject = new PTAM();
     ptObject -> PTAM_ADD_BASE_8("state",0);
     delete ptObject;
@@ -145,11 +140,13 @@ uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
 
 //CHange state to prep
 uint8_t CONTROLLER_TASKS::SWITCH2PREP(){
+    _telemetry *tObj = new _telemetry();
     //Change variable
     uint8_t change = 0;
-    if(compareX(recieve_telemetry(),"PREP")){
+    if(compareX(tObj -> getLastRequest(),"PREP")){
         change = 1;
     }
+    delete tObj;
     PTAM *ptObject = new PTAM();
     ptObject -> PTAM_ADD_BASE_8("state",1);
     delete ptObject;
@@ -158,11 +155,13 @@ uint8_t CONTROLLER_TASKS::SWITCH2PREP(){
 
 //CHange state to armed
 uint8_t CONTROLLER_TASKS::SWITCH2ARMED(){
+    _telemetry *tObj = new _telemetry();
     //Change variable
     uint8_t change = 0;
-    if(compareX(recieve_telemetry(),"ARMED")){
+    if(compareX(tObj -> getLastRequest(),"ARMED")){
         change = 1;
     }
+    delete tObj;
     PTAM *ptObject = new PTAM();
     ptObject -> PTAM_ADD_BASE_8("state",2);
     delete ptObject;
@@ -171,11 +170,13 @@ uint8_t CONTROLLER_TASKS::SWITCH2ARMED(){
 
 //Change state to bypass
 uint8_t CONTROLLER_TASKS::SWITCH2BYPASS(){
+    _telemetry *tObj = new _telemetry();
     //Change variable
     uint8_t change = 0;
-    if(compareX(recieve_telemetry(),"BYPASS")){
+    if(compareX(tObj -> getLastRequest(),"BYPASS")){
         change = 1;
     }
+    delete tObj;
     PTAM *ptObject = new PTAM();
     ptObject -> PTAM_ADD_BASE_8("state",3);
     delete ptObject;
@@ -200,5 +201,3 @@ uint8_t CONTROLLER_TASKS::compareX(char* x, char* y){
         return 1;
     }
 }
-
-char* CONTROLLER_TASKS::recieve_telemetry(){}
