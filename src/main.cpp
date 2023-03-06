@@ -24,7 +24,7 @@ SOFTWARE.*/
 #define MAIN_
 
 #include"system/sys_controller.h"
-#include"PTAM/temp_access_mem.h"
+//#include"PTAM/temp_access_mem.h"
 #include"util/defi.h"
 
 //Through spi interface, ECU recieves instructions from main computer
@@ -78,11 +78,11 @@ void loop(){
     testPTAM();
 }
 
-void testPTAM(){
+/*void testPTAM(){
     PTAM *obj = new PTAM();
     uint8_t size = obj -> PTAM_ADD_BASE_DOUBLE("345",65);
     Serial.println("tEST");
 
-}
+}*/
 
 #endif // MAIN_

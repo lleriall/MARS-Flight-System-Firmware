@@ -22,6 +22,18 @@ SOFTWARE.*/
 
 #include"sys_wifi.h"
 
+String success;
+esp_now_peer_info_t peerInfo;
+typedef struct struct_message {
+    float temp;
+    float hum;
+    float pres;
+} struct_message;
+
+struct_message incomingReadings;
+
+uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
 void _peerComms::peer_initialize(char* peer){
     // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);

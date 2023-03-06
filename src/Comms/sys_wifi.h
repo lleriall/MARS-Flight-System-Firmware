@@ -1,3 +1,6 @@
+#ifndef wifi
+#define wifi
+
 /*MIT License
 
 Copyright (c) 2020 Nyameaama Gambrah
@@ -20,21 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include <esp_now.h>
-#include <WiFi.h>
 #include"../util/defi.h"
-
-String success;
-esp_now_peer_info_t peerInfo;
-typedef struct struct_message {
-    float temp;
-    float hum;
-    float pres;
-} struct_message;
-
-struct_message incomingReadings;
-
-uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 class _peerComms {
     public:
@@ -44,3 +33,5 @@ class _peerComms {
 
         void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len);
 };
+
+#endif //wifi

@@ -23,7 +23,6 @@ SOFTWARE.
 */
 
 #include "../util/defi.h"
-#include "Wire.h"
 
 #define MPU6050_ADDR         0x68
 #define MPU6050_SMPLRT_DIV   0x19

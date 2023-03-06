@@ -20,7 +20,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include"temp_access_mem.h"
+#include"temp_access_mem.h" 
+/*
+    PTAM implementation is a series of statically allocated 1D arrays
+    which correspond to their respective data type
+    Each data pair has two values
+*/
+
+//Arrays declared
+//!!! OVERFLOW UNLIKELY AS THERE IS A SINGLE SENSOR REQUEST EVERY CYCLE !!!
+
+static char* floatingP[length];
+static char* eight_bit[length];
+static char* thirtytwo_bit[length];
+static char* character[length];
+
+uint8_t floatingP_LEN = 0;
+uint8_t eight_bit_LEN = 0;
+uint8_t thirtytwo_bit_LEN = 0;
+uint8_t character_LEN = 0;
 
 //Method to add data to program temp access memory
 //Returns the size of data sent

@@ -18,3 +18,6 @@ SOFTWARE.*/
 
 #include "stack_send.h"
 
+char* _telemetry::getLastRequest(){
+    
+}

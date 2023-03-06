@@ -24,12 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 #include"../util/defi.h"
-#include"../Comms/stack_send.h"
-#include"flight_tasks.h"
-#include"../Control/_pid.h"
-#include"../drivers/motors/_motors.h"
-#include"../PTAM/temp_access_mem.h"
-#include<SPI.h>
 
 class CONTROLLER_TASKS {
     private:

@@ -34,17 +34,6 @@ SOFTWARE.*/
 //Arrays declared
 //SPACE DECLARED FOR 5 PAIRS (~10)
 #define length 10
-//!!! OVERFLOW UNLIKELY AS THERE IS A SINGLE SENSOR REQUEST EVERY CYCLE !!!
-
-static char* floatingP[length];
-static char* eight_bit[length];
-static char* thirtytwo_bit[length];
-static char* character[length];
-
-uint8_t floatingP_LEN = 0;
-uint8_t eight_bit_LEN = 0;
-uint8_t thirtytwo_bit_LEN = 0;
-uint8_t character_LEN = 0;
 
 class PTAM {
     public:

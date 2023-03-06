@@ -24,9 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 #include"../../util/defi.h"
-#include"../../PTAM/temp_access_mem.h"
-
-uint8_t servoPos = 0;
 
 class _motors {
     public:

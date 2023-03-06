@@ -22,6 +22,8 @@ SOFTWARE.*/
 
 #include "_motors.h"
 
+uint8_t servoPos = 0;
+
 _motors::_motors(){
     _init();
 }
@@ -87,6 +89,10 @@ uint8_t _motors::_init(){
     pinMode(FR,OUTPUT);
     pinMode(RL,OUTPUT);
     pinMode(RR,OUTPUT);
+}
+
+uint8_t _motors::returnServoPos(){
+    return 1;
 }
 
 uint8_t _motors::computeOptimumDelay(uint8_t delta){
