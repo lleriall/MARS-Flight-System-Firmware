@@ -34,7 +34,6 @@ void testPTAM();
 #define DRONE_STATE 0
 
 void setup(){
-    Serial.begin(9600);
     CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
     //CTobj -> pin_setup();
     //CTobj -> GSE_comms_setup();

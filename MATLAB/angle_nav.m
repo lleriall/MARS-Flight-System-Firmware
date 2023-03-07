@@ -19,15 +19,15 @@ SOFTWARE.
 %}
 %Test Data
 
-_pathInitial = [5,9]
-_pathFinal = [15,24]
+pathInitial = [5,9]
+pathFinal = [15,24]
 
 %Check if final x or y is equal to initial x or y within the bounds of 10%
-if(_pathInitial(0) >= _pathFinal(0) - (0.10 * _pathFinal(0)) && _pathInitial(0) <= _pathFinal(0) + (0.10 * _pathFinal(0))):
+if(pathInitial(1) >= pathFinal(1) - (0.10 * pathFinal(1)) && pathInitial(1) <= pathFinal(1) + (0.10 * pathFinal(1)))
     %Current Angle does not change
 
 end
-if(_pathInitial(1) >= _pathFinal(1) - (0.10 * _pathFinal(0)) && _pathInitial(0) <= _pathFinal(0) + (0.10 * _pathFinal(0))):
+if(pathInitial(2) >= pathFinal(2) - (0.10 * pathFinal(2)) && pathInitial(2) <= pathFinal(2) + (0.10 * pathFinal(2)))
     %Current Angle does not change
 
 end
@@ -39,14 +39,14 @@ end
 %(initial X, finaly Y)
 %(initial X, initial Y)
 %(final X, final Y)
-mappedVector = [_pathInitial(0),_pathFinal(1)];
+mappedVector = [pathInitial(1),pathFinal(2)];
 
 %Get distance from initial vector to final vector
-dInitial_Final = sqrt(power(_pathFinal(0) - _pathInitial(0),2) + power(_pathFinal(1) - _pathInitial(1),2));
+dInitial_Final = sqrt(power(pathFinal(1) - pathInitial(1),2) + power(pathFinal(2) - pathInitial(2),2));
 %Get distance from initial vector to mapped vector
-dInitial_Mapped = sqrt(power(mappedVector(0) - _pathInitial(0),2) + power(mappedVector(1) - _pathInitial(1),2));
+dInitial_Mapped = sqrt(power(mappedVector(1) - pathInitial(1),2) + power(mappedVector(2) - pathInitial(2),2));
 %Get distance from mapped vector to final vector
-dMapped_Final = sqrt(power(_pathFinal(0) - mappedVector(0),2) + power(_pathFinal(1) - mappedVector(1),2));
+dMapped_Final = sqrt(power(pathFinal(1) - mappedVector(1),2) + power(pathFinal(2) - mappedVector(2),2));
 %Get angle A = cos(A) = c^2 + a^2 - b^2 / 2*c*a
 b_ang = acosd(power(dInitial_Mapped,2) + power(dMapped_Final,2) - power(dInitial_Final,2) / 2 * dInitial_Mapped * dInitial_Final);
 Angle = 180 - 90 - b_ang

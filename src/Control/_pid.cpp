@@ -2,7 +2,8 @@
 
 uint8_t tagCount, PR_count;
 double PID_PR[64][5];
-String *tags = (String*)malloc(12);
+//char *tags = (char*)malloc(12);
+char* tags[64];
 
 //Important for PID process identification
 double kp = 0.5,ki = 0.2,kd = 0.1;
@@ -26,7 +27,7 @@ double PROPORTIONAL_INTEGRAL_DERIVATIVE::getDerivative(){
     return derivative;
 }
 
-double PROPORTIONAL_INTEGRAL_DERIVATIVE::PID_MAIN(String Process,double current,double setpoint){
+double PROPORTIONAL_INTEGRAL_DERIVATIVE::PID_MAIN(char* Process,double current,double setpoint){
     updateConstants(Process);
     processVar = current;
 	error = setpoint - processVar;
@@ -40,7 +41,7 @@ double PROPORTIONAL_INTEGRAL_DERIVATIVE::PID_MAIN(String Process,double current,
     return result;
 }
 
-void PROPORTIONAL_INTEGRAL_DERIVATIVE::createPIDinstance(String tag,double kp,double ki,double kd){ 
+void PROPORTIONAL_INTEGRAL_DERIVATIVE::createPIDinstance(char* tag,double kp,double ki,double kd){ 
     if(!checkforInstance(tag)){
         tags[tagCount] = tag;
         tagCount++;
@@ -58,10 +59,10 @@ void PROPORTIONAL_INTEGRAL_DERIVATIVE::createPIDinstance(String tag,double kp,do
     
 }
 
-void PROPORTIONAL_INTEGRAL_DERIVATIVE::updateConstants(String Process){
+void PROPORTIONAL_INTEGRAL_DERIVATIVE::updateConstants(char* Process){
     uint8_t index = -1;
     for(size_t i = 0; i < tagCount;i++){
-        if(compare(tags[i],Process)){
+        if(strcmp(tags[i],Process)){
             index = i;
         }
     }
@@ -77,7 +78,7 @@ void PROPORTIONAL_INTEGRAL_DERIVATIVE::updateConstants(String Process){
    }
 }
 
-boolean PROPORTIONAL_INTEGRAL_DERIVATIVE::compare(String x, String y){
+bool PROPORTIONAL_INTEGRAL_DERIVATIVE::compare(char* x, char* y){
     if (x != y){
         return false;
     }
@@ -86,10 +87,10 @@ boolean PROPORTIONAL_INTEGRAL_DERIVATIVE::compare(String x, String y){
     }
 }
 
-boolean PROPORTIONAL_INTEGRAL_DERIVATIVE::checkforInstance(String tag){
-    boolean instanceTrue = false;
+bool PROPORTIONAL_INTEGRAL_DERIVATIVE::checkforInstance(char* tag){
+    bool instanceTrue = false;
     for(size_t i = 0; i < tagCount;i++){
-        if(compare(tag,tags[i])){
+        if(strcmp(tag,tags[i])){
             instanceTrue = true;
         }
     }

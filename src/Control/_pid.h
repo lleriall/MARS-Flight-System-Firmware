@@ -1,7 +1,10 @@
 #ifndef PID
 #define PID
 
-#include"../util/defi.h"
+//#include"../util/defi.h"
+
+#include<string.h>
+#include<stdint.h>
 
 //Different instances of PID computation will be called from this class so each unique process will
 //need to have constants stored so individual processes can be continued after end of class call
@@ -11,7 +14,7 @@ class PROPORTIONAL_INTEGRAL_DERIVATIVE {
         uint8_t dt;
 
     private:
-        void updateConstants(String Process);
+        void updateConstants(char* Process);
 
         double getProportional();
 
@@ -19,15 +22,15 @@ class PROPORTIONAL_INTEGRAL_DERIVATIVE {
 
         double getDerivative();
 
-        boolean compare(String x, String y);
+        bool compare(char* x, char* y);
 
-        boolean checkforInstance(String tag);
+        bool checkforInstance(char* tag);
 
     public:
         //
-        double PID_MAIN(String Process,double rocketPos,double setpoint);
+        double PID_MAIN(char* Process,double rocketPos,double setpoint);
 
-        void createPIDinstance(String tag,double kp,double ki,double kd);
+        void createPIDinstance(char* tag,double kp,double ki,double kd);
 
 };
 
