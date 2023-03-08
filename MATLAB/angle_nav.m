@@ -19,6 +19,7 @@ SOFTWARE.
 %}
 %Test Data
 
+function compute_Angle()
 pathInitial = [5,9]
 pathFinal = [15,24]
 
