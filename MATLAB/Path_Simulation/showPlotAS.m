@@ -1,9 +1,9 @@
 function showPlotAS(checkboxValue,array)%<SM:PDF>%<SM:PDF_PARAM>
-    if checkboxValue == 0%<SM:IF> %<SM:ROP>  
-        figure(2)%<SM:PLOT>
-        plot(array);%<SM:PLOT>
+    if checkboxValue == 0 
+        figure(2)
+        plot(array);
     else %<SM:IF>
-        figure(2)%<SM:PLOT>
-        plot(array,'.');%<SM:PLOT>   
+        figure(2)
+        plot(array,'.'); 
     end
 end

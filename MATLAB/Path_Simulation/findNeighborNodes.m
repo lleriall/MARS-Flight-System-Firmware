@@ -1,14 +1,14 @@
-function [CLSa,CLSb] = findNeighborNodes(pointX,pointY,xrand,yrand)%<SM:PDF> %<SM:PDF_PARAM>
-    closestNode = [];%<SM:REF> 
-    dists = [];%<SM:REF> 
-    for i = 1: length(xrand)%<SM:FOR> 
-        temp = findDistanceBetweenNodes(pointX,pointY,xrand(i),yrand(i));%<SM:PDF_RETURN> 
-        dists = [dists,temp];%<SM:REF> 
+function [CLSa,CLSb] = findNeighborNodes(pointX,pointY,xrand,yrand)
+    closestNode = []; 
+    dists = []; 
+    for i = 1: length(xrand)
+        temp = findDistanceBetweenNodes(pointX,pointY,xrand(i),yrand(i)); 
+        dists = [dists,temp]; 
     end
-    closest = min(dists);%<SM:REF> 
-    closestindX = find(dists == closest,1);%<SM:REF>%<SM:ROP>  
+    closest = min(dists); 
+    closestindX = find(dists == closest,1); 
     %Return the point
-    CLSa = xrand(closestindX);%<SM:RANDUSE> %<SM:REF> 
-    CLSb = yrand(closestindX);%<SM:RANDUSE> %<SM:REF> 
+    CLSa = xrand(closestindX);  
+    CLSb = yrand(closestindX);  
     
 end

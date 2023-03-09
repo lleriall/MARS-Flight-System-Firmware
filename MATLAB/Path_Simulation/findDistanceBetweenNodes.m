@@ -1,9 +1,9 @@
-function result = findDistanceBetweenNodes(currentPosX,currentPosY,filteredX,filteredY)%<SM:PDF> %<SM:PDF_PARAM> 
+function result = findDistanceBetweenNodes(currentPosX,currentPosY,filteredX,filteredY) 
       %Use pythagoras to find distance between nodes
-     dist = [];%<SM:REF> 
-     pythagoras = sqrt(power((filteredX - currentPosX),2) + power((filteredY - currentPosY),2));%<SM:RTOTAL>  
-     if pythagoras ~= 0 %<SM:IF> %<SM:ROP>  
-         dist = [dist,pythagoras];%<SM:REF> 
+     dist = [];
+     pythagoras = sqrt(power((filteredX - currentPosX),2) + power((filteredY - currentPosY),2));  
+     if pythagoras ~= 0   
+         dist = [dist,pythagoras];
      end
-    result = dist;%<SM:PDF_RETURN>
+    result = dist;
 end

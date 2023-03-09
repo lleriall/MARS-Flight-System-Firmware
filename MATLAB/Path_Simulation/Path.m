@@ -1,4 +1,4 @@
-function [distancesR,visitedNodesR,indexEndR] = Path(xrand,yrand,promptIX,promptIY,exploredNodesX,exploredNodesY,cbx2)%<SM:PDF>%<SM:PDF_PARAM> 
+function [distancesR,visitedNodesR,indexEndR] = Path(xrand,yrand,promptIX,promptIY,exploredNodesX,exploredNodesY,cbx2) 
     count = 1;
     expNodesXCopy = 0;
     expNodesYCopy = 0;
@@ -7,8 +7,8 @@ function [distancesR,visitedNodesR,indexEndR] = Path(xrand,yrand,promptIX,prompt
     startX = promptIX;
     startY = promptIY;
     % We set the distances between the starting node and all other cities to infinity, except for the distance between the starting node and itself, which we set to 0.
-    distances(1:length(xrand)) = Inf;%<SM:REF> 
-    visitedNodes(1:length(xrand)) = 0;%<SM:REF>
+    distances(1:length(xrand)) = Inf; 
+    visitedNodes(1:length(xrand)) = 0;
     
     % After that, we iteratively execute the following steps:
     % We choose the node with the smallest value as the “current node” and visit all of its neighboring nodes. As we visit each neighbor, we update their tentative distance from the starting node.
@@ -22,27 +22,27 @@ function [distancesR,visitedNodesR,indexEndR] = Path(xrand,yrand,promptIX,prompt
     currentPosY = promptIY;
 
     indexEnd = 502;
-    indxs = []; %<SM:REF> 
+    indxs = [];  
     while count <= length(xrand)%<SM:WHILE> %<SM:ROP>   
         % We choose the node with the smallest value as the “current node” and visit all of its neighboring nodes. As we visit each neighbor, we update their tentative distance from the starting node.
        mindistance = Inf;
-        for h = 1:length(xrand) %<SM:FOR> 
-            this_dist = findDistanceBetweenNodes(currentPosX,currentPosY,xrand(h),yrand(h));%<SM:PDF_CALL>
-            if this_dist < mindistance & visitedNodes(h)~= 1 %<SM:IF>%<SM:BOP> %<SM:ROP>   
+        for h = 1:length(xrand)  
+            this_dist = findDistanceBetweenNodes(currentPosX,currentPosY,xrand(h),yrand(h));
+            if this_dist < mindistance & visitedNodes(h)~= 1   
                 mindistance = this_dist;
                 nextNode = h;
             end
         end
-        distances(count) = mindistance;%<SM:REF>
-        visitedNodes(nextNode) = 1;%<SM:REF>
-        indxs = [indxs,nextNode];%<SM:REF>
-        currentPosX = xrand(nextNode);%<SM:REF>
-        currentPosY = yrand(nextNode);%<SM:REF>
+        distances(count) = mindistance;
+        visitedNodes(nextNode) = 1;
+        indxs = [indxs,nextNode];
+        currentPosX = xrand(nextNode);
+        currentPosY = yrand(nextNode);
 
-        count = count + 1;%<SM:RTOTAL>  
+        count = count + 1;  
 
     end
-    showPlotAS(cbx2,indxs);%<SM:PDF_CALL>
+    showPlotAS(cbx2,indxs);
     %Return values
     distancesR = distances;
     visitedNodesR = visitedNodes;
