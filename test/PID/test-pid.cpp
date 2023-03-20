@@ -1,4 +1,4 @@
-#include"../_pid.h"
+#include"_pid.h"
 #include<iostream>
 #include<string.h>
 
@@ -8,5 +8,7 @@ int main(){
     pObj -> createPIDinstance("testInstance",0.5,0.1,0.3);
     //Run API
     double res = pObj -> PID_MAIN("testInstance", 70, 90);
+    uint8_t f = pObj -> retTests();
     std::cout << res << std::endl;
+    std::cout << f << std::endl;
 }
