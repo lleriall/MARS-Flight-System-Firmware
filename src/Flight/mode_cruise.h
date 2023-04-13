@@ -1,0 +1,5 @@
+/*
+      in CRUISE mode we use the navigation code to control
+      roll when heading is locked. Heading becomes unlocked on
+      any aileron or rudder input
+    */

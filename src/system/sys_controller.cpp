@@ -97,11 +97,11 @@ void CONTROLLER_TASKS::_PREP_(){
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
-    //Get waypoint
-    
-    _FLIGHT *use = new _FLIGHT();
+    //Check if takeoff conditions met
 
-    delete use;
+    // If takeoff = true , Set cruise - follow waypoint
+
+    //
 }
 
 //For manual testing, implement bypass to respond to sensor and motor
