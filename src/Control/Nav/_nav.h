@@ -20,8 +20,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-/*
-      in CRUISE mode we use the navigation code to control
-      roll when heading is locked. Heading becomes unlocked on
-      any aileron or rudder input
-    */
+#ifndef NAV_STACK
+#define NAV_STACK
+
+#include"../../util/defi.h"
+#include"../../util/utility.h"
+
+class NAVIGATION_STACK {
+    public:
+        double COMPUTE_BEARING(double current_lat,double current_long,double final_lat,double final_long);
+
+        double DISTANCE_BETWEEN(double current_lat,double current_long,double final_lat,double final_long);
+};
+
+#endif //NAV_STACK

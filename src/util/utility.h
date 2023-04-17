@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2023 Limitless Aeronautics
+Copyright (c) 2020 Nyameaama Gambrah
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -18,10 +18,29 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
+SOFTWARE.
+*/
 
-/*
-      in CRUISE mode we use the navigation code to control
-      roll when heading is locked. Heading becomes unlocked on
-      any aileron or rudder input
-    */
+#ifndef UTIL
+#define UTIL
+
+#include<stddef.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+
+#define pi (3.14159265358979)
+
+class UTILITY_FUNCTIONS {
+    public:
+        //This function converts decimal degrees to radians       
+		double deg2rad(double deg);
+
+        //This function converts radians to decimal degrees 
+		double rad2deg(double rad);
+        
+        //This function generates a 5 digit Alphanumeric random string
+        //std::string generateAlphanumericString();
+};
+
+#endif

@@ -19,7 +19,7 @@ SOFTWARE.
 %}
 %Test Data
 
-function compute_Angle()
+%function compute_Angle()
 pathInitial = [5,9]
 pathFinal = [15,24]
 
@@ -51,3 +51,16 @@ dMapped_Final = sqrt(power(pathFinal(1) - mappedVector(1),2) + power(pathFinal(2
 %Get angle A = cos(A) = c^2 + a^2 - b^2 / 2*c*a
 b_ang = acosd(power(dInitial_Mapped,2) + power(dMapped_Final,2) - power(dInitial_Final,2) / 2 * dInitial_Mapped * dInitial_Final);
 Angle = 180 - 90 - b_ang
+
+if Angle < -45
+    %Turn left
+
+else if Angle > 45
+    %Turn right
+
+else if Angle > -45 && Angle < 45
+    %Maintain direction
+
+end
+
+%
