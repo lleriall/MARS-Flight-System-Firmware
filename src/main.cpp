@@ -29,8 +29,6 @@ SOFTWARE.*/
 
 //Through spi interface, ECU recieves instructions from main computer
 
-void testPTAM();
-
 #define DRONE_STATE 0
 
 void setup(){
@@ -74,14 +72,6 @@ void loop(){
 
     }
     delete CTobj;
-    testPTAM();
 }
-
-/*void testPTAM(){
-    PTAM *obj = new PTAM();
-    uint8_t size = obj -> PTAM_ADD_BASE_DOUBLE("345",65);
-    Serial.println("tEST");
-
-}*/
 
 #endif // MAIN_
