@@ -23,7 +23,7 @@ SOFTWARE.*/
 #ifndef PTAM_
 #define PTAM_
 
-#include"../util/defi.h"
+#include"../../util/defi.h"
 /*
     PTAM implementation is a series of statically allocated 1D arrays
     which correspond to their respective data type
@@ -63,7 +63,7 @@ class PTAM {
         double PTAM_RETRIEVE_BASE_DOUBLE(char* baseID);
 
         //Method to clear entire PTAM data for next program cycle
-        void PTAM_CLEAR_ALL();
+        //void PTAM_CLEAR_ALL();
 
 };
 

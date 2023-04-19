@@ -133,7 +133,7 @@ uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
     }
     delete tObj;
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("state",0);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("state"),0);
     delete ptObject;
     return change;
 }
@@ -148,7 +148,7 @@ uint8_t CONTROLLER_TASKS::SWITCH2PREP(){
     }
     delete tObj;
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("state",1);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("state"),1);
     delete ptObject;
     return change;
 }
@@ -163,7 +163,7 @@ uint8_t CONTROLLER_TASKS::SWITCH2ARMED(){
     }
     delete tObj;
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("state",2);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("state"),2);
     delete ptObject;
     return change;
 }
@@ -178,7 +178,7 @@ uint8_t CONTROLLER_TASKS::SWITCH2BYPASS(){
     }
     delete tObj;
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("state",3);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("state"),3);
     delete ptObject;
     return change;
 }

@@ -145,7 +145,7 @@ double PTAM::PTAM_RETRIEVE_BASE_DOUBLE(char* baseID){
 }
 
 //Method to clear entire PTAM data for next program cycle
-void PTAM::PTAM_CLEAR_ALL(){
+/*void PTAM::PTAM_CLEAR_ALL(){
     //Set all values to 0
 
-}
+}*/

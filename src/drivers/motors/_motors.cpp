@@ -28,54 +28,53 @@ _motors::_motors(){
     _init();
 }
 
-uint8_t _motors::adjustServoFWLEFT(uint8_t range){
+uint8_t _motors::adjustServoFWLEFT(int16_t range){
     uint8_t _outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(_outPin,HIGH);
     delay(opT);
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("SFL",range);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("SFL"),range);
     delete ptObject;
     return (1);
 }
 
-uint8_t _motors::adjustServoFWRIGHT(uint8_t range){
+uint8_t _motors::adjustServoFWRIGHT(int16_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("SFR",range);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("SFR"),range);
     delete ptObject;
     return (1);
 }
 
-uint8_t _motors::adjustServoRWLEFT(uint8_t range){
+uint8_t _motors::adjustServoRWLEFT(int16_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("SRL",range);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("SRL"),range);
     delete ptObject;
     return (1);
 }
 
-uint8_t _motors::adjustServoRWRIGHT(uint8_t range){
+uint8_t _motors::adjustServoRWRIGHT(int16_t range){
     uint8_t outPin = 0;
     uint16_t opT = computeOptimumDelay(range - returnServoPos());
     digitalWrite(outPin, HIGH);
     delay(opT);
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("SRR",range);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("SRR"),range);
     delete ptObject;
     return (1);
 }
 
-uint8_t _motors::mainThrottle(uint8_t range){
-
+uint8_t _motors::mainThrottle(int16_t range){
     PTAM *ptObject = new PTAM();
-    ptObject -> PTAM_ADD_BASE_8("Throttle",range);
+    ptObject -> PTAM_ADD_BASE_INT(std::string("Throttle"),range);
     delete ptObject;
 }
 

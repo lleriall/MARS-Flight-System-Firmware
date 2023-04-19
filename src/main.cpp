@@ -24,7 +24,6 @@ SOFTWARE.*/
 #define MAIN_
 
 #include"system/sys_controller.h"
-//#include"PTAM/temp_access_mem.h"
 #include"util/defi.h"
 
 //Through spi interface, ECU recieves instructions from main computer

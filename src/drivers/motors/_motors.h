@@ -30,15 +30,15 @@ class _motors {
         _motors();
     public:
         //Motor firmware modules mapped to range 0 - 180 | Neutral = 90
-        uint8_t adjustServoFWLEFT(uint8_t range);
+        uint8_t adjustServoFWLEFT(int16_t range);
 
-        uint8_t adjustServoFWRIGHT(uint8_t range);
+        uint8_t adjustServoFWRIGHT(int16_t range);
 
-        uint8_t adjustServoRWLEFT(uint8_t range);
+        uint8_t adjustServoRWLEFT(int16_t range);
 
-        uint8_t adjustServoRWRIGHT(uint8_t range);
+        uint8_t adjustServoRWRIGHT(int16_t range);
 
-        uint8_t mainThrottle(uint8_t range);
+        uint8_t mainThrottle(int16_t range);
 
         uint8_t returnServoPos();
 
