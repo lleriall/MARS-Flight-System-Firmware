@@ -20,7 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#include"_ptamAPI.h"
+/*#include"_ptamAPI.h"
 
 uint8_t PTAM::PTAM_ADD_BASE_DOUBLE(std::string baseID,double data){
     DataStore *obj = new DataStore();
@@ -72,3 +72,4 @@ void PTAM::PTAM_CLEAR_ALL(){
     obj -> clearData();
     delete obj;
 }
+*/

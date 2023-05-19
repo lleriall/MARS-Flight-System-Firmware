@@ -20,10 +20,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef PTAM_
-#define PTAM_
 
-#include"../util/defi.h"
+//#ifndef PTAM_
+//#define PTAM_
+
+//#include"../util/defi.h"
 
 /*
     PTAM implementation is a series of statically allocated 1D arrays
@@ -31,6 +32,7 @@ SOFTWARE.*/
 
     Each data pair has two values
 */
+/*
 
 class PTAM {
     public:
@@ -57,4 +59,4 @@ class PTAM {
 
 };
 
-#endif 
+#endif */

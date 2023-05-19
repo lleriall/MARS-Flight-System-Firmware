@@ -30,7 +30,6 @@ SOFTWARE.
 #include<WiFi.h>
 #include<esp_now.h>
 #include<Wire.h>
-#include"PTAM/_ptamAPI.h"
 #include"PTAM/_ptam.h"
 #include"system/sys_controller.h"
 #include"system/flight_tasks.h"
