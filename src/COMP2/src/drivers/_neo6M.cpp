@@ -1,4 +1,4 @@
-#include "_neo6M.h"
+/*#include "_neo6M.h"
 
 void NEO6M::begin() {
   // initialize serial communication with the GPS module
@@ -18,8 +18,8 @@ bool NEO6M::readGPS() {
     }
   }
   return false;*/
-}
-
+//}
+/*
 float NEO6M::getLatitude() {
   return latitude;
 }
@@ -35,3 +35,4 @@ float NEO6M::getAltitude() {
 int NEO6M::getSatellites() {
   return satellites;
 }
+*/

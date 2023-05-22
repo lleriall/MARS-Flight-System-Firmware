@@ -24,7 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 #include"../util/defi.h"
-#include"../drivers/motors/_motors.h"
 
 #define INDIVIDUAL (uint8_t) 0
 #define SIMULTANEOUS (uint8_t) 1

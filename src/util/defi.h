@@ -26,6 +26,7 @@ SOFTWARE.
 #include <iostream>
 #include <string>
 #include<Arduino.h>
+//#include <SoftwareSerial.h>
 #include<SPI.h>
 #include<WiFi.h>
 #include<esp_now.h>
@@ -33,8 +34,6 @@ SOFTWARE.
 #include"PTAM/_ptam.h"
 #include"system/sys_controller.h"
 #include"system/flight_tasks.h"
-#include"drivers/motors/_motors.h"
-#include"drivers/_imu.h"
 #include"Control/_pid.h"
 #include"Comms/stack_send.h"
 //#include"Comms/sys_wifi.h"

@@ -1,4 +1,4 @@
-#ifndef NEO6M_H
+/*#ifndef NEO6M_H
 #define NEO6M_H
 
 //#include <SoftwareSerial.h>
@@ -28,3 +28,4 @@ class NEO6M {
 };
 
 #endif
+*/
