@@ -52,7 +52,7 @@ void loop() {
 }
 */
 #include<Arduino.h>
-#include"_motors.h"
+/*#include"_motors.h"
 
 int count = 0;
 
@@ -70,4 +70,75 @@ void loop(){
    }
    
    delete obj;
+}*/
+
+/*
+#include <Arduino.h>
+#include "MotorController.h"
+
+MotorController motor(2);  // Create a MotorController object with throttlePin = 2
+
+void setup() {
+   Serial.begin(9600);
+   motor.begin();
+}
+
+void loop() {
+  // Set motor speed using throttle input (0 - 180)
+  int throttleInput = 90;  // Example throttle input (change this as needed)
+  for(int i = 0; i < 180;i++){
+      motor.setThrottle(i);
+  }
+
+  for(int i = 180; i > 0;i--){
+      motor.setThrottle(i);
+  }
+
+  delay(1000);  // Delay for 1 second
+
+  // Stop the motor
+  motor.stop();
+
+}*/
+
+#include <Arduino.h>
+#include "gps.h"
+
+// GPS module connection pins
+const int gpsRxPin = 2;
+const int gpsTxPin = 3;
+
+GPSModule gpsModule(gpsRxPin, gpsTxPin);
+
+void setup() {
+  Serial.begin(9600);
+  gpsModule.begin();
+}
+
+void loop() {
+  if (gpsModule.update()) {
+    double latitude = gpsModule.getLatitude();
+    double longitude = gpsModule.getLongitude();
+    double altitude = gpsModule.getAltitude();
+    double velocity = gpsModule.getVelocity();
+    unsigned long time = gpsModule.getTime();
+
+    // Print the GPS data
+    Serial.print("Latitude: ");
+    Serial.println(latitude, 6);
+
+    Serial.print("Longitude: ");
+    Serial.println(longitude, 6);
+
+    Serial.print("Altitude: ");
+    Serial.print(altitude);
+    Serial.println(" meters");
+
+    Serial.print("Velocity: ");
+    Serial.print(velocity);
+    Serial.println(" km/h");
+
+    Serial.print("Time: ");
+    Serial.println(time);
+  }
 }

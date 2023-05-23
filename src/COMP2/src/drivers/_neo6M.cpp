@@ -1,38 +1,36 @@
-/*#include "_neo6M.h"
+#include "GPSModule.h"
 
-void NEO6M::begin() {
-  // initialize serial communication with the GPS module
-  //gpsSerial.begin(9600);
+GPSModule::GPSModule(int rxPin, int txPin) : gpsSerial(rxPin, txPin) {}
+
+void GPSModule::begin() {
+  gpsSerial.begin(9600);
 }
 
-bool NEO6M::readGPS() {
-  /*if (gpsSerial.available()) {
-    char c = gpsSerial.read();
-    if (gps.encode(c)) {
-      // read GPS information and store in class variables
-      latitude = gps.location.lat();
-      longitude = gps.location.lng();
-      altitude = gps.altitude.meters();
-      satellites = gps.satellites.value();
+bool GPSModule::update() {
+  while (gpsSerial.available()) {
+    if (gps.encode(gpsSerial.read())) {
       return true;
     }
   }
-  return false;*/
-//}
-/*
-float NEO6M::getLatitude() {
-  return latitude;
+  return false;
 }
 
-float NEO6M::getLongitude() {
-  return longitude;
+double GPSModule::getLatitude() {
+  return gps.location.lat();
 }
 
-float NEO6M::getAltitude() {
-  return altitude;
+double GPSModule::getLongitude() {
+  return gps.location.lng();
 }
 
-int NEO6M::getSatellites() {
-  return satellites;
+double GPSModule::getAltitude() {
+  return gps.altitude.meters();
 }
-*/
+
+double GPSModule::getVelocity() {
+  return gps.speed.kmph();
+}
+
+unsigned long GPSModule::getTime() {
+  return gps.time.value();
+}

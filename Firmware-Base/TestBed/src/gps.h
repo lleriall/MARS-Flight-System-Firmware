@@ -1,25 +1,23 @@
-/*#ifndef GPS_H
-#define GPS_H
+#ifndef GPSMODULE_H
+#define GPSMODULE_H
 
-#include <HardwareSerial.h>
+#include <SoftwareSerial.h>
+#include <TinyGPS++.h>
 
-class GPS {
-public:
-  GPS(HardwareSerial& serial);
-  void begin();
-  void update();
-  float getLatitude() const;
-  float getLongitude() const;
-  float getAltitude() const;
-
+class GPSModule {
 private:
-  HardwareSerial& serial_;
-  float latitude_ = 0.0;
-  float longitude_ = 0.0;
-  float altitude_ = 0.0;
+  SoftwareSerial gpsSerial;
+  TinyGPSPlus gps;
 
-  void parseGGA(const String& line);
-  float parseCoord(const String& coordStr, char hem) const;
+public:
+  GPSModule(int rxPin, int txPin);
+  void begin();
+  bool update();
+  double getLatitude();
+  double getLongitude();
+  double getAltitude();
+  double getVelocity();
+  unsigned long getTime();
 };
 
-#endif  // GPS_H*/
+#endif
