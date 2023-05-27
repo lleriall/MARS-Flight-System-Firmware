@@ -1,4 +1,4 @@
-#ifndef MPU6050_H
+/*#ifndef MPU6050_H
 #define MPU6050_H
 
 #include <Wire.h>
@@ -36,4 +36,4 @@ class MPU6050 {
         int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
 };
 
-#endif
+#endif*/

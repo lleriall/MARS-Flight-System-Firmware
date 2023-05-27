@@ -1,4 +1,4 @@
-#include "mpu6050.h"
+/*#include "mpu6050.h"
 #include <Arduino.h>
 
 MPU6050::MPU6050(){
@@ -72,4 +72,4 @@ double MPU6050::calculateRoll() {
 double MPU6050::calculateYaw() {
   double yaw = atan2(GyX, sqrt(GyY * GyY + GyZ * GyZ)) * (180.0 / PI);
   return yaw;
-}
+}*/
