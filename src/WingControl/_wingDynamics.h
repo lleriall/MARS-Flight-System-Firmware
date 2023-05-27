@@ -28,6 +28,11 @@ SOFTWARE.*/
 #define INDIVIDUAL (uint8_t) 0
 #define SIMULTANEOUS (uint8_t) 1
 
+#define MOTOR_FL 1
+#define MOTOR_FR 2
+#define MOTOR_RL 3
+#define MOTOR_RR 4
+
 class _WING_DYNAMICS{
     public:
         uint8_t _translateRight(uint8_t range, uint8_t _mode);

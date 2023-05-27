@@ -22,45 +22,38 @@ SOFTWARE.*/
 
 #include"_wingDynamics.h"
 
+/*
+    MOTOR FL - 1
+    MOTOR FR - 2
+    MOTOR RL - 3
+    MOTOR RR - 4
+*/
+
 uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode){
-    _motors *obj = new _motors();
-    //Lateral
-    if(_mode == 1){
-        for(uint8_t i = obj -> returnServoPos(); i <= range;i++){
-            obj -> adjustServoFWRIGHT(i);
-            obj -> adjustServoRWRIGHT(i);
-        }
-    }
-    if(_mode == 0){
-        obj -> adjustServoFWRIGHT(range);
-        obj -> adjustServoRWRIGHT(range);
-    }
+    //Adjust FR and RR wing 
+    MODULE_ROUTER * obj = new MODULE_ROUTER();
+    obj -> motors(MOTOR_FR, range);
+    obj -> motors(MOTOR_RR, range);
     delete obj;
 }
 
 uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode){
-    _motors *obj = new _motors();
-    if(_mode == 1){
-        for(uint8_t i = obj -> returnServoPos(); i <= range; i++){
-            obj -> adjustServoFWLEFT(i);
-            obj -> adjustServoRWLEFT(i);
-        }
-    }
-    if(_mode == 0){
-        obj -> adjustServoFWLEFT(range);
-        obj -> adjustServoRWLEFT(range);
-    }
+    MODULE_ROUTER * obj = new MODULE_ROUTER();
+    obj -> motors(MOTOR_FL, range);
+    obj -> motors(MOTOR_RL, range);
+    delete obj;
 }
 
 uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t _mode){
-    _motors *obj = new _motors();
-    if(_mode == 1){
-        for(uint8_t i = obj -> returnServoPos(); i <=  range; i++){
-            
-        }
-    }
+    MODULE_ROUTER * obj = new MODULE_ROUTER();
+    obj -> motors(MOTOR_FL, range);
+    obj -> motors(MOTOR_RL, range);
+    delete obj;
 }
 
 uint8_t _WING_DYNAMICS::_translateDown(uint8_t range,uint8_t mode){
-
+    MODULE_ROUTER * obj = new MODULE_ROUTER();
+    obj -> motors(MOTOR_FL, range);
+    obj -> motors(MOTOR_RL, range);
+    delete obj;
 }
