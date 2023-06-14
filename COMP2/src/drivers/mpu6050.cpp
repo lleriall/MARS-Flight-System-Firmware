@@ -1,75 +1,81 @@
-/*#include "mpu6050.h"
-#include <Arduino.h>
+#include "mpu6050.h"
+#include <Wire.h>
 
-MPU6050::MPU6050(){
-    setup();
+MPU6050::MPU6050() {
+    accelX = 0.0;
+    accelY = 0.0;
+    accelZ = 0.0;
+    gyroX = 0.0;
+    gyroY = 0.0;
+    gyroZ = 0.0;
+    pitch = 0.0;
+    roll = 0.0;
+    yaw = 0.0;
 }
 
-void MPU6050::setup() {
-  Wire.begin();
-  Wire.beginTransmission(MPU_ADDR);
-  Wire.write(0x6B); // PWR_MGMT_1 register
-  Wire.write(0);    // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
-  Serial.begin(9600);
+void MPU6050::initialize() {
+    // Initialize MPU6050 sensor
+    Wire.begin();
+    Wire.beginTransmission(0x68); // Address of MPU6050
+    Wire.write(0x6B); // PWR_MGMT_1 register
+    Wire.write(0); // Wake up MPU6050
+    Wire.endTransmission(true);
 }
 
-void MPU6050::readData() {
-  Wire.beginTransmission(MPU_ADDR);
-  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
-  Wire.endTransmission(false);
-  Wire.requestFrom(MPU_ADDR, 14, true); // request a total of 14 registers
+void MPU6050::update() {
+    // Read sensor data from MPU6050
+    Wire.beginTransmission(0x68); // Address of MPU6050
+    Wire.write(0x3B); // Starting register for accelerometer data
+    Wire.endTransmission(false);
+    Wire.requestFrom(0x68, 14, true); // Request 14 bytes of data
 
-  AcX = Wire.read() << 8 | Wire.read(); // combine high and low bytes for X-axis acceleration
-  AcY = Wire.read() << 8 | Wire.read(); // combine high and low bytes for Y-axis acceleration
-  AcZ = Wire.read() << 8 | Wire.read(); // combine high and low bytes for Z-axis acceleration
+    // Read accelerometer data
+    accelX = (Wire.read() << 8 | Wire.read()) / 16384.0;
+    accelY = (Wire.read() << 8 | Wire.read()) / 16384.0;
+    accelZ = (Wire.read() << 8 | Wire.read()) / 16384.0;
 
-  Tmp = Wire.read() << 8 | Wire.read(); // combine high and low bytes for temperature
+    // Read gyroscope data
+    gyroX = (Wire.read() << 8 | Wire.read()) / 131.0;
+    gyroY = (Wire.read() << 8 | Wire.read()) / 131.0;
+    gyroZ = (Wire.read() << 8 | Wire.read()) / 131.0;
 
-  GyX = Wire.read() << 8 | Wire.read(); // combine high and low bytes for X-axis gyroscope
-  GyY = Wire.read() << 8 | Wire.read(); // combine high and low bytes for Y-axis gyroscope
-  GyZ = Wire.read() << 8 | Wire.read(); // combine high and low bytes for Z-axis gyroscope
+    // Calculate pitch, roll, and yaw angles
+    pitch = fastAtan(-accelX / fastSqrt(accelY * accelY + accelZ * accelZ));
+    roll = fastAtan(accelY / fastSqrt(accelX * accelX + accelZ * accelZ));
+    yaw = fastAtan(accelZ / fastSqrt(accelX * accelX + accelY * accelY));
 }
 
-int16_t MPU6050::getAccelerationX() {
-  return AcX;
+float MPU6050::getPitch() {
+    return pitch;
 }
 
-int16_t MPU6050::getAccelerationY() {
-  return AcY;
+float MPU6050::getRoll() {
+    return roll;
 }
 
-int16_t MPU6050::getAccelerationZ() {
-  return AcZ;
+float MPU6050::getYaw() {
+    return yaw;
 }
 
-double MPU6050::getTemperature() {
-  return Tmp / 340.00 + 36.53;
+float MPU6050::fastAtan(float x) {
+    // Approximation of arctan function
+    const float a = 0.596227f;
+    const float b = 1.570796f;
+    const float c = 0.146446f;
+
+    float y = a * x * x * x + b * x + c * x * x * x * x;
+
+    return y;
 }
 
-int16_t MPU6050::getGyroscopeX() {
-  return GyX;
-}
+float MPU6050::fastSqrt(float x) {
+    // Approximation of square root function
+    float y = x;
+    float z = 0.0;
+    while (y - z >= 0.0001) {
+        y = (y + z) / 2.0;
+        z = x / y;
+    }
 
-int16_t MPU6050::getGyroscopeY() {
-  return GyY;
+    return y;
 }
-
-int16_t MPU6050::getGyroscopeZ() {
-  return GyZ;
-}
-
-double MPU6050::calculatePitch() {
-  double pitch = atan2(AcY, sqrt(AcX * AcX + AcZ * AcZ)) * (180.0 / PI);
-  return pitch;
-}
-
-double MPU6050::calculateRoll() {
-  double roll = atan2(-AcX, AcZ) * (180.0 / PI);
-  return roll;
-}
-
-double MPU6050::calculateYaw() {
-  double yaw = atan2(GyX, sqrt(GyY * GyY + GyZ * GyZ)) * (180.0 / PI);
-  return yaw;
-}*/

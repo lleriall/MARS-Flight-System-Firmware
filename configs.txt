@@ -1,0 +1,26 @@
+Pins:
+
+Servo:
+GND 
+5V
+DIGITAL
+
+NEO6M GPS:
+GND
+RX
+TX
+5V
+
+MPU6050:
+SDA 
+SCL 
+5V
+GND 
+
+Display:
+GND 
+5V
+SCK
+SDA
+
+MOTOR:

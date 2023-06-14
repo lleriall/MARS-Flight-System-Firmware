@@ -9,20 +9,20 @@ ServoController::ServoController() {
 
 void ServoController::moveToAngleFL(int angle) {
   servo_1.write(angle);
-  delay(15);
+  delay(360);
 }
 
 void ServoController::moveToAngleFR(int angle) {
   servo_2.write(angle);
-  delay(15);
+  delay(360);
 }
 
 void ServoController::moveToAngleRL(int angle) {
   servo_3.write(angle);
-  delay(15);
+  delay(360);
 }
 
 void ServoController::moveToAngleRR(int angle) {
   servo_4.write(angle);
-  delay(15);
+  delay(360);
 }
