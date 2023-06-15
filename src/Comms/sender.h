@@ -16,24 +16,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef STRINGPARSER_H
-#define STRINGPARSER_H
+#ifndef ESP32_SENDER_H
+#define ESP32_SENDER_H
 
-#include <string>
+#include <SoftwareSerial.h>
+#include <Arduino.h>
 
-class StringParser {
-private:
-    std::string inputString;
-    std::string extractedString;
-    int extractedNumber;
+class Sender {
+  private:
+    SoftwareSerial mySerial;
 
-public:
-    StringParser(const std::string& input);
+  public:
+    Sender(int txPin, int rxPin);
+    
+    void setup();
 
-    void parse();
-
-    std::string getExtractedString() const;
-    int getExtractedNumber() const;
+    void sendData(String data);
+    
+    String receiveData();
 };
 
 #endif

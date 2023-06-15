@@ -16,24 +16,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef STRINGPARSER_H
-#define STRINGPARSER_H
+#include "receiver.h"
+#include <Arduino.h>
 
-#include <string>
+UnoReceiver::UnoReceiver(int rxPin, int txPin) : mySerial(rxPin, txPin) {}
 
-class StringParser {
-private:
-    std::string inputString;
-    std::string extractedString;
-    int extractedNumber;
+void UnoReceiver::setup() {
+  Serial.begin(115200);
+  mySerial.begin(9600);    // Set the baud rate to match the ESP32
+}
 
-public:
-    StringParser(const std::string& input);
+String UnoReceiver::receiveData() {
+  if (mySerial.available()) {
+    String receivedData = mySerial.readString();
+    return receivedData;
+  }
+  return "";
+}
 
-    void parse();
-
-    std::string getExtractedString() const;
-    int getExtractedNumber() const;
-};
-
-#endif
+void UnoReceiver::sendData(String data) {
+  mySerial.println(data);
+}

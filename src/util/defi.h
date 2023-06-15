@@ -37,6 +37,8 @@ SOFTWARE.
 #include"Control/_pid.h"
 #include"Comms/stack_send.h"
 //#include"Comms/sys_wifi.h"
+#include"_encode.h"
+#include"Comms/sender.h"
 #include"WingControl/_wingDynamics.h"
 #include"module-router/route.h"
 

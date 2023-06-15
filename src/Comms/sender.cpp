@@ -16,24 +16,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef STRINGPARSER_H
-#define STRINGPARSER_H
+#include "sender.h"
 
-#include <string>
+Sender::Sender(int txPin, int rxPin) : mySerial(txPin, rxPin) {}
 
-class StringParser {
-private:
-    std::string inputString;
-    std::string extractedString;
-    int extractedNumber;
+void Sender::setup() {
+  Serial.begin(115200);
+  mySerial.begin(9600);    // Set the baud rate to match the Arduino Uno
+}
 
-public:
-    StringParser(const std::string& input);
+void Sender::sendData(String data) {
+  mySerial.println(data);
+}
 
-    void parse();
-
-    std::string getExtractedString() const;
-    int getExtractedNumber() const;
-};
-
-#endif
+String Sender::receiveData() {
+  if (mySerial.available()) {
+    String receivedData = mySerial.readString();
+    return receivedData;
+  }
+  return "";
+}

@@ -16,24 +16,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef STRINGPARSER_H
-#define STRINGPARSER_H
+#ifndef UNO_RECEIVER_H
+#define UNO_RECEIVER_H
 
-#include <string>
+#include <SoftwareSerial.h>
 
-class StringParser {
-private:
-    std::string inputString;
-    std::string extractedString;
-    int extractedNumber;
+class UnoReceiver {
+    private:
+    SoftwareSerial mySerial;
+    
+    public:
+    UnoReceiver(int rxPin, int txPin);
 
-public:
-    StringParser(const std::string& input);
+    void setup();
 
-    void parse();
+    String receiveData();
 
-    std::string getExtractedString() const;
-    int getExtractedNumber() const;
+    void sendData(String data);
 };
 
 #endif

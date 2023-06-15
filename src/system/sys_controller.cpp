@@ -66,13 +66,13 @@ void CONTROLLER_TASKS::_init_(){
     //SENSORS
 
     //Rotate wing servos to default
-    uint8_t defaultP = 0;
+    /*uint8_t defaultP = 0;
     _motors *_mObj = new _motors();
     _mObj -> adjustServoFWLEFT(defaultP);
     _mObj -> adjustServoFWRIGHT(defaultP);
     _mObj -> adjustServoRWLEFT(defaultP);
     _mObj -> adjustServoRWRIGHT(defaultP);
-    delete _mObj;
+    delete _mObj;*/
 }
 
 void CONTROLLER_TASKS::_IDLE_(){
