@@ -29,14 +29,7 @@ uint8_t droneStarted;
 
 //Setup pins based on config
 void CONTROLLER_TASKS::pin_setup(){
-    //Setup MASTER connection for forward neighbor
-    //Set SlaveSelection pin as output.
-    //uint8_t SlaveSelection = 0; //TEMP
-    //pinMode(SlaveSelection, OUTPUT);
-    //and Make it HIGH to prevent to start communication right away
-    //digitalWrite(SlaveSelection, HIGH);
-
-    //Setup SLAVE connection for backwards neighbor
+   
 }
 
 //Setup comms to GSE over ESP32 Wifi

@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2023 Limitless Aeronautics
+Copyright (c) 2023 limitless Aeronautics
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,39 +20,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef ONBOARD_DIS
-#define ONBOARD_DIS
+#ifndef NON_BLOCKING_DELAY_H
+#define NON_BLOCKING_DELAY_H
 
-#define GOOD_CONNECTION 1
-#define BAD_CONNECTION 0
-
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include "NonBlockingDelay.h"
-
-class _ONBOARD_DISPLAY {
-  public:
-    void _display_ref(uint8_t _connection, uint8_t WRL,uint8_t WRR,uint8_t WFR, uint8_t WFL);
-
-  public:
-    void _init_();
-
-    void _ALT_SCRN();
-
-    void _stateDisplay();
-
-    void _stateConnection(uint8_t x);
-
-    void state_wingAngleRL(uint8_t value);
-
-    void state_wingAngleRR(uint8_t value);
-
-    void state_wingAngleFL(uint8_t value);
-
-    void state_wingAngleFR(uint8_t value);
-
+class NonBlockingDelay {
+private:
+  unsigned long previousTime;
+  unsigned long delayTime;
+public:
+  NonBlockingDelay(unsigned long duration);
+  bool isElapsed();
 };
 
- #endif //ONBOARD_DIS
+#endif // NON_BLOCKING_DELAY_H
