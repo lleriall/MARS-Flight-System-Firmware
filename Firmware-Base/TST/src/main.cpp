@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include"sender.h"
 
-Sender *obj2 = new Sender(23,22);
+Sender *obj2 = new Sender(3,2);
 
 void setup() {
   obj2 -> setup();
