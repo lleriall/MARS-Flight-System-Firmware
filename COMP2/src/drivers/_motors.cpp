@@ -18,29 +18,118 @@ SOFTWARE.*/
 
 #include "_motors.h"
 
-ServoController::ServoController() {
-  servo_1.attach(servo_pin1); // start servo control
+Servo servo_1;
+Servo servo_2; 
+Servo servo_3; 
+Servo servo_4; 
+
+void ServoController::setupServo(){
+  servo_1.attach(servo_pin1);
   servo_2.attach(servo_pin2);
   servo_3.attach(servo_pin3);
   servo_4.attach(servo_pin4);
 }
 
-void ServoController::moveToAngleFL(int angle) {
-  servo_1.write(angle);
-  delay(360);
+uint8_t ServoController::moveToAngleFL(uint8_t angle) {
+  //Hardware Check
+  if(angle < 0 || angle > 180){
+    return;
+  }
+  if(SERVO_POS_1 != angle){
+    if(angle < SERVO_POS_1){
+      for (uint8_t pos = SERVO_POS_1; pos >= angle; pos -= 1) { 
+        // in steps of 1 degree
+        servo_1.write(pos);           
+        delay(10); 
+      }
+      SERVO_POS_1 = angle;
+    }
+    if(angle > SERVO_POS_1){
+      for (uint8_t pos = SERVO_POS_1; pos <= angle; pos += 1) { 
+        // in steps of 1 degree
+        servo_1.write(pos);             
+        delay(10);
+      }
+      SERVO_POS_1 = angle;
+    }
+  }
+  return angle;
 }
 
-void ServoController::moveToAngleFR(int angle) {
-  servo_2.write(angle);
-  delay(360);
+uint8_t ServoController::moveToAngleFR(uint8_t angle) {
+  //Hardware Check
+  if(angle < 0 || angle > 180){
+    return;
+  }
+  if(SERVO_POS_2 != angle){
+    if(angle < SERVO_POS_2){
+      for (uint8_t pos = SERVO_POS_2; pos >= angle; pos -= 1) { 
+        // in steps of 1 degree
+        servo_2.write(pos);           
+        delay(10); 
+      }
+      SERVO_POS_2 = angle;
+    }
+    if(angle > SERVO_POS_2){
+      for (uint8_t pos = SERVO_POS_2; pos <= angle; pos += 1) { 
+        // in steps of 1 degree
+        servo_2.write(pos);             
+        delay(10);
+      }
+      SERVO_POS_2 = angle;
+    }
+  }
+  return angle;
 }
 
-void ServoController::moveToAngleRL(int angle) {
-  servo_3.write(angle);
-  delay(360);
+uint8_t ServoController::moveToAngleRL(uint8_t angle) {
+  //Hardware Check
+  if(angle < 0 || angle > 180){
+    return;
+  }
+  if(SERVO_POS_3 != angle){
+    if(angle < SERVO_POS_3){
+      for (uint8_t pos = SERVO_POS_3; pos >= angle; pos -= 1) { 
+        // in steps of 1 degree
+        servo_3.write(pos);           
+        delay(10); 
+      }
+      SERVO_POS_3 = angle;
+    }
+    if(angle > SERVO_POS_3){
+      for (uint8_t pos = SERVO_POS_3; pos <= angle; pos += 1) { 
+        // in steps of 1 degree
+        servo_3.write(pos);             
+        delay(10);
+      }
+      SERVO_POS_3 = angle;
+    }
+  }
+  return angle;
 }
 
-void ServoController::moveToAngleRR(int angle) {
-  servo_4.write(angle);
-  delay(360);
+uint8_t ServoController::moveToAngleRR(uint8_t angle) {
+  //Hardware Check
+  if(angle < 0 || angle > 180){
+    return;
+  }
+  if(SERVO_POS_4 != angle){
+    if(angle < SERVO_POS_4){
+      for (uint8_t pos = SERVO_POS_4; pos >= angle; pos -= 1) { 
+        // in steps of 1 degree
+        servo_4.write(pos);           
+        delay(10); 
+      }
+      SERVO_POS_4 = angle;
+    }
+    if(angle > SERVO_POS_4){
+      for (uint8_t pos = SERVO_POS_4; pos <= angle; pos += 1) { 
+        // in steps of 1 degree
+        servo_4.write(pos);             
+        delay(10);
+      }
+      SERVO_POS_4 = angle;
+    }
+  }
+  return angle;
 }

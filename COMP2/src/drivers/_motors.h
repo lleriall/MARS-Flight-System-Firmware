@@ -22,25 +22,37 @@ SOFTWARE.*/
 #include<Arduino.h>
 #include <Servo.h>
 
+
 class ServoController {
     public:
-        ServoController();
+        uint8_t moveToAngleFL(uint8_t angle);
+
+        uint8_t moveToAngleFR(uint8_t angle);
+
+        uint8_t moveToAngleRL(uint8_t angle);
+
+        uint8_t moveToAngleRR(uint8_t angle);
+
+        void setupServo();
+
     public:
-        void moveToAngleFL(int angle);
-        void moveToAngleFR(int angle);
-        void moveToAngleRL(int angle);
-        void moveToAngleRR(int angle);
+        //FRONT LEFT
+        uint8_t servo_pin1 = 3; 
+        //FRONT RIGHT
+        uint8_t servo_pin2 = 2;
+        //REAR LEFT
+        uint8_t servo_pin3 = 6;
+        //REAR RIGHT
+        uint8_t servo_pin4 = 5;
 
-private:
-    Servo servo_1;
-    Servo servo_2; // servo controller (multiple can exist)
-    Servo servo_3; // servo controller (multiple can exist)
-    Servo servo_4; // servo controller (multiple can exist)
+    public:
+        uint8_t SERVO_POS_1 = 0;
 
-    int servo_pin1 = 3; // PWM pin for servo control
-    int servo_pin2 = 2;
-    int servo_pin3 = 6;
-    int servo_pin4 = 5;
+        uint8_t SERVO_POS_2 = 0;
+
+        uint8_t SERVO_POS_3 = 0;
+
+        uint8_t SERVO_POS_4 = 0;
 };
 
 #endif  // SERVOCONTROLLER_H
