@@ -22,60 +22,75 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from trace import generate_path
-from utility import plot_path
+import utility
 import matplotlib.pyplot as plt
 import sys
 import time
 sys.path.insert(0,'/Users/nyameaama/Documents/MARS-Firmware/LIAM/dev/simulator')
 import physics
-#import visualization
+import visualization
+import PID
 
-'''
-start_lat = 40.7128  # Latitude of start point
-start_lon = -74.0060  # Longitude of start point
-end_lat = 34.0522  # Latitude of end point
-end_lon = -118.2437  # Longitude of end point
-num_points = 10  # Number of points in the generated path
+def simulate_system(initial_position, target_values, initial_values, kp, ki, kd, dt, duration):
+    mass = 1  # kg
+    num_steps = int(duration / dt)
+    current_values = initial_values
+    integral = [0, 0, 0]
+    previous_errors = [0, 0, 0]  # Initialize previous errors for each axis
+    AOA = 15
+    throttle = 50
+    position = initial_position
+    posVector = []
 
-path = generate_path(start_lat, start_lon, end_lat, end_lon, num_points)
+    for step in range(num_steps):
+        control_signals = PID.pid_controller(
+            target_values, current_values, kp, ki, kd, integral, previous_errors, dt
+        )
 
-print("Generated Path:")
-for point in path:
-    print(point)
+        # Use the control signals in your simulation
+        vx_control_signal, vy_control_signal, vz_control_signal = control_signals
+        velocity = [vx_control_signal, vy_control_signal, vz_control_signal]
+        # Update the plane's state
+        position = physics.update_plane(mass, position, velocity, AOA, throttle, dt)
 
-plot_path(path)
-'''
+        # Update current values based on the control signals
+        current_values[0] += vx_control_signal * dt
+        current_values[1] += vy_control_signal * dt
+        current_values[2] += vz_control_signal * dt
 
-# Initial state
-mass = 1000  # kg
-initial_position = (0, 0, 0)  # (x, y, z) coordinates
-initial_velocity = (10, 0, 0)  # (vx, vy, vz) velocities
+        # Update integral and previous errors
+        errors = PID.calculate_error(target_values, current_values)
+        integral = PID.calculate_integral(integral, errors, dt)
+        previous_errors = errors
 
-# Time step and duration
-dt = 0.1  # time step in seconds
-duration = 5  # duration in seconds
+        # Rest of the simulation code
+        # Get the new position from the updated state
+        new_position = position
+        posVector.append(new_position)
 
-# Simulation loop
-num_steps = int(duration / dt)
-position = initial_position
-velocity = initial_velocity
+    return current_values, posVector
 
-for step in range(num_steps):
-    # Update the plane's state
-    position, velocity = physics.update_plane(mass, position, velocity, dt)
+# Define PID gains
+kp = 1.0
+ki = 0.5
+kd = 0.2
 
-    # Get the new position from the updated state
-    new_position = position
+# Set initial and target values for vx, vy, and vz
+initial_values = [0.0, 0.0, 0.0]
+target_values = [10.0, -5.0, 2.0]
 
-    # Print the new position
-    print(f"Step {step+1}: New Position = {new_position}")
+initial_position = (0, 0, 5)  # (x, y, z) coordinates
 
-    # Optionally, perform other computations or actions based on the new position
+# Simulation parameters
+dt = 0.1
+duration = 5.0
 
-    # You can also access the plane's other attributes such as velocity, acceleration, etc. if needed
+# Simulate the system with PID control
+final_values,finalPos = simulate_system(initial_position,target_values, initial_values, kp, ki, kd, dt, duration)
 
-    # Wait for the time step before proceeding to the next iteration
-    # (useful if you want to simulate the time progression realistically)
-    # You can remove this line if you want the simulation to run as fast as possible
-    time.sleep(dt)
+# Print the final values for vx, vy, and vz
+print("Final values: vx =", final_values[0], "vy =", final_values[1], "vz =", final_values[2])
+
+posX, posY, posZ = utility.extractXY(finalPos)
+# Visualize the trajectory animation
+visualization.visualize_trajectory(posX,posY,posZ)

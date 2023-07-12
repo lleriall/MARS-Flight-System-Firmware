@@ -3,7 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 
 def visualize_trajectory(x, y, z):
-    fig = plt.figure()
+    fig = plt.figure("LIAM Simulator")
     ax = fig.add_subplot(111, projection='3d')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
@@ -11,9 +11,9 @@ def visualize_trajectory(x, y, z):
 
     # Set the aspect ratio and limits
     ax.set_box_aspect([1, 1, 0.5])
-    ax.set_xlim(min(x), max(x))
-    ax.set_ylim(min(y), max(y))
-    ax.set_zlim(min(z), max(z))
+    ax.set_xlim(min(x), max(x) + 10)
+    ax.set_ylim(min(y), max(y) + 10)
+    ax.set_zlim(min(z), max(z) + 10)
 
     # Create initial empty lines for the animation
     line, = ax.plot([], [], [], marker='o', label='Trajectory')
@@ -38,24 +38,3 @@ def visualize_trajectory(x, y, z):
     # Display the animation
     plt.legend()
     plt.show()
-
-def simulate_flight(start_position, end_position, num_steps):
-    # Generate a trajectory
-    x = [start_position[0]]
-    y = [start_position[1]]
-    z = [start_position[2]]
-    for _ in range(num_steps):
-        # Calculate the new position based on your physics model
-        # Replace the following line with your own physics calculations
-        new_position = [x[-1] + 1, y[-1] + 1, z[-1] + 1]
-        x.append(new_position[0])
-        y.append(new_position[1])
-        z.append(new_position[2])
-
-    # Visualize the trajectory animation
-    visualize_trajectory(x, y, z)
-
-start_position = [10, 0, 0]
-end_position = [10, 15, 20]
-num_steps = 20
-simulate_flight(start_position, end_position, num_steps)

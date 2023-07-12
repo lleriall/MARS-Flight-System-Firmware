@@ -1,4 +1,4 @@
-"""
+'''
 MIT License
 
 Copyright (c) 2023 limitless Aeronautics
@@ -20,14 +20,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-"""
+'''
 
 import matplotlib.pyplot as plt
 
 def plot_path(path):
-    """
-    Plots the given path of coordinates.
-    """
+    #Plots the given path of coordinates.
     latitudes = [point[0] for point in path]
     longitudes = [point[1] for point in path]
 
@@ -37,3 +35,27 @@ def plot_path(path):
     plt.title('Generated Path')
     plt.grid(True)
     plt.show()
+
+def extractXY(points):
+    extrctX = [point[0] for point in points]
+    extrctY = [point[1] for point in points]
+    extrctZ = [point[2] for point in points]
+    return extrctX,extrctY,extrctZ
+
+def get_last_value(points,variable):
+    if len(points) == 0:
+        return None
+    if variable == 'x':
+        last_point = points[-1]
+        x, _, _ = last_point
+        return x
+    if variable == 'y':
+        last_point = points[-1]
+        _, y, _ = last_point
+        return y
+    if variable == 'z':
+        last_point = points[-1]
+        _, _, z = last_point
+        return z
+    return ValueError
+    
