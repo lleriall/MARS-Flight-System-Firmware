@@ -25,7 +25,13 @@ SOFTWARE.
 from trace import generate_path
 from utility import plot_path
 import matplotlib.pyplot as plt
+import sys
+import time
+sys.path.insert(0,'/Users/nyameaama/Documents/MARS-Firmware/LIAM/dev/simulator')
+import physics
+#import visualization
 
+'''
 start_lat = 40.7128  # Latitude of start point
 start_lon = -74.0060  # Longitude of start point
 end_lat = 34.0522  # Latitude of end point
@@ -38,4 +44,38 @@ print("Generated Path:")
 for point in path:
     print(point)
 
-plot_path()
+plot_path(path)
+'''
+
+# Initial state
+mass = 1000  # kg
+initial_position = (0, 0, 0)  # (x, y, z) coordinates
+initial_velocity = (10, 0, 0)  # (vx, vy, vz) velocities
+
+# Time step and duration
+dt = 0.1  # time step in seconds
+duration = 5  # duration in seconds
+
+# Simulation loop
+num_steps = int(duration / dt)
+position = initial_position
+velocity = initial_velocity
+
+for step in range(num_steps):
+    # Update the plane's state
+    position, velocity = physics.update_plane(mass, position, velocity, dt)
+
+    # Get the new position from the updated state
+    new_position = position
+
+    # Print the new position
+    print(f"Step {step+1}: New Position = {new_position}")
+
+    # Optionally, perform other computations or actions based on the new position
+
+    # You can also access the plane's other attributes such as velocity, acceleration, etc. if needed
+
+    # Wait for the time step before proceeding to the next iteration
+    # (useful if you want to simulate the time progression realistically)
+    # You can remove this line if you want the simulation to run as fast as possible
+    time.sleep(dt)
