@@ -11,9 +11,9 @@ def visualize_trajectory(x, y, z):
 
     # Set the aspect ratio and limits
     ax.set_box_aspect([1, 1, 0.5])
-    ax.set_xlim(min(x), max(x) + 10)
-    ax.set_ylim(min(y), max(y) + 10)
-    ax.set_zlim(min(z), max(z) + 10)
+    ax.set_xlim(min(x), max(x))
+    ax.set_ylim(min(y), max(y))
+    ax.set_zlim(min(z), max(z))
 
     # Create initial empty lines for the animation
     line, = ax.plot([], [], [], marker='o', label='Trajectory')

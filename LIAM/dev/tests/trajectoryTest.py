@@ -49,7 +49,6 @@ for step in range(num_steps):
 
     # Get the new position from the updated state
     new_position = position
-
     # Print the new position
     print(f"Step {step+1}: New Position = {new_position}")
 

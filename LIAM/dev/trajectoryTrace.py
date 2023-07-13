@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 import math
+import utility
 
 def calculate_coordinate(lat1, lon1, lat2, lon2, distance):
     """
@@ -44,14 +45,27 @@ def generate_path(start_lat, start_lon, end_lat, end_lon, num_points):
     delta_lat = (end_lat - start_lat) / num_points
     delta_lon = (end_lon - start_lon) / num_points
 
-    path = [(start_lat + i * delta_lat, start_lon + i * delta_lon) for i in range(num_points + 1)]
+    path = [(start_lat + i * delta_lat, start_lon + i * delta_lon) for i in range(num_points)]
 
     return path
 
-def generate_altitude_trajectory(initial_altitude, final_altitude, num_points):
-    delta_altitude = final_altitude - initial_altitude
-    altitude_increment = delta_altitude / (num_points - 1)
+def generate_altitude_trajectory(initial_altitude, mid_altitude, final_altitude, num_points):
+    delta_altitude1 = mid_altitude - initial_altitude
+    delta_altitude2 = final_altitude - mid_altitude
 
-    trajectory = [initial_altitude + i * altitude_increment for i in range(num_points)]
+    num_points1 = num_points // 2
+    num_points2 = num_points - num_points1
+
+    altitude_increment1 = delta_altitude1 / (num_points1 - 1)
+    altitude_increment2 = delta_altitude2 / (num_points2 - 1)
+
+    trajectory = [initial_altitude + i * altitude_increment1 for i in range(num_points1)]
+    trajectory += [mid_altitude + i * altitude_increment2 for i in range(num_points2)]
 
     return trajectory
+
+def generateCompletePath(start_lat, start_lon, end_lat, end_lon,initial_altitude, mid_altitude, final_altitude, num_points):
+    xy = generate_path(start_lat, start_lon, end_lat, end_lon, num_points)
+    zAlt = generate_altitude_trajectory(initial_altitude, mid_altitude, final_altitude, num_points)
+    complete = utility.append_array_to_tuples(xy,zAlt)
+    return complete

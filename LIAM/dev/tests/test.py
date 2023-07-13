@@ -1,4 +1,5 @@
 import PID
+import utility
 
 # Define PID gains
 kp = 0.5
@@ -6,8 +7,8 @@ ki = 0.1
 kd = 0.7
 
 # Set initial and target values for vx, vy, and vz
-initial_values = [0.0, 0.0, 0.0]
-target_values = [10.0, -5.0, 2.0]
+initial_values = [7.6, 8.8, 3.6]
+target_values = [7, 8, 9]
 
 # Simulation parameters
 dt = 0.1
