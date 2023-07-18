@@ -87,10 +87,13 @@ start_lat = 40.7128  # Latitude of start point
 start_lon = -74.0060  # Longitude of start point
 end_lat = 34.0522  # Latitude of end point
 end_lon = -118.2437  # Longitude of end point
+
+init = (5,5)
+final = (20,20)
 num_points = 10  # Number of points in the generated path
-initial_altitude = 20
-mid_altitude = 120
-final_altitude = 60
+initial_altitude = 5
+mid_altitude = 20
+final_altitude = 10
 num_points = 20
 
 path = trJ.generateCompletePath(start_lat, start_lon, end_lat, end_lon,initial_altitude, mid_altitude, final_altitude, num_points)

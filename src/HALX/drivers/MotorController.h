@@ -16,43 +16,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef SERVOCONTROLLER_H
-#define SERVOCONTROLLER_H
+#ifndef MOTORCONTROLLER_H
+#define MOTORCONTROLLER_H
 
+#include <ESP32Servo.h>
 #include<Arduino.h>
-#include <Servo.h>
 
+class MotorController {
+private:
+  Servo esc;  // Create a Servo object
+  int throttlePin;  // Digital pin connected to ESC control signal
+private:
+  int map(int value, int fromLow, int fromHigh, int toLow, int toHigh);
 
-class ServoController {
-    public:
-        uint8_t moveToAngleFL(uint8_t angle);
-
-        uint8_t moveToAngleFR(uint8_t angle);
-
-        uint8_t moveToAngleRL(uint8_t angle);
-
-        uint8_t moveToAngleRR(uint8_t angle);
-
-        void setupServo();
-
-    public:
-        //FRONT LEFT
-        uint8_t servo_pin1 = 3; 
-        //FRONT RIGHT
-        uint8_t servo_pin2 = 2;
-        //REAR LEFT
-        uint8_t servo_pin3 = 6;
-        //REAR RIGHT
-        uint8_t servo_pin4 = 5;
-
-    public:
-        uint8_t SERVO_POS_1 = 0;
-
-        uint8_t SERVO_POS_2 = 0;
-
-        uint8_t SERVO_POS_3 = 0;
-
-        uint8_t SERVO_POS_4 = 0;
+public:
+  MotorController(int pin);
+  void begin();
+  void setThrottle(int throttleValue);
+  void stop();
 };
 
-#endif  // SERVOCONTROLLER_H
+#endif

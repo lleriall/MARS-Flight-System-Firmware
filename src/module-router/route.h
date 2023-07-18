@@ -1,3 +1,4 @@
+/*
 #ifndef MOD_ROUTER
 #define MOD_ROUTER
 
@@ -25,3 +26,4 @@ class MODULE_ROUTER {
 };
 
 #endif // MOD_ROUTER
+*/

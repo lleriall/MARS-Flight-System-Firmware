@@ -35,11 +35,24 @@ SOFTWARE.
 #include"system/sys_controller.h"
 #include"system/flight_tasks.h"
 #include"Control/_pid.h"
-#include"Comms/stack_send.h"
-//#include"Comms/sys_wifi.h"
+#include"system/Comms/_broadcast.h"
 #include"_encode.h"
-#include"Comms/sender.h"
 #include"WingControl/_wingDynamics.h"
 #include"module-router/route.h"
+#include"system/_state.h"
+#include"system/display/onboardDisplay.h"
+#include"HALX/drivers/_motors.h"
+#include"HALX/drivers/MotorController.h"
+#include"HALX/drivers/mpu6050.h"
+#include"HALX/drivers/_neo6M.h"
+#include"system/checks/validateSensors.h"
+
+
+//PTAM REGISTER INFO
+//"state" -> StateMachine main status
+//"GPScheck" -> GPS functionality flag
+//"IMUcheck" -> IMU functionality flag
+//"BMPcheck" -> BMP functionality flag
+//setupSFlag -> ServerSetupFlag
 
 #endif //DEFINITION

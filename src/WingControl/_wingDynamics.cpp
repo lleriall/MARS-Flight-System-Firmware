@@ -29,31 +29,31 @@ SOFTWARE.*/
     MOTOR RR - 4
 */
 
-uint8_t _WING_DYNAMICS::_translateRight(uint8_t range, uint8_t _mode){
+uint8_t _WING_DYNAMICS::_translateRight(uint8_t range){
     //Adjust FR and RR wing 
-    MODULE_ROUTER * obj = new MODULE_ROUTER();
-    obj -> motors(MOTOR_FR, range);
-    obj -> motors(MOTOR_RR, range);
-    delete obj;
+    ServoController *serv = new ServoController();
+    serv -> moveToAngleFL(range);
+    serv -> moveToAngleRR(range);
+    delete serv;
 }
 
-uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range, uint8_t _mode){
-    MODULE_ROUTER * obj = new MODULE_ROUTER();
-    obj -> motors(MOTOR_FL, range);
-    obj -> motors(MOTOR_RL, range);
-    delete obj;
+uint8_t _WING_DYNAMICS::_translateLeft(uint8_t range){
+    ServoController *serv = new ServoController();
+    serv -> moveToAngleFL(range);
+    serv -> moveToAngleRR(range);
+    delete serv;
 }
 
-uint8_t _WING_DYNAMICS::_translateUp(uint8_t range, uint8_t _mode){
-    MODULE_ROUTER * obj = new MODULE_ROUTER();
-    obj -> motors(MOTOR_FL, range);
-    obj -> motors(MOTOR_RL, range);
-    delete obj;
+uint8_t _WING_DYNAMICS::_translateUp(uint8_t range){
+    ServoController *serv = new ServoController();
+    serv -> moveToAngleFL(range);
+    serv -> moveToAngleRR(range);
+    delete serv;
 }
 
-uint8_t _WING_DYNAMICS::_translateDown(uint8_t range,uint8_t mode){
-    MODULE_ROUTER * obj = new MODULE_ROUTER();
-    obj -> motors(MOTOR_FL, range);
-    obj -> motors(MOTOR_RL, range);
-    delete obj;
+uint8_t _WING_DYNAMICS::_translateDown(uint8_t range){
+    ServoController *serv = new ServoController();
+    serv -> moveToAngleFL(range);
+    serv -> moveToAngleRR(range);
+    delete serv;
 }

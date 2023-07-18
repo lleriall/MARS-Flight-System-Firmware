@@ -22,10 +22,7 @@ SOFTWARE.*/
 
 #include"sys_controller.h"
 
-//Variable noting whether engine has already been prepped
-uint8_t prep;
-//Variable noting whether engine has been started
-uint8_t droneStarted;
+BroadcastedServer server;
 
 //Setup pins based on config
 void CONTROLLER_TASKS::pin_setup(){
@@ -33,30 +30,76 @@ void CONTROLLER_TASKS::pin_setup(){
 }
 
 //Setup comms to GSE over ESP32 Wifi
-void CONTROLLER_TASKS::GSE_comms_setup(){
-
+void CONTROLLER_TASKS::GSE_COMMS_SETUP(){
+    // Initialize and start the server
+    server.begin();
+    server.sendWebpage();
+    server.handleNotFound();
 
 }
 //Start comms and attach RF interrupt 
 //ATTACH PIN NUMBERS
 void CONTROLLER_TASKS::_init_(){
-    //SET PID PROCESSES
-    PROPORTIONAL_INTEGRAL_DERIVATIVE *_pobj = new PROPORTIONAL_INTEGRAL_DERIVATIVE();
-    //ROLL RIGHT
-    _pobj -> createPIDinstance("rollRight",0,0,0); //<- Gains
-    //ROLL LEFT
-    _pobj -> createPIDinstance("rollLeft",0,0,0);
-    //PITCH UP
-    _pobj -> createPIDinstance("pitchUp",0,0,0);
-    //PITCH DOWN
-    _pobj -> createPIDinstance("pitchDown",0,0,0);
-    delete _pobj;
+    PTAM_REGISTER_SET();
     //Start Serial Communication
     Serial.begin(9600);
     //Setup pins - SPI,sensors
     //pin_setup();
     //SPI.begin();
     //SENSORS
+    DataStore *ptObject = new DataStore();
+
+    SensorValidator *valD = new SensorValidator();
+    bool GPScheck = valD -> validateGPSData();
+    if(GPScheck == true){
+        //Update PTAM Register = 1 denoting sensor success
+        std::string reg_name = "GPScheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,1);
+    }else{
+        //Update PTAM Register = 0 denoting sensor fail
+        std::string reg_name = "GPScheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,0);
+    }
+
+    bool IMUcheck = valD -> validateIMUData();
+    if(IMUcheck == true){
+        //Update PTAM Register = 1 denoting sensor success
+        std::string reg_name = "IMUcheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,1);
+    }else{
+        //Update PTAM Register = 0 denoting sensor fail
+        std::string reg_name = "IMUcheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,0);
+    }
+
+    bool BMPcheck = valD -> validateBMP280Data();
+    if(BMPcheck == true){
+        //Update PTAM Register = 1 denoting sensor success
+        std::string reg_name = "BMPcheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,1);
+    }else{
+        //Update PTAM Register = 0 denoting sensor fail
+        std::string reg_name = "BMPcheck";
+        //Remove previous value
+        ptObject -> clearData(reg_name);
+        //Push Update
+        ptObject -> storeData(reg_name,0);
+    }
 
     //Rotate wing servos to default
     /*uint8_t defaultP = 0;
@@ -74,19 +117,17 @@ void CONTROLLER_TASKS::_IDLE_(){
 
 //Telemetry checks, peripheral checks
 void CONTROLLER_TASKS::_PREP_(){
-
-    if(prep != 1){
-        
-        //Delay 30 seconds for possible ground interrupt
-
-        //CHECKS
-
-        prep = 1;
-    }else{
-        //Do nothing.
-        //Drone already prepped
+    DataStore* obj = new DataStore();
+    auto setupFL = obj -> getIntData("setupSFlag").back();
+    if(setupFL == 0){
+        GSE_COMMS_SETUP();
+        //Set server setup PTAM register to 1
+        obj -> clearData("setupSFlag");
+        obj -> storeData(std::string("setupSFlag"),1);
     }
-    //delete obj;
+    //Controller runs ground server
+    server.handleClient();
+    delete obj;
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -116,81 +157,18 @@ void CONTROLLER_TASKS::_bypass_(char* sbc_id){
 }
  //Sensor bypass
 
-//CHange state to idle
-uint8_t CONTROLLER_TASKS::SWITCH2IDLE(){
-    _telemetry *tObj = new _telemetry();
-    //Change variable
-    uint8_t change = 0;
-    if(compareX(tObj -> getLastRequest(),"IDLE")){
-        change = 1;
-    }
-    delete tObj;
-    DataStore *ptObject = new DataStore();
-    ptObject -> storeData(std::string("state"),0);
-    delete ptObject;
-    return change;
-}
-
-//CHange state to prep
-uint8_t CONTROLLER_TASKS::SWITCH2PREP(){
-    _telemetry *tObj = new _telemetry();
-    //Change variable
-    uint8_t change = 0;
-    if(compareX(tObj -> getLastRequest(),"PREP")){
-        change = 1;
-    }
-    delete tObj;
-    DataStore *ptObject = new DataStore();
-    ptObject -> storeData(std::string("state"),1);
-    delete ptObject;
-    return change;
-}
-
-//CHange state to armed
-uint8_t CONTROLLER_TASKS::SWITCH2ARMED(){
-    _telemetry *tObj = new _telemetry();
-    //Change variable
-    uint8_t change = 0;
-    if(compareX(tObj -> getLastRequest(),"ARMED")){
-        change = 1;
-    }
-    delete tObj;
-    DataStore *ptObject = new DataStore();
-    ptObject -> storeData(std::string("state"),2);
-    delete ptObject;
-    return change;
-}
-
-//Change state to bypass
-uint8_t CONTROLLER_TASKS::SWITCH2BYPASS(){
-    _telemetry *tObj = new _telemetry();
-    //Change variable
-    uint8_t change = 0;
-    if(compareX(tObj -> getLastRequest(),"BYPASS")){
-        change = 1;
-    }
-    delete tObj;
-    DataStore *ptObject = new DataStore();
-    ptObject -> storeData(std::string("state"),3);
-    delete ptObject;
-    return change;
-}
-
-//Reset all drone tags
-void CONTROLLER_TASKS::reset_(){
-    //Reset prep tag
-    prep = 0;
-
-    //Reset drone started tag
-    droneStarted = 0;
-}
-
-//If output = 1, strings match
-uint8_t CONTROLLER_TASKS::compareX(char* x, char* y){
-    if (x != y){
-        return 0;
-    }
-    else{
-        return 1;
-    }
+void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
+    //On startup init PTAM registers so no module calls an undefined register
+    DataStore *init = new DataStore();
+    //StateMachine main status
+    init -> storeData("state"," ");
+    //GPS functionality flag
+    init -> storeData("GPScheck",0);
+    //IMU functionality flag
+    init -> storeData("IMUcheck",0);
+    //BMP functionality flag
+    init -> storeData("BMPcheck",0);
+    //ServerSetupFlag
+    init -> storeData("setupSFlag",0);
+    delete init;
 }

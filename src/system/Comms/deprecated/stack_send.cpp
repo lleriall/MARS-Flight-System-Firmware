@@ -1,5 +1,5 @@
 /*MIT License
-Copyright (c) 2023 limitless Aeronautics
+Copyright (c) 2023 Limitless Aeronautics
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -15,25 +15,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
+/*
+#include "stack_send.h"
 
-#ifndef MOTORCONTROLLER_H
-#define MOTORCONTROLLER_H
-
-#include <Servo.h>
-#include<Arduino.h>
-
-class MotorController {
-private:
-  Servo esc;  // Create a Servo object
-  int throttlePin;  // Digital pin connected to ESC control signal
-private:
-  int map(int value, int fromLow, int fromHigh, int toLow, int toHigh);
-
-public:
-  MotorController(int pin);
-  void begin();
-  void setThrottle(int throttleValue);
-  void stop();
-};
-
-#endif
+char* _telemetry::getLastRequest(){
+    
+}
+*/

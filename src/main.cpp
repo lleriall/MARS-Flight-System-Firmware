@@ -23,7 +23,6 @@ SOFTWARE.*/
 #ifndef MAIN_
 #define MAIN_
 
-#include"system/sys_controller.h"
 #include"util/defi.h"
 
 //Through spi interface, ECU recieves instructions from main computer
@@ -32,18 +31,17 @@ SOFTWARE.*/
 
 void setup(){
     CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
-    //CTobj -> pin_setup();
-    //CTobj -> GSE_comms_setup();
     CTobj -> _init_();
     delete CTobj;
 }
 
 void loop(){
     CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
+    STATE *change = new STATE();
     while(1){
         #if DRONE_STATE == 0 // IDLE
         CTobj -> _IDLE_();
-        if(CTobj -> SWITCH2PREP() == 1){
+        if(change -> SWITCH2PREP() == 1){
             #undef DRONE_STATE
             #define DRONE_STATE 1
         }
@@ -51,7 +49,7 @@ void loop(){
 
         #if DRONE_STATE == 1 // PREP
         CTobj -> _PREP_();
-        if(CTobj -> SWITCH2ARMED() == 1){
+        if(change -> SWITCH2ARMED() == 1){
             #undef DRONE_STATE
             #define DRONE_STATE 2
         }
@@ -59,7 +57,7 @@ void loop(){
 
         #if DRONE_STATE == 2 // ARMED
         CTobj -> _ARMED_();
-        if(CTobj -> SWITCH2IDLE() == 1){
+        if(change -> SWITCH2IDLE() == 1){
             #undef DRONE_STATE
             #define DRONE_STATE 0
         }

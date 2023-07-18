@@ -33,7 +33,7 @@ void ServoController::setupServo(){
 uint8_t ServoController::moveToAngleFL(uint8_t angle) {
   //Hardware Check
   if(angle < 0 || angle > 180){
-    return;
+    return 0;
   }
   if(SERVO_POS_1 != angle){
     if(angle < SERVO_POS_1){
@@ -59,7 +59,7 @@ uint8_t ServoController::moveToAngleFL(uint8_t angle) {
 uint8_t ServoController::moveToAngleFR(uint8_t angle) {
   //Hardware Check
   if(angle < 0 || angle > 180){
-    return;
+    return 0;
   }
   if(SERVO_POS_2 != angle){
     if(angle < SERVO_POS_2){
@@ -85,7 +85,7 @@ uint8_t ServoController::moveToAngleFR(uint8_t angle) {
 uint8_t ServoController::moveToAngleRL(uint8_t angle) {
   //Hardware Check
   if(angle < 0 || angle > 180){
-    return;
+    return 0;
   }
   if(SERVO_POS_3 != angle){
     if(angle < SERVO_POS_3){
@@ -111,7 +111,7 @@ uint8_t ServoController::moveToAngleRL(uint8_t angle) {
 uint8_t ServoController::moveToAngleRR(uint8_t angle) {
   //Hardware Check
   if(angle < 0 || angle > 180){
-    return;
+    return 0;
   }
   if(SERVO_POS_4 != angle){
     if(angle < SERVO_POS_4){

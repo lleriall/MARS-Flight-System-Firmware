@@ -36,9 +36,11 @@ class CONTROLLER_TASKS {
         //If output = 1, strings match
         uint8_t compareX(char* x, char* y);
 
+        void PTAM_REGISTER_SET();
+
     public: 
         //Setup NodeMCU wifi comms
-        void GSE_comms_setup();
+        void GSE_COMMS_SETUP();
 
         //Start comms and attach interrupts 
         void _init_();
@@ -54,25 +56,7 @@ class CONTROLLER_TASKS {
         //comms without additional processes.
         //+1 Overload
         void _bypass_(char* sbc_id);
-        //void _bypass_(char* sbc_id,uint8_t peripheral_type=1);
-
-        //Controller loop statemachine change functions
-
-        //Change state to idle
-        uint8_t SWITCH2IDLE();
-
-        //Change state to prep
-        uint8_t SWITCH2PREP();
-
-        //Change state to armed
-        uint8_t SWITCH2ARMED();
-
-        //Change state to bypass
-        uint8_t SWITCH2BYPASS();
-
-        //Change drone state definition 
-        //Used for interrupt handlers to change engine state
-        void CHANGE_STATE_DEFINITON();     
+        //void _bypass_(char* sbc_id,uint8_t peripheral_type=1); 
 
 };
 

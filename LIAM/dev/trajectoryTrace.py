@@ -41,11 +41,19 @@ def calculate_coordinate(lat1, lon1, lat2, lon2, distance):
 
     return math.degrees(lat2), math.degrees(lon2)
 
-def generate_path(start_lat, start_lon, end_lat, end_lon, num_points):
+def generate_pathLatLong(start_lat, start_lon, end_lat, end_lon, num_points):
     delta_lat = (end_lat - start_lat) / num_points
     delta_lon = (end_lon - start_lon) / num_points
 
     path = [(start_lat + i * delta_lat, start_lon + i * delta_lon) for i in range(num_points)]
+
+    return path
+
+def generate_path(start_point, end_point, num_points):
+    delta_x = (end_point[0] - start_point[0]) / num_points
+    delta_y = (end_point[1] - start_point[1]) / num_points
+
+    path = [(start_point[0] + i * delta_x, start_point[1] + i * delta_y) for i in range(num_points + 1)]
 
     return path
 

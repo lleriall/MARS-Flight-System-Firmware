@@ -25,19 +25,22 @@ SOFTWARE.*/
 #include <vector>
 
 class DataStore {
-private:
-    static std::unordered_map<std::string, std::vector<void*>>* data_map;
+    private:
+        static std::unordered_map<std::string, std::vector<void*>>* data_map;
 
-public:
-    template<typename T>
-    static void storeData(const std::string& id, T data);
+    public:
+        //+2 OVERLOADS
+        static void storeData(const std::string& id, const std::string& data);
+        static void storeData(const std::string& id, int data);
+        static void storeData(const std::string& id, double data);
 
-    template<typename T>
-    static std::vector<T> getData(const std::string& id);
+        static std::vector<std::string> getStringData(const std::string& id);
+        static std::vector<int> getIntData(const std::string& id);
+        static std::vector<double> getDoubleData(const std::string& id);
 
-    static void clearData();
-
-    ~DataStore();
+        static void clearData(const std::string& id);
+        static void clearData();
+        ~DataStore();
 };
 
 #endif // DATASTORE_HPP

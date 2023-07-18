@@ -1,15 +1,24 @@
-#include <Arduino.h>
-#include"sender.h"
+#include <WiFi.h>
+#include "_broadcast.h"
 
-Sender *obj2 = new Sender(3,2);
+BroadcastedServer server;
 
 void setup() {
-  obj2 -> setup();
+  Serial.begin(115200);
+
+  // Connect to Wi-Fi
+  //WiFi.begin("MyWiFiNetwork", "password");
+  //while (WiFi.status() != WL_CONNECTED) {
+  //  delay(1000);
+  //  Serial.println("Connecting to WiFi...");
+  //}
+
+  // Initialize and start the server
+  server.begin();
+  server.sendWebpage();
+  server.handleNotFound();
 }
 
 void loop() {
-  Serial.println(obj2 -> receiveData());
-  String dataToSend = "PACKET";  // Replace with your desired string
-  obj2 -> sendData(dataToSend);
-  delay(1000);
+  server.handleClient();
 }

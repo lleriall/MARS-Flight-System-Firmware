@@ -1,3 +1,4 @@
+/*
 #include "route.h"
 
 double MODULE_ROUTER::motors(uint8_t type, uint8_t value) {
@@ -33,3 +34,4 @@ void MODULE_ROUTER::sendCommandWithValue(const char* command, uint8_t value) {
   delete ecode;
   delete obj;
 }
+*/
