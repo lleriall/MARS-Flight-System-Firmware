@@ -1,7 +1,8 @@
-from trace import generate_path
+import sys
+sys.path.insert(0,'/Users/nyameaama/Documents/MARS-Firmware/LIAM/dev')
 import utility
 import matplotlib.pyplot as plt
-import sys
+
 import time
 sys.path.insert(0,'/Users/nyameaama/Documents/MARS-Firmware/LIAM/dev/simulator')
 import physics

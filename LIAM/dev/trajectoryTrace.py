@@ -53,7 +53,7 @@ def generate_path(start_point, end_point, num_points):
     delta_x = (end_point[0] - start_point[0]) / num_points
     delta_y = (end_point[1] - start_point[1]) / num_points
 
-    path = [(start_point[0] + i * delta_x, start_point[1] + i * delta_y) for i in range(num_points + 1)]
+    path = [(start_point[0] + i * delta_x, start_point[1] + i * delta_y) for i in range(num_points)]
 
     return path
 
@@ -73,7 +73,13 @@ def generate_altitude_trajectory(initial_altitude, mid_altitude, final_altitude,
     return trajectory
 
 def generateCompletePath(start_lat, start_lon, end_lat, end_lon,initial_altitude, mid_altitude, final_altitude, num_points):
-    xy = generate_path(start_lat, start_lon, end_lat, end_lon, num_points)
+    xy = generate_pathLatLong(start_lat, start_lon, end_lat, end_lon, num_points)
+    zAlt = generate_altitude_trajectory(initial_altitude, mid_altitude, final_altitude, num_points)
+    complete = utility.append_array_to_tuples(xy,zAlt)
+    return complete
+
+def generateCompletePath2(point1,point2,initial_altitude, mid_altitude, final_altitude, num_points):
+    xy = generate_path(point1,point2, num_points)
     zAlt = generate_altitude_trajectory(initial_altitude, mid_altitude, final_altitude, num_points)
     complete = utility.append_array_to_tuples(xy,zAlt)
     return complete
