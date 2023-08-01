@@ -1,0 +1,64 @@
+Compiler supported targets: xtensa-esp32-elf
+
+CMake Warning at /Users/nyameaama/esp/esp-idf/components/partition_table/project_include.cmake:18 (message):
+  Partition table CSV file
+  /Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv not
+  found.  Change custom partition CSV path in menuconfig.
+Call Stack (most recent call first):
+  /Users/nyameaama/esp/esp-idf/tools/cmake/build.cmake:398 (include)
+  /Users/nyameaama/esp/esp-idf/tools/cmake/build.cmake:620 (__build_process_project_includes)
+  /Users/nyameaama/esp/esp-idf/tools/cmake/project.cmake:464 (idf_build_process)
+  CMakeLists.txt:8 (project)
+
+
+Traceback (most recent call last):
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 358, in <module>
+    main()
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 327, in main
+    target = ParttoolTarget(**target_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 88, in __init__
+    with open(partition_table_file, 'rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv'
+Traceback (most recent call last):
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 358, in <module>
+    main()
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 327, in main
+    target = ParttoolTarget(**target_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 88, in __init__
+    with open(partition_table_file, 'rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv'
+Traceback (most recent call last):
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 358, in <module>
+    main()
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 327, in main
+    target = ParttoolTarget(**target_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 88, in __init__
+    with open(partition_table_file, 'rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv'
+Traceback (most recent call last):
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 358, in <module>
+    main()
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 327, in main
+    target = ParttoolTarget(**target_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 88, in __init__
+    with open(partition_table_file, 'rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv'
+Traceback (most recent call last):
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 358, in <module>
+    main()
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 327, in main
+    target = ParttoolTarget(**target_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nyameaama/esp/esp-idf/components/partition_table/parttool.py", line 88, in __init__
+    with open(partition_table_file, 'rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nyameaama/Documents/MARS-Firmware/base-firmware/partitions.csv'
+ninja: error: '../partitions.csv', needed by 'partition_table/partition-table.bin', missing and no known rule to make it
