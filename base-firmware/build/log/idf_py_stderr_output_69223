@@ -1,0 +1,31 @@
+[0;33m--- idf_monitor on /dev/cu.usbserial-027D71AF 115200 ---[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---[0m
+[0;33m0x40080400: _init at ??:?
+[0m
+[0;33m0x4008136c: call_start_cpu1 at /Users/nyameaama/esp/esp-idf/components/esp_system/port/cpu_start.c:154
+[0m
+[0;33m0x400d65e9: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_data() const at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/basic_string.h:234
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/basic_string.h:544
+[0m
+[0;33m0x4000c2e0: memcpy in ROM
+[0m
+[0;33m0x4000c2f6: memcpy in ROM
+[0m
+[0;33m0x400d65e6: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_local_data() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/basic_string.h:241
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/basic_string.h:541
+[0m
+[0;33m0x400d7b38: STATE::getLastStateRequest[abi:cxx11]() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:117
+[0m
+[0;33m0x400d7c4a: STATE::SWITCH2BYPASS() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:70
+[0m
+[0;33m0x400d685e: app_main at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../main/base-firmware.cpp:59
+[0m
+[0;33m0x40184113: main_task at /Users/nyameaama/esp/esp-idf/components/freertos/app_startup.c:208 (discriminator 13)
+[0m
+[0;33m0x4008b655: vPortTaskWrapper at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:162
+[0m
+[0;33m0x40080400: _init at ??:?
+[0m
+[0;33m0x4008136c: call_start_cpu1 at /Users/nyameaama/esp/esp-idf/components/esp_system/port/cpu_start.c:154
+[0m
+[0m

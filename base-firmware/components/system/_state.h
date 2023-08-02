@@ -26,11 +26,10 @@ SOFTWARE.*/
 #include<iostream>
 #include<string>
 #include"../PTAM/_ptam.h"
+#include"esp_log.h"
 
 class STATE {
     public:
-        uint8_t SWITCH2IDLE();
-
         uint8_t SWITCH2PREP();
 
         uint8_t SWITCH2ARMED();
@@ -40,8 +39,6 @@ class STATE {
         void ASSIGN_PREP_TASKS();
 
         void UNDEF_FLAGS(std::string state);
-
-        void reset_();
 
         uint8_t compareX(std::string x, std::string y);
 

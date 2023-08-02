@@ -33,9 +33,9 @@ class CONTROLLER_TASKS {
         //Setup Pins
         void pin_setup();
 
+    public: 
         void PTAM_REGISTER_SET();
 
-    public: 
         //Start comms and attach interrupts 
         void _init_();
 
@@ -49,7 +49,7 @@ class CONTROLLER_TASKS {
         //For manual testing, implement bypass to respond to sensor and valve
         //comms without additional processes.
         //+1 Overload
-        void _bypass_(char* sbc_id);
+        void _bypass_(std::string sbc_id);
         //void _bypass_(char* sbc_id,uint8_t peripheral_type=1); 
 
 };

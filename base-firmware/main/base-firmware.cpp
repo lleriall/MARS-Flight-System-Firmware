@@ -3,12 +3,16 @@
 #include"../components/HALX/mg90s_servo.h"
 #include"../components/PTAM/_ptam.h"
 #include"../components/system/validateSensors.h"
-
+#include"../components/system/_state.h"
+#include"../components/system/sys_controller.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include<string>
+
+#define DRONE_STATE 1
 
 extern "C"{
     void app_main(void){
@@ -22,9 +26,62 @@ extern "C"{
         }
         ESP_ERROR_CHECK(ret);
 
-        //ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
-        //wifi_init_softap();
         BroadcastedServer server;
         server.wifi_init_softap();
+
+        SharedMemory& sharedMemory = SharedMemory::getInstance();
+        CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
+        //Boot 
+        CTobj -> _init_();
+        STATE *change = new STATE();
+        while(1){
+            #if DRONE_STATE == 1 // STANDBY
+            //FROM STANDBY PREP WE CAN EITHER SWITCH TO ARMED OR BYPASS
+            CTobj -> _PREP_();
+            if(change -> SWITCH2ARMED() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 2
+                continue;
+            }
+            if(change -> SWITCH2BYPASS() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 3
+                continue;
+            }
+            #endif
+
+            #if DRONE_STATE == 2 // ARMED
+            //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
+            CTobj -> _ARMED_();
+            if(change.SWITCH2PREP() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 1
+                continue;
+            }
+            if(change.SWITCH2BYPASS() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 3
+                continue;
+            }
+            #endif
+            
+            #if DRONE_STATE == 3 // BYPASS
+            //FROM BYPASS WE CAN EITHER SWITCH TO STANDY PREP OR ARMED
+            CTobj -> _bypass_(std::string("ID"));
+            if(change -> SWITCH2PREP() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 1
+                continue;
+            }
+            if(change -> SWITCH2ARMED() == 1){
+                #undef DRONE_STATE
+                #define DRONE_STATE 2
+                continue;
+            }
+            #endif
+
+        }
+        delete change;
+        delete CTobj;
     }
 }

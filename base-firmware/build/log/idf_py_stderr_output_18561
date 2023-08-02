@@ -1,0 +1,68 @@
+[0;33m--- idf_monitor on /dev/cu.usbserial-027D71AF 115200 ---[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---[0m
+[0;33m0x40080400: _init at ??:?
+[0m
+[0;33m0x4008136c: call_start_cpu1 at /Users/nyameaama/esp/esp-idf/components/esp_system/port/cpu_start.c:154
+[0m
+[0;33m0x400da00b: task_wdt_timeout_handling at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:461 (discriminator 3)
+[0m
+[0;33m0x400da192: task_wdt_isr at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:585
+[0m
+[0;33m0x40082d31: _xt_lowint1 at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S:1226
+[0m
+[0;33m0x4000bfed: _xtos_set_intlevel in ROM
+[0m
+[0;33m0x4008b93b: vPortClearInterruptMaskFromISR at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos/portmacro.h:568
+ (inlined by) vPortExitCritical at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:532
+[0m
+[0;33m0x400891af: xQueueGenericSend at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:998
+[0m
+[0;33m0x40081340: pthread_mutex_unlock at /Users/nyameaama/esp/esp-idf/components/pthread/pthread.c:703
+[0m
+[0;33m0x400d7b37: SharedMemory::clearData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/xtensa-esp32-elf/no-rtti/bits/gthr-default.h:779
+ (inlined by) std::mutex::unlock() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:118
+ (inlined by) std::lock_guard<std::mutex>::~lock_guard() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:235
+ (inlined by) SharedMemory::clearData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/PTAM/_ptam.cpp:65
+[0m
+[0;33m0x400d7f4d: STATE::SWITCH2PREP() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:35
+[0m
+[0;33m0x400d66c1: app_main at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../main/base-firmware.cpp:71
+[0m
+[0;33m0x4018487b: main_task at /Users/nyameaama/esp/esp-idf/components/freertos/app_startup.c:208 (discriminator 13)
+[0m
+[0;33m0x4008b655: vPortTaskWrapper at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:162
+[0m
+[0;33m0x400da00b: task_wdt_timeout_handling at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:461 (discriminator 3)
+[0m
+[0;33m0x400da192: task_wdt_isr at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:585
+[0m
+[0;33m0x40082d31: _xt_lowint1 at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S:1226
+[0m
+[0;33m0x4000bfed: _xtos_set_intlevel in ROM
+[0m
+[0;33m0x4008b93b: vPortClearInterruptMaskFromISR at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos/portmacro.h:568
+ (inlined by) vPortExitCritical at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:532
+[0m
+[0;33m0x40089638: xQueueSemaphoreTake at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:1720
+[0m
+[0;33m0x400812c4: pthread_mutex_lock_internal at /Users/nyameaama/esp/esp-idf/components/pthread/pthread.c:614
+[0m
+[0;33m0x400812fa: pthread_mutex_lock at /Users/nyameaama/esp/esp-idf/components/pthread/pthread.c:644
+[0m
+[0;33m0x400d6f79: std::mutex::lock() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/xtensa-esp32-elf/no-rtti/bits/gthr-default.h:749
+ (inlined by) std::mutex::lock() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:100
+[0m
+[0;33m0x400d7cd6: std::lock_guard<std::mutex>::lock_guard(std::mutex&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:229
+ (inlined by) SharedMemory::getLastString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/PTAM/_ptam.cpp:75
+[0m
+[0;33m0x400d7ed0: STATE::getLastStateRequest[abi:cxx11]() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:115
+[0m
+[0;33m0x400d7fae: STATE::SWITCH2ARMED() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:51
+[0m
+[0;33m0x400d6698: app_main at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../main/base-firmware.cpp:41
+[0m
+[0;33m0x4018487b: main_task at /Users/nyameaama/esp/esp-idf/components/freertos/app_startup.c:208 (discriminator 13)
+[0m
+[0;33m0x4008b655: vPortTaskWrapper at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:162
+[0m
+[0m

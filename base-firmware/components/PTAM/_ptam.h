@@ -16,31 +16,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-#ifndef DATASTORE_HPP
-#define DATASTORE_HPP
+#ifndef SHARED_MEMORY_H
+#define SHARED_MEMORY_H
 
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <mutex>
 
-class DataStore {
-    private:
-        static std::unordered_map<std::string, std::vector<void*>>* data_map;
+class SharedMemory {
+public:
+    static SharedMemory& getInstance();
 
-    public:
-        //+2 OVERLOADS
-        static void storeData(const std::string& id, const std::string& data);
-        static void storeData(const std::string& id, int data);
-        static void storeData(const std::string& id, double data);
+    void storeString(const std::string& id, const std::string& data);
+    void storeDouble(const std::string& id, double data);
+    void storeInt(const std::string& id, int data);
 
-        static std::vector<std::string> getStringData(const std::string& id);
-        static std::vector<int> getIntData(const std::string& id);
-        static std::vector<double> getDoubleData(const std::string& id);
+    std::vector<std::string> getStringData(const std::string& id);
+    std::vector<double> getDoubleData(const std::string& id);
+    std::vector<int> getIntData(const std::string& id);
 
-        static void clearData(const std::string& id);
-        static void clearData();
-        ~DataStore();
+    void clearData(const std::string& id);
+    void clearAllData();
+
+    std::string getLastString(const std::string& id);
+    double getLastDouble(const std::string& id);
+    int getLastInt(const std::string& id);
+
+private:
+    SharedMemory();
+    ~SharedMemory();
+
+    std::unordered_map<std::string, std::vector<std::string>> stringData_;
+    std::unordered_map<std::string, std::vector<double>> doubleData_;
+    std::unordered_map<std::string, std::vector<int>> intData_;
+
+    std::mutex mutex_;
+
+private:
+    std::string getLastElement(const std::vector<std::string>& vec);
+    double getLastElement(const std::vector<double>& vec);
+    int getLastElement(const std::vector<int>& vec);
 };
 
-#endif // DATASTORE_HPP
+#endif // SHARED_MEMORY_H

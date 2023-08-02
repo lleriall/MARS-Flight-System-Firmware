@@ -18,85 +18,82 @@ SOFTWARE.*/
 
 #include "_ptam.h"
 
-std::unordered_map<std::string, std::vector<void*>>* DataStore::data_map = nullptr;
+SharedMemory::SharedMemory() {}
 
-void DataStore::storeData(const std::string& id, const std::string& data) {
-    if (!data_map) {
-        data_map = new std::unordered_map<std::string, std::vector<void*>>();
-    }
-    (*data_map)[id].push_back(new std::string(data));
+SharedMemory::~SharedMemory() {}
+
+SharedMemory& SharedMemory::getInstance() {
+    static SharedMemory instance;
+    return instance;
 }
 
-void DataStore::storeData(const std::string& id, int data) {
-    if (!data_map) {
-        data_map = new std::unordered_map<std::string, std::vector<void*>>();
-    }
-    (*data_map)[id].push_back(new int(data));
+void SharedMemory::storeString(const std::string& id, const std::string& data) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    stringData_[id].push_back(data);
 }
 
-void DataStore::storeData(const std::string& id, double data) {
-    if (!data_map) {
-        data_map = new std::unordered_map<std::string, std::vector<void*>>();
-    }
-    (*data_map)[id].push_back(new double(data));
+void SharedMemory::storeDouble(const std::string& id, double data) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    doubleData_[id].push_back(data);
 }
 
-std::vector<std::string> DataStore::getStringData(const std::string& id) {
-    std::vector<std::string> results;
-    if (data_map && data_map->count(id) > 0) {
-        for (void* ptr : (*data_map)[id]) {
-            std::string* data_ptr = static_cast<std::string*>(ptr);
-            results.push_back(*data_ptr);
-        }
-    }
-    return results;
+void SharedMemory::storeInt(const std::string& id, int data) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    intData_[id].push_back(data);
 }
 
-std::vector<int> DataStore::getIntData(const std::string& id) {
-    std::vector<int> results;
-    if (data_map && data_map->count(id) > 0) {
-        for (void* ptr : (*data_map)[id]) {
-            int* data_ptr = static_cast<int*>(ptr);
-            results.push_back(*data_ptr);
-        }
-    }
-    return results;
+std::vector<std::string> SharedMemory::getStringData(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return stringData_[id];
 }
 
-std::vector<double> DataStore::getDoubleData(const std::string& id) {
-    std::vector<double> results;
-    if (data_map && data_map->count(id) > 0) {
-        for (void* ptr : (*data_map)[id]) {
-            double* data_ptr = static_cast<double*>(ptr);
-            results.push_back(*data_ptr);
-        }
-    }
-    return results;
+std::vector<double> SharedMemory::getDoubleData(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return doubleData_[id];
 }
 
-void DataStore::clearData(const std::string& id) {
-    if (data_map && data_map->count(id) > 0) {
-        for (void* ptr : (*data_map)[id]) {
-            delete static_cast<std::string*>(ptr);
-        }
-        (*data_map)[id].clear();
-    }
+std::vector<int> SharedMemory::getIntData(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return intData_[id];
 }
 
-void DataStore::clearData() {
-    if (data_map) {
-        for (auto& pair : *data_map) {
-            for (void* ptr : pair.second) {
-                if (ptr != nullptr) {
-                    delete ptr;
-                }
-            }
-        }
-        delete data_map;
-        data_map = nullptr;
-    }
+void SharedMemory::clearData(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    stringData_.erase(id);
+    doubleData_.erase(id);
+    intData_.erase(id);
 }
 
-DataStore::~DataStore() {
-    clearData();
+void SharedMemory::clearAllData() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    stringData_.clear();
+    doubleData_.clear();
+    intData_.clear();
+}
+
+std::string SharedMemory::getLastString(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return getLastElement(stringData_[id]);
+}
+
+double SharedMemory::getLastDouble(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return getLastElement(doubleData_[id]);
+}
+
+int SharedMemory::getLastInt(const std::string& id) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return getLastElement(intData_[id]);
+}
+
+std::string SharedMemory::getLastElement(const std::vector<std::string>& vec) {
+    return vec.empty() ? "" : vec.back();
+}
+
+double SharedMemory::getLastElement(const std::vector<double>& vec) {
+    return vec.empty() ? 0.0 : vec.back();
+}
+
+int SharedMemory::getLastElement(const std::vector<int>& vec) {
+    return vec.empty() ? 0 : vec.back();
 }
