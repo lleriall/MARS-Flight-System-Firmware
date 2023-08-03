@@ -1,0 +1,109 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7084
+ho 0 tail 12 room 4
+load:0x40078000,len:15576
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3876
+entry 0x4008064c
+[0;32mI (33) boot: ESP-IDF v5.1-dirty 2nd stage bootloader[0m
+[0;32mI (33) boot: compile time Jul 31 2023 23:38:56[0m
+[0;32mI (33) boot: Multicore bootloader[0m
+[0;32mI (38) boot: chip revision: v3.0[0m
+[0;32mI (41) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (46) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (51) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (55) boot: Enabling RNG early entropy source...[0m
+[0;32mI (61) boot: Partition Table:[0m
+[0;32mI (64) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (71) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (79) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (86) boot:  2 factory          factory app      00 00 00010000 00177000[0m
+[0;32mI (94) boot: End of partition table[0m
+[0;32mI (98) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=46050h (286800) map[0m
+[0;32mI (210) esp_image: segment 1: paddr=00056078 vaddr=3ffb0000 size=037b8h ( 14264) load[0m
+[0;32mI (216) esp_image: segment 2: paddr=00059838 vaddr=40080000 size=067e0h ( 26592) load[0m
+[0;32mI (227) esp_image: segment 3: paddr=00060020 vaddr=400d0020 size=b66c4h (747204) map[0m
+[0;32mI (497) esp_image: segment 4: paddr=001166ec vaddr=400867e0 size=0ed5ch ( 60764) load[0m
+[0;32mI (533) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (533) boot: Disabling RNG early entropy source...[0m
+[0;32mI (545) cpu_start: Multicore app[0m
+[0;32mI (545) cpu_start: Pro cpu up.[0m
+[0;32mI (545) cpu_start: Starting app cpu, entry point is 0x4008136c[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (563) cpu_start: Pro cpu start user code[0m
+[0;32mI (563) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (563) cpu_start: Application information:[0m
+[0;32mI (568) cpu_start: Project name:     base-firmware[0m
+[0;32mI (573) cpu_start: App version:      ea37c19-dirty[0m
+[0;32mI (579) cpu_start: Compile time:     Aug  2 2023 18:27:53[0m
+[0;32mI (585) cpu_start: ELF file SHA256:  4ff1a56cb780cbce...[0m
+[0;32mI (591) cpu_start: ESP-IDF:          v5.1-dirty[0m
+[0;32mI (596) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (601) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (606) cpu_start: Chip rev:         v3.0[0m
+[0;32mI (611) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (618) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (624) heap_init: At 3FFB8F38 len 000270C8 (156 KiB): DRAM[0m
+[0;32mI (630) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (636) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (643) heap_init: At 4009553C len 0000AAC4 (42 KiB): IRAM[0m
+[0;32mI (651) spi_flash: detected chip: generic[0m
+[0;32mI (654) spi_flash: flash io: dio[0m
+[0;32mI (662) app_start: Starting scheduler on CPU0[0m
+[0;32mI (663) app_start: Starting scheduler on CPU1[0m
+[0;32mI (663) main_task: Started on CPU0[0m
+[0;32mI (673) main_task: Calling app_main()[0m
+I (2713) wifi:wifi driver task: 3ffc0e8c, prio:23, stack:6656, core=0
+I (2723) wifi:wifi firmware version: b2f1f86
+I (2723) wifi:wifi certification version: v7.0
+I (2723) wifi:config NVS flash: enabled
+I (2723) wifi:config nano formating: disabled
+I (2723) wifi:Init data frame dynamic rx buffer num: 32
+I (2733) wifi:Init management frame dynamic rx buffer num: 32
+I (2733) wifi:Init management short buffer num: 32
+I (2743) wifi:Init dynamic tx buffer num: 32
+I (2743) wifi:Init static rx buffer size: 1600
+I (2743) wifi:Init static rx buffer num: 10
+I (2753) wifi:Init dynamic rx buffer num: 32
+[0;32mI (2753) wifi_init: rx ba win: 6[0m
+[0;32mI (2763) wifi_init: tcpip mbox: 32[0m
+[0;32mI (2763) wifi_init: udp mbox: 6[0m
+[0;32mI (2763) wifi_init: tcp mbox: 6[0m
+[0;32mI (2773) wifi_init: tcp tx win: 5744[0m
+[0;32mI (2773) wifi_init: tcp rx win: 5744[0m
+[0;32mI (2783) wifi_init: tcp mss: 1440[0m
+[0;32mI (2783) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (2793) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (2803) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07[0m
+I (2903) wifi:mode : softAP (ec:62:60:76:2c:8d)
+I (2903) wifi:Total power save buffer number: 16
+I (2903) wifi:Init max length of beacon: 752/752
+I (2903) wifi:Init max length of beacon: 752/752
+[0;32mI (2913) wifi softAP: wifi_init_softap finished. SSID:HIVE2 password:HIVE_PASS channel:6[0m
+[0;32mI (2913) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1[0m
+[0;31mE (7703) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[0;31mE (7703) task_wdt:  - IDLE (CPU 0)[0m
+[0;31mE (7703) task_wdt: Tasks currently running:[0m
+[0;31mE (7703) task_wdt: CPU 0: main[0m
+[0;31mE (7703) task_wdt: CPU 1: IDLE[0m
+[0;31mE (7703) task_wdt: Print CPU 0 (current core) backtrace[0m
+
+
+Backtrace: 0x400DA01B:0x3FFB1C50 0x400DA1A2:0x3FFB1C70 0x40082D31:0x3FFB1C90 0x400014FC:0x3FFBB0E0 0x400D65E2:0x3FFBB0F0 0x400D8096:0x3FFBB110 0x400D66A8:0x3FFBB1F0 0x4018488B:0x3FFBB230 0x4008B655:0x3FFBB260
+
+[0;31mE (12703) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[0;31mE (12703) task_wdt:  - IDLE (CPU 0)[0m
+[0;31mE (12703) task_wdt: Tasks currently running:[0m
+[0;31mE (12703) task_wdt: CPU 0: main[0m
+[0;31mE (12703) task_wdt: CPU 1: IDLE[0m
+[0;31mE (12703) task_wdt: Print CPU 0 (current core) backtrace[0m
+
+
+Backtrace: 0x400DA01B:0x3FFB1C50 0x400DA1A2:0x3FFB1C70 0x40082D31:0x3FFB1C90 0x4000BFED:0x3FFBAFD0 0x4008AB36:0x3FFBAFE0 0x400895BD:0x3FFBB000 0x400812C4:0x3FFBB040 0x400812FA:0x3FFBB060 0x400D6F89:0x3FFBB080 0x400D7CE6:0x3FFBB0A0 0x400D7EE0:0x3FFBB0D0 0x400D7EF6:0x3FFBB110 0x400D66D2:0x3FFBB1F0 0x4018488B:0x3FFBB230 0x4008B655:0x3FFBB260
+

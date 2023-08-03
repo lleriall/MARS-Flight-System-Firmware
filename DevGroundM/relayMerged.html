@@ -171,6 +171,17 @@
             color: #fff;
           }
 
+          #AltGraphTitle{
+            position: absolute;
+            width: 10%;
+            height:5%;
+            left:45%;
+            top:7%;
+            color: #ffffff;
+            z-index: 1000;
+            font-weight: bolder;
+          }
+
           /* Add a black background color to the top navigation */
             .topnav {
             background-color: #333;
@@ -516,6 +527,21 @@
             font-weight: bolder;
         }
 
+        #label9 {
+            position: absolute;
+            top:5%;
+            left: 15%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #c91414;
+            padding: 5px;
+            border-style: solid;
+            border-radius: 3px;
+            font-size: 10px;
+            z-index: 100;
+            font-weight: bolder;
+        }
+
         #AltCanvas {
           position: absolute;
           top: 1%;
@@ -700,6 +726,7 @@
           <div id="label6">NO NAV SET </div>
           <div id="label7">FAIL 84</div>
           <div id="label8">THROTTLE:</div>
+          <div id="label9">NO DATA RESPONSE</div>
         </div>
 
         <div id = "terminal-area">
@@ -725,6 +752,7 @@
             </div>
 
             <div id = "initStat-menu">
+              <div id = "AltGraphTitle">Altitude</div>
               <canvas id="AltCanvas"></canvas>
             </div>
 
@@ -937,8 +965,14 @@ function executeCommand(command) {
         handleGpsInitPageCommand(command);
     } else if (currentPage === 'preflight') {
         handlePreflightPageCommand(command);
-    } else if (currentPage === 'wingConfig') {
-        handleWingConfigPageCommand(command);
+    } else if (currentPage === 'hardwareConfig') {
+      handlehardwareConfigPageCommand(command);
+    }
+    else if (currentPage === 'gpsStat') {
+      //handlehardwareConfigPageCommand(command);
+    }
+    else if (currentPage === 'imuStat') {
+      //handlehardwareConfigPageCommand(command);
     }
     terminalDiv.scrollTop = output.scrollHeight;
 }
@@ -962,14 +996,14 @@ function changePage(pageName) {
     case "pfpage1":
       PFPAGE1();
       break;
-    case 3:
-      dayName = "Wednesday";
+    case "hardwareConfig":
+      hardwarePage();
       break;
-    case 4:
-      dayName = "Thursday";
+    case 'gpsStat':
+      gpsStatPage();
       break;
-    case 5:
-      dayName = "Friday";
+    case 'imuStat':
+      imuStatPage();
       break;
     case 6:
       dayName = "Saturday";
@@ -1025,18 +1059,6 @@ function FDPAGE2() {
   showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
 }
 
-function outputOnInit() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
-  output.textContent += initialText;
-  showMenuOptions([
-    '\n\nFLIGHT DIRECTOR [1]',
-    '         SYS MISC [2]',
-    '\n\n\n\n\n\nPREFLIGHT [3]',
-    '   HRDWRE CONFIGURATION [4]',
-  ]);
-  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
-}
-
 // Clear the output
 function clearOutput() {
     output.textContent = '';
@@ -1055,7 +1077,7 @@ function handleMainPageCommand(command) {
             changePage('pfpage1');
             break;
         case '4':
-            changePage('wingConfig');
+            changePage('hardwareConfig');
             break;
         default:
             // Handle unknown commands
@@ -1088,12 +1110,68 @@ function handlefdPageCommand(command) {
 
 // Function to handle commands on the Preflight page
 function handlePreflightPageCommand(command) {
-    // Implement logic for Preflight page commands here
+  
 }
 
 // Function to handle commands on the Wing Configuration page
-function handleWingConfigPageCommand(command) {
-    // Implement logic for Wing Configuration page commands here
+function handlehardwareConfigPageCommand(command) {
+  switch (command) {
+        case '1':
+            changePage('imuStat');
+            break;
+        case '2':
+            changePage('gpsStat');
+            break;
+        case '<':
+            //changePage('wingConfig');
+            break;
+        case '>':
+            //changePage('wingConfig');
+            break;
+        default:
+            // Handle unknown commands
+            output.textContent += '> Invalid command\n';
+            break;
+    }
+}
+
+function hardwarePage(){
+  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n IMU',
+    '\n\n GPS',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
+}
+
+function imuStatPage(){
+  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n IMU',
+    '         VX:',
+    '\n\nVY:',
+    'VZ:',
+    '   ACCX:',
+    'ACCY:',
+    'ACCZ:',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
+}
+
+function gpsStatPage(){
+  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n GPS',
+    '         LATITUDE:',
+    '\n\nLONGITUDE:',
+    'ALTITUDE:',
+    '  SATELLITES:',
+    'VELOCITY:',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
 }
 
         // Call the function on webpage load

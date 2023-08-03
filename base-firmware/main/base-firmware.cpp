@@ -41,11 +41,15 @@ extern "C"{
             if(change -> SWITCH2ARMED() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 2
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
             if(change -> SWITCH2BYPASS() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 3
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
             #endif
@@ -53,14 +57,18 @@ extern "C"{
             #if DRONE_STATE == 2 // ARMED
             //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
             CTobj -> _ARMED_();
-            if(change.SWITCH2PREP() == 1){
+            if(change -> SWITCH2PREP() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 1
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
-            if(change.SWITCH2BYPASS() == 1){
+            if(change -> SWITCH2BYPASS() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 3
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
             #endif
@@ -71,11 +79,15 @@ extern "C"{
             if(change -> SWITCH2PREP() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 1
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
             if(change -> SWITCH2ARMED() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 2
+                //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                vTaskDelay(1);
                 continue;
             }
             #endif

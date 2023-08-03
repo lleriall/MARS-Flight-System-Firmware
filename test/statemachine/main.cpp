@@ -19,6 +19,7 @@ int main(){
             if(change -> SWITCH2ARMED() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 2
+                
                 continue;
             }
             if(change -> SWITCH2BYPASS() == 1){
@@ -31,12 +32,12 @@ int main(){
             #if DRONE_STATE == 2 // ARMED
             //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
             CTobj -> _ARMED_();
-            if(change.SWITCH2PREP() == 1){
+            if(change -> SWITCH2PREP() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 1
                 continue;
             }
-            if(change.SWITCH2BYPASS() == 1){
+            if(change -> SWITCH2BYPASS() == 1){
                 #undef DRONE_STATE
                 #define DRONE_STATE 3
                 continue;

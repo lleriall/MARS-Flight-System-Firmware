@@ -1,0 +1,59 @@
+[0;33m--- idf_monitor on /dev/cu.usbserial-027D71AF 115200 ---[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---[0m
+[0;33m0x40080400: _init at ??:?
+[0m
+[0;33m0x4008136c: call_start_cpu1 at /Users/nyameaama/esp/esp-idf/components/esp_system/port/cpu_start.c:154
+[0m
+[0;33m0x400da01b: task_wdt_timeout_handling at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:461 (discriminator 3)
+[0m
+[0;33m0x400da1a2: task_wdt_isr at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:585
+[0m
+[0;33m0x40082d31: _xt_lowint1 at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S:1226
+[0m
+[0;33m0x400014fc: strlen in ROM
+[0m
+[0;33m0x400d65e2: std::char_traits<char>::length(char const*) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/char_traits.h:395
+ (inlined by) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/basic_string.h:641
+[0m
+[0;33m0x400d8096: STATE::SWITCH2BYPASS() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:72
+[0m
+[0;33m0x400d66a8: app_main at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../main/base-firmware.cpp:47
+[0m
+[0;33m0x4018488b: main_task at /Users/nyameaama/esp/esp-idf/components/freertos/app_startup.c:208 (discriminator 13)
+[0m
+[0;33m0x4008b655: vPortTaskWrapper at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:162
+[0m
+[0;33m0x400da01b: task_wdt_timeout_handling at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:461 (discriminator 3)
+[0m
+[0;33m0x400da1a2: task_wdt_isr at /Users/nyameaama/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c:585
+[0m
+[0;33m0x40082d31: _xt_lowint1 at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S:1226
+[0m
+[0;33m0x4000bfed: _xtos_set_intlevel in ROM
+[0m
+[0;33m0x4008ab36: vPortClearInterruptMaskFromISR at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos/portmacro.h:568
+ (inlined by) xTaskGetSchedulerState at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5063
+[0m
+[0;33m0x400895bd: xQueueSemaphoreTake at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:1662
+[0m
+[0;33m0x400812c4: pthread_mutex_lock_internal at /Users/nyameaama/esp/esp-idf/components/pthread/pthread.c:614
+[0m
+[0;33m0x400812fa: pthread_mutex_lock at /Users/nyameaama/esp/esp-idf/components/pthread/pthread.c:644
+[0m
+[0;33m0x400d6f89: std::mutex::lock() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/xtensa-esp32-elf/no-rtti/bits/gthr-default.h:749
+ (inlined by) std::mutex::lock() at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:100
+[0m
+[0;33m0x400d7ce6: std::lock_guard<std::mutex>::lock_guard(std::mutex&) at /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/xtensa-esp32-elf/include/c++/12.2.0/bits/std_mutex.h:229
+ (inlined by) SharedMemory::getLastString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/PTAM/_ptam.cpp:75
+[0m
+[0;33m0x400d7ee0: STATE::getLastStateRequest[abi:cxx11]() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:115
+[0m
+[0;33m0x400d7ef6: STATE::SWITCH2PREP() at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../components/system/_state.cpp:30
+[0m
+[0;33m0x400d66d2: app_main at /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/../main/base-firmware.cpp:73
+[0m
+[0;33m0x4018488b: main_task at /Users/nyameaama/esp/esp-idf/components/freertos/app_startup.c:208 (discriminator 13)
+[0m
+[0;33m0x4008b655: vPortTaskWrapper at /Users/nyameaama/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:162
+[0m
+[0m
