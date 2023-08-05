@@ -1,1 +1,25 @@
-2ec6febfd13149e895d4fc8a9c0bba1e48be3736
+30c31aaea0a5490bd999e56ff4084b761751157f 7d9fee6204e7715e7b892f651cdd1f5367dd0192 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1683744379 -0400	pull --tags origin dev-flight: Fast-forward
+7d9fee6204e7715e7b892f651cdd1f5367dd0192 6b6332f6617acda05199ff653d7e867e77050c90 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1683753306 -0400	commit: minor change
+6b6332f6617acda05199ff653d7e867e77050c90 8d784efdb3556bcf9672f37633d36e88d6d26127 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1683753676 -0400	commit: rm path app
+8d784efdb3556bcf9672f37633d36e88d6d26127 67ff4b5b06a326be58d73c6820359e48f1bbcc83 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1684527874 -0400	commit: push refactor
+67ff4b5b06a326be58d73c6820359e48f1bbcc83 3ac531a129cbf39c2c91701bce679eea564ceca2 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1684731249 -0400	commit: updates everywhere
+3ac531a129cbf39c2c91701bce679eea564ceca2 a7401f1e3482e014fd8b59c0b6f427f51788f829 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1684874879 -0400	commit: gps and motor driver additions
+a7401f1e3482e014fd8b59c0b6f427f51788f829 884ccf6894df35d0709b271a1120aefbf2e09f23 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1685147345 -0400	commit: wing interfacing changes
+884ccf6894df35d0709b271a1120aefbf2e09f23 7012a4700251472a33fb7c510c47bd2ee0c1bfb3 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1685151674 -0400	commit: sensor controller updates
+7012a4700251472a33fb7c510c47bd2ee0c1bfb3 915a50f71a1315dc3e84486436763b72e438433b Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1685474428 -0400	commit: add assets
+915a50f71a1315dc3e84486436763b72e438433b 8a8774d0c78052fd9f6e76307e94b703014b5a2a Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1685576148 -0400	pull --tags origin dev-flight: Fast-forward
+8a8774d0c78052fd9f6e76307e94b703014b5a2a ec3fec69fb6d2b4eefb36868da92fd09f1ba7a44 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1686693131 -0400	commit: tiny changes everywhere - big is the new tiny
+ec3fec69fb6d2b4eefb36868da92fd09f1ba7a44 3c545efff54d8f756888d2b98640ea78d05655c5 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1686716975 -0400	commit: added imu driver and onboard display UI
+3c545efff54d8f756888d2b98640ea78d05655c5 9aba0c461496498a65f6b9b8e9863bcaba8aae93 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1686818097 -0400	commit: tiny changes everyhwere - will it ever end?
+9aba0c461496498a65f6b9b8e9863bcaba8aae93 b75b63df985613785cc49194d27f71be6e455ff6 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1687206762 -0400	commit: firmware additions to display unit
+b75b63df985613785cc49194d27f71be6e455ff6 411b6fa44fde8fcc9c83d2c1745bf0226fd5645c Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1687588851 -0400	commit: LIAM additions
+411b6fa44fde8fcc9c83d2c1745bf0226fd5645c 933fffdece06dd227e80285becfa907b98ad08bb Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1688058872 -0400	commit: changes to LIAM
+933fffdece06dd227e80285becfa907b98ad08bb 665b6861e73f1affdc620201c55c850e6f5fc170 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1688456435 -0400	commit: rewrote servo drivers
+665b6861e73f1affdc620201c55c850e6f5fc170 f7041a4c31b254ffeeb32afa524c6a96694011a5 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1689193045 -0400	commit: push LIAM simulator
+f7041a4c31b254ffeeb32afa524c6a96694011a5 d9de902d06d7ac21a76cec1d2e3d8371e9a59e06 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1689204404 -0400	commit: additional simulation modules for LIAM
+d9de902d06d7ac21a76cec1d2e3d8371e9a59e06 d2899964ceed99ced8b2df9bce4765866bc7ea7b Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1689232837 -0400	commit: more simulation updates
+d2899964ceed99ced8b2df9bce4765866bc7ea7b 25b68642c25d262cbc674b271346117a7dca415e Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1689645278 -0400	commit: tiny changes everywhere: Finally, its about tiny
+25b68642c25d262cbc674b271346117a7dca415e 2ec6febfd13149e895d4fc8a9c0bba1e48be3736 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1690426118 -0400	commit: lets just say this: there have been big repo changes
+2ec6febfd13149e895d4fc8a9c0bba1e48be3736 4a2dd2460226b2ff09c51a2eebb83dda91d15319 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1690885085 -0400	commit: myriad of changes + connected server backend
+4a2dd2460226b2ff09c51a2eebb83dda91d15319 ea37c19f5548ff7e9543ca10ecb9839afc5f356a Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1690974596 -0400	commit: fixed statemachine and ptam logic bugs but build now triggering watchdog timer
+ea37c19f5548ff7e9543ca10ecb9839afc5f356a a2d0233bde754a5d122b55a23f778cb9a81bb133 Nyameaama Gambrah <nyameaama.gambra@yahoo.com> 1691025967 -0400	commit: added delays to fix watchdog timer trigger

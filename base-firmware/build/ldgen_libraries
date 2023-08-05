@@ -60,7 +60,7 @@
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/spiffs/libspiffs.a
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/wifi_provisioning/libwifi_provisioning.a
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/main/libmain.a
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/libPTAM.a
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/Comms/libComms.a
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/HALX/libHALX.a
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/libPTAM.a
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/system/libsystem.a

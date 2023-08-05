@@ -1,16 +1,21 @@
 #include"../components/Comms/_broadcast.h"
 #include"../components/HALX/mg90s_servo.h"
+#include"../components/HALX/MPU6050.h"
+#include"../components/HALX/ssd1306.h"
+#include"../components/HALX/ssd1306_fonts.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include<cmath>
 
 
 //#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 
 extern "C" {
     void app_main() {
+        esp_log_level_set("TAG", ESP_LOG_INFO);
         // Wait for Wi-Fi to initialize
         vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
         //Initialize NVS
@@ -25,7 +30,50 @@ extern "C" {
     //wifi_init_softap();
         BroadcastedServer server;
         server.wifi_init_softap();
+
+/*
+    SSD1306_Init();
+    printf("SSD1306 Initialized..\n");
+    
+    char str[16];
+    SSD1306_GotoXY(0,30);
+    sprintf(str,"HIVE PLATFORM");
+    SSD1306_Puts(str, &Font_7x10, SSD1306_COLOR_WHITE);
+    printf("printed text\n");
+    SSD1306_UpdateScreen();
+    vTaskDelay(1);
+    SSD1306_GotoXY(10,10);
+
+
+uint8_t flag,flag2 = 1;
+    int16_t ax,ay,az;
+    int16_t gx,gy,gz;
+    MPU6050 *obj = new MPU6050();
+	
+    while (1) {
+         if(obj -> MPU_Get_Accelerometer(&ax,&ay,&az) == 0){
+            ESP_LOGI("TAG","IMU ACCX: %d",ax);
+            ESP_LOGI("TAG","IMU ACCY: %d",ay);
+            ESP_LOGI("TAG","IMU ACCZ: %d",az);
+        }
+        if(obj -> MPU_Get_Gyroscope(&gx,&gy,&gz) == 0){
+            ESP_LOGI("TAG","IMU GYROX: %d",gx);
+            ESP_LOGI("TAG","IMU GYROY: %d",gy);
+            ESP_LOGI("TAG","IMU GYROZ: %d",gz);
+        }
+        */
+
+        /*float roll  = atan2f(ay, az) * (180.0 / 3.14159);
+        float pitch = atan2f(-ax, sqrtf(ay * ay + az * az)) * (180.0 / 3.14159);
+        ESP_LOGI("TAG","IMU ROLL: %f",roll);
+        ESP_LOGI("TAG","IMU PITCH: %f",pitch);*/
+        // Process and use the accelerometer and gyroscopic values as needed
+
+        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to allow other tasks to run
+    //}
+
     }
+
 }
 
 

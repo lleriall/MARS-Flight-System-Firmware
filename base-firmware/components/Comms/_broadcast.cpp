@@ -29,7 +29,6 @@ SOFTWARE.*/
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include<stdio.h>
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
@@ -43,6 +42,7 @@ SOFTWARE.*/
 #define _ESP_WIFI_PASS      "HIVE_PASS"
 #define _ESP_WIFI_CHANNEL   6
 #define _MAX_STA_CONN       1
+#define MAX_DATA_LEN        100
 
 static const char *TAG = "wifi softAP";
 
@@ -107,94 +107,38 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
-    httpd_uri_t button_uri = {
-        .uri       = "/button",
-        .method    = HTTP_POST,
-        .handler   = handle_button_request,
-        .user_ctx  = NULL
-    };
-
     httpd_uri_t LAT1_uri = {
-        .uri       = "/GET_LAT",
+        .uri       = "/GET_GPS",
         .method    = HTTP_POST,
-        .handler   = handle_LAT_request,
+        .handler   = handle_GPS_request,
         .user_ctx  = NULL
     };
 
-    httpd_uri_t LONG1_uri = {
-        .uri       = "/GET_LONG",
+    httpd_uri_t IMU1_uri = {
+        .uri       = "/GET_IMU1",
         .method    = HTTP_POST,
-        .handler   = handle_LONG_request,
+        .handler   = handle_IMU1_request,
         .user_ctx  = NULL
     };
 
-    httpd_uri_t SAT1_uri = {
-        .uri       = "/GET_SAT",
+    httpd_uri_t W1_uri = {
+        .uri       = "/GET_W1",
         .method    = HTTP_POST,
-        .handler   = handle_SAT_request,
+        .handler   = handle_W1_request,
         .user_ctx  = NULL
     };
 
-    httpd_uri_t PTCH1_uri = {
-        .uri       = "/GET_PTCH",
+    httpd_uri_t AMB1_uri = {
+        .uri       = "/GET_AMB",
         .method    = HTTP_POST,
-        .handler   = handle_PTCH_request,
+        .handler   = handle_AMB_request,
         .user_ctx  = NULL
     };
 
-    httpd_uri_t RLL1_uri = {
-        .uri       = "/GET_RLL",
+    httpd_uri_t SWP_uri = {
+        .uri       = "/INC_SWP",
         .method    = HTTP_POST,
-        .handler   = handle_RLL_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t YAW1_uri = {
-        .uri       = "/GET_YAW",
-        .method    = HTTP_POST,
-        .handler   = handle_YAW_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t WFL1_uri = {
-        .uri       = "/GET_WFL",
-        .method    = HTTP_POST,
-        .handler   = handle_WFL_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t WFR1_uri = {
-        .uri       = "/GET_WFR",
-        .method    = HTTP_POST,
-        .handler   = handle_WFR_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t WRL1_uri = {
-        .uri       = "/GET_WRL",
-        .method    = HTTP_POST,
-        .handler   = handle_WRL_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t WRR1_uri = {
-        .uri       = "/GET_WRR",
-        .method    = HTTP_POST,
-        .handler   = handle_WRR_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t OAT1_uri = {
-        .uri       = "/GET_OAT",
-        .method    = HTTP_POST,
-        .handler   = handle_OAT_request,
-        .user_ctx  = NULL
-    };
-
-    httpd_uri_t PRESS1_uri = {
-        .uri       = "/GET_PRESS",
-        .method    = HTTP_POST,
-        .handler   = handle_PRESS_request,
+        .handler   = handle_SWP_incoming,
         .user_ctx  = NULL
     };
 
@@ -203,22 +147,37 @@ void BroadcastedServer::wifi_init_softap(void)
     if (httpd_start(&server, &config) == ESP_OK) {
         //Register root
         httpd_register_uri_handler(server, &root_uri);
-        // Register the "/button" URI handler
-        //httpd_register_uri_handler(server, &button_uri);
         httpd_register_uri_handler(server, &LAT1_uri);
-        httpd_register_uri_handler(server, &LONG1_uri);
-        httpd_register_uri_handler(server, &SAT1_uri);
-        httpd_register_uri_handler(server, &PTCH1_uri);
-        httpd_register_uri_handler(server, &RLL1_uri);
-        httpd_register_uri_handler(server, &YAW1_uri);
-        httpd_register_uri_handler(server, &WFL1_uri);
-        httpd_register_uri_handler(server, &WFR1_uri);
-        httpd_register_uri_handler(server, &WRL1_uri);
-        httpd_register_uri_handler(server, &WRR1_uri);
-        httpd_register_uri_handler(server, &OAT1_uri);
-        httpd_register_uri_handler(server, &PRESS1_uri);
+        httpd_register_uri_handler(server, &IMU1_uri);
+        httpd_register_uri_handler(server, &W1_uri);
+        httpd_register_uri_handler(server, &AMB1_uri);
+        httpd_register_uri_handler(server, &SWP_uri);
     }
 
+}
+
+std::string BroadcastedServer::packData(const std::string& id1, float value1,
+                     const std::string& id2, float value2,
+                     const std::string& id3, float value3,
+                     const std::string& id4, float value4) {
+    std::ostringstream packed;
+    packed << id1 << value1 << "_" << id2 << value2 << "_" << id3 << value3 << "_" << id4 << value4;
+    return packed.str();
+}
+
+void BroadcastedServer::extractValuesAndIds(const std::string& data, std::vector<std::string>& ids, std::vector<double>& values) {
+    std::stringstream ss(data);
+    std::string item;
+
+    while (getline(ss, item, '_')) {
+        // Extract the ID and value from each item
+        std::string id = item.substr(0, item.find_first_of("0123456789.-"));
+        double value = std::stod(item.substr(item.find_first_of("0123456789.-")));
+
+        // Add the ID and value to the respective vectors
+        ids.push_back(id);
+        values.push_back(value);
+    }
 }
 
 /* Handler for the root ("/") endpoint */
@@ -233,17 +192,24 @@ esp_err_t BroadcastedServer::root_handler(httpd_req_t *req) {
     return ESP_OK;
 }
 
-/* Handler for the "/button" endpoint */
-esp_err_t BroadcastedServer::handle_button_request(httpd_req_t *req) {
+/* Handler for the "/GET_GPS" endpoint */
+esp_err_t BroadcastedServer::handle_GPS_request(httpd_req_t *req) {
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the button is pressed
-        // For example, toggle an LED, control a motor, etc.
-        // Implement your action here...
+
+        std::string id1 = "LAT";
+        double value1 = 56;
+        std::string id2 = "LONG";
+        double value2 = 78.50;
+        std::string id3 = "SAT";
+        double value3 = 72.34;
+        std::string id4 = "ALT";
+        double value4 = 40;
+
+        std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
 
         // Send a response to the client
-        const char *response = "Button Pressed";
-        httpd_resp_send(req, response, strlen(response));
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
         return ESP_OK;
     }
 
@@ -252,20 +218,24 @@ esp_err_t BroadcastedServer::handle_button_request(httpd_req_t *req) {
     return ESP_OK;
 }
 
-/* Handler for the "/GET_LAT" endpoint */
-esp_err_t BroadcastedServer::handle_LAT_request(httpd_req_t *req) {
+
+/* Handler for the "/IMU1" endpoint */
+esp_err_t BroadcastedServer::handle_IMU1_request(httpd_req_t *req) {
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
 
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
+        std::string id1 = "PITCH";
+        double value1 = 98;
+        std::string id2 = "ROLL";
+        double value2 = 42;
+        std::string id3 = "YAW";
+        double value3 = 87;
+        std::string id4 = "XXX";
+        double value4 =22;
 
+        std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
         // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
         return ESP_OK;
     }
 
@@ -274,20 +244,24 @@ esp_err_t BroadcastedServer::handle_LAT_request(httpd_req_t *req) {
     return ESP_OK;
 }
 
-/* Handler for the "/GET_LONG" endpoint */
-esp_err_t BroadcastedServer::handle_LONG_request(httpd_req_t *req) {
+/* Handler for the "/W1" endpoint */
+esp_err_t BroadcastedServer::handle_W1_request(httpd_req_t *req) {
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
 
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
+       std::string id1 = "WFL";
+        double value1 = 165;
+        std::string id2 = "WFR";
+        double value2 = 148;
+        std::string id3 = "WRL";
+        double value3 = 109;
+        std::string id4 = "WRR";
+        double value4 = 112;
+
+        std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
 
         // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
         return ESP_OK;
     }
 
@@ -296,20 +270,24 @@ esp_err_t BroadcastedServer::handle_LONG_request(httpd_req_t *req) {
     return ESP_OK;
 }
 
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_SAT_request(httpd_req_t *req) {
+
+esp_err_t BroadcastedServer::handle_AMB_request(httpd_req_t *req) {
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
 
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
+       std::string id1 = "OAT";
+        double value1 = 165;
+        std::string id2 = "PRESS";
+        double value2 = 148;
+        std::string id3 = "WX1";
+        double value3 = 109;
+        std::string id4 = "WX2";
+        double value4 = 112;
+
+        std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
 
         // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
         return ESP_OK;
     }
 
@@ -318,194 +296,74 @@ esp_err_t BroadcastedServer::handle_SAT_request(httpd_req_t *req) {
     return ESP_OK;
 }
 
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_PTCH_request(httpd_req_t *req) {
+esp_err_t BroadcastedServer::handle_SWP_incoming(httpd_req_t *req){
+    char received_data[MAX_DATA_LEN] = "";
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
+        int total_len = req->content_len;
+    int cur_len = 0;
+    int received = 0;
+    
+    if (total_len >= MAX_DATA_LEN) {
+        return ESP_FAIL;
     }
 
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_RLL_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
+    while (received < total_len) {
+        // Receive the data in chunks
+        cur_len = httpd_req_recv(req, received_data + received, MAX_DATA_LEN);
+        if (cur_len <= 0) {
+            if (cur_len == HTTPD_SOCK_ERR_TIMEOUT) {
+                continue;
+            }
+            return ESP_FAIL;
+        }
+        received += cur_len;
     }
 
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_YAW_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
+    // Null-terminate the received_data string
+    received_data[received] = '\0';
         // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
+        //httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        std::string data = received_data;
+        std::vector<std::string> ids;
+        std::vector<double> values;
 
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_WFL_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
-
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_WFR_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
-
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_WRL_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
-
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-/* Handler for the "/GET_SAT" endpoint */
-esp_err_t BroadcastedServer::handle_WRR_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
-
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-esp_err_t BroadcastedServer::handle_OAT_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
-        return ESP_OK;
-    }
-
-    // If the request is not a POST request, return 404 Not Found
-    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
-    return ESP_OK;
-}
-
-esp_err_t BroadcastedServer::handle_PRESS_request(httpd_req_t *req) {
-    // Check if the request is a POST request
-    if (req->method == HTTP_POST) {
-        // Perform the action you want to execute when the endpoint is requested
-        // Providing a seed value for randomness
-        srand((unsigned) time(NULL));
-
-        // Get a random number
-        int random = rand();
-        std::string str = std::to_string(random);
-
-        // Send a response to the client
-        httpd_resp_send(req, str.c_str(), str.length());
+        extractValuesAndIds(data, ids, values);
+        ESP_LOGI("TAG", "%f",values[0]);
+        
+        //UPDATE PTAM REGISTERS
+        SharedMemory& sharedMemory = SharedMemory::getInstance();
+        //If value from frontend is not 0, update PTAM register for respective variable
+        if(values[0] != 0){
+            //Latitude
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TLat");
+            sharedMemory.storeDouble("TLat", values[0]);
+        }
+        if(values[1] != 0){
+            //Longitude
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TLong");
+            sharedMemory.storeDouble("TLong", values[1]);
+        }
+        if(values[2] != 0){
+            //Altitude - target
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TAlt");
+            sharedMemory.storeDouble("TAlt", values[2]);
+        }
+        if(values[3] != 0){
+            //Altitude - cruise
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("CAlt");
+            sharedMemory.storeDouble("CAlt", values[3]);
+        }
+        if(values[4] != 0){
+            //Velocity
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TVel");
+            sharedMemory.storeDouble("TVel", values[4]);
+        }
         return ESP_OK;
     }
 

@@ -404,17 +404,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/Comms/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
   include("/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/HALX/cmake_install.cmake")
-endif()
-
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
-  include("/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

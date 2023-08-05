@@ -607,6 +607,13 @@
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/main/CMakeFiles/install/strip.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/main/CMakeFiles/install.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/main/CMakeFiles/list_install_components.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install/local.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/rebuild_cache.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/edit_cache.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install/strip.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/list_install_components.dir
+/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/__idf_PTAM.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/Comms/CMakeFiles/install/local.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/Comms/CMakeFiles/install/strip.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/Comms/CMakeFiles/install.dir
@@ -621,13 +628,6 @@
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/HALX/CMakeFiles/rebuild_cache.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/HALX/CMakeFiles/edit_cache.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/HALX/CMakeFiles/__idf_HALX.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install/local.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/rebuild_cache.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/edit_cache.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install/strip.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/install.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/list_install_components.dir
-/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/PTAM/CMakeFiles/__idf_PTAM.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/system/CMakeFiles/install/local.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/system/CMakeFiles/install/strip.dir
 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/system/CMakeFiles/install.dir

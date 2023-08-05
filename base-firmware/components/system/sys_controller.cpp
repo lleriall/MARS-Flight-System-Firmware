@@ -102,14 +102,9 @@ void CONTROLLER_TASKS::_IDLE_(){
 
 //Telemetry checks, peripheral checks
 void CONTROLLER_TASKS::_PREP_(){
-    /*DataStore* obj = new DataStore();
-    auto setupFL = obj.getIntData("setupSFlag").back();
-    if(setupFL == 0){
-        //Set server setup PTAM register to 1
-        obj.clearData("setupSFlag");
-        obj.storeData(std::string("setupSFlag"),1);
-    }
-    delete obj;*/
+    SharedMemory& sharedMemory = SharedMemory::getInstance();
+    auto lat = sharedMemory.getLastDouble("TLat");
+    //ESP_LOGI("LAT", "%f",lat);
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -153,7 +148,6 @@ void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
 
     sharedMemory.storeInt("state", 1);
     sharedMemory.storeString("stateDescript", "PREP");
-
     //GPS functionality flag
     sharedMemory.storeInt("GPScheck", 0);
     //IMU functionality flag
@@ -162,6 +156,16 @@ void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
     sharedMemory.storeInt("BMPcheck", 0);
     //ServerSetupFlag
     sharedMemory.storeInt("setupSFlag", 0);
+    //Target Latitude 
+    sharedMemory.storeDouble("TLat", 0);
+    //Target Longitude
+    sharedMemory.storeDouble("TLong", 0);
+    //Target Altitude
+    sharedMemory.storeDouble("TAlt", 0);
+    //Cruise Altitude
+    sharedMemory.storeDouble("CAlt", 0);
+    //Target Velocity
+    sharedMemory.storeDouble("TVel", 0);
 
     //auto po = init.getStringData(std::string("stateDescript")).back();
     //std::cout << po << std::endl;

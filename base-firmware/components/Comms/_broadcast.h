@@ -25,7 +25,13 @@ SOFTWARE.*/
 
 #include <esp_http_server.h>
 #include<cstdlib>
+#include<string>
+#include<sstream>
+#include <iomanip>
+#include<vector>
 #include"page.h"
+#include"esp_log.h"
+#include"../PTAM/_ptam.h"
 
 class BroadcastedServer {
     public:
@@ -34,33 +40,26 @@ class BroadcastedServer {
         void wifi_init_softap(void);
 
     private:
+        static std::string packData(const std::string& id1, float value1,
+                     const std::string& id2, float value2,
+                     const std::string& id3, float value3,
+                     const std::string& id4, float value4);
+        
+        static void extractValuesAndIds(const std::string& data, std::vector<std::string>& ids, std::vector<double>& values);
+
+    private:
         static esp_err_t root_handler(httpd_req_t *req);
 
-        static esp_err_t handle_button_request(httpd_req_t *req);
+        static esp_err_t handle_GPS_request(httpd_req_t *req);
 
-        static esp_err_t handle_LAT_request(httpd_req_t *req);
+        static esp_err_t handle_IMU1_request(httpd_req_t *req);
 
-        static esp_err_t handle_LONG_request(httpd_req_t *req);
+        static esp_err_t handle_W1_request(httpd_req_t *req);
 
-        static esp_err_t handle_SAT_request(httpd_req_t *req);
+        static esp_err_t handle_AMB_request(httpd_req_t *req);
 
-        static esp_err_t handle_PTCH_request(httpd_req_t *req);
+        static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
-        static esp_err_t handle_RLL_request(httpd_req_t *req);
-
-        static esp_err_t handle_YAW_request(httpd_req_t *req);
-
-        static esp_err_t handle_WFL_request(httpd_req_t *req);
-
-        static esp_err_t handle_WFR_request(httpd_req_t *req);
-
-        static esp_err_t handle_WRL_request(httpd_req_t *req);
-
-        static esp_err_t handle_WRR_request(httpd_req_t *req);
-
-        static esp_err_t handle_OAT_request(httpd_req_t *req);
-
-        static esp_err_t handle_PRESS_request(httpd_req_t *req);
 
     private:
         const char *html_content = responseXX;

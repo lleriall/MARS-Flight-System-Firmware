@@ -1336,6 +1336,25 @@ rule C_STATIC_LIBRARY_LINKER____idf_main_
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER____idf_PTAM_
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-g++  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking C static library.
+
+rule C_STATIC_LIBRARY_LINKER____idf_PTAM_
+  command = $PRE_LINK && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E rm -f $TARGET_FILE && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc $TARGET_FILE $LINK_FLAGS $in && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib $TARGET_FILE && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E touch $TARGET_FILE && $POST_BUILD
+  description = Linking C static library $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER____idf_Comms_
   depfile = $DEP_FILE
   deps = gcc
@@ -1366,25 +1385,6 @@ rule CXX_COMPILER____idf_HALX_
 # Rule for linking C static library.
 
 rule C_STATIC_LIBRARY_LINKER____idf_HALX_
-  command = $PRE_LINK && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E rm -f $TARGET_FILE && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc $TARGET_FILE $LINK_FLAGS $in && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib $TARGET_FILE && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E touch $TARGET_FILE && $POST_BUILD
-  description = Linking C static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER____idf_PTAM_
-  depfile = $DEP_FILE
-  deps = gcc
-  command = /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-g++  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking C static library.
-
-rule C_STATIC_LIBRARY_LINKER____idf_PTAM_
   command = $PRE_LINK && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E rm -f $TARGET_FILE && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc $TARGET_FILE $LINK_FLAGS $in && /Users/nyameaama/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib $TARGET_FILE && /usr/local/Cellar/cmake/3.17.3/bin/cmake -E touch $TARGET_FILE && $POST_BUILD
   description = Linking C static library $TARGET_FILE
   restat = $RESTAT

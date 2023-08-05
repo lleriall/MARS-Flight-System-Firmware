@@ -27,7 +27,11 @@ SOFTWARE.*/
 #include<cstdlib>
 #include<string>
 #include<sstream>
+#include <iomanip>
+#include<vector>
 #include"page.h"
+#include"esp_log.h"
+//#include"../PTAM/_ptam.h"
 
 class BroadcastedServer {
     public:
@@ -40,6 +44,8 @@ class BroadcastedServer {
                      const std::string& id2, float value2,
                      const std::string& id3, float value3,
                      const std::string& id4, float value4);
+        
+        static void extractValuesAndIds(const std::string& data, std::vector<std::string>& ids, std::vector<double>& values);
 
     private:
         static esp_err_t root_handler(httpd_req_t *req);
@@ -51,6 +57,8 @@ class BroadcastedServer {
         static esp_err_t handle_W1_request(httpd_req_t *req);
 
         static esp_err_t handle_AMB_request(httpd_req_t *req);
+
+        static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
 
     private:

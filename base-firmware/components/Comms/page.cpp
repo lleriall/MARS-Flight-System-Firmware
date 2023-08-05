@@ -5,7 +5,6 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
       <head>
         <title>HIVE 2</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel= "stylesheet" type= "text/css" href= "styles.css">
         <style>
           html { font-family: sans-serif; text-align: center; background-color: rgb(0, 0, 0);}
           body { display: inline-flex; flex-direction: column;overflow: hidden; }
@@ -172,6 +171,17 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           }
           #config-title{
             color: #fff;
+          }
+
+          #AltGraphTitle{
+            position: absolute;
+            width: 10%;
+            height:5%;
+            left:45%;
+            top:7%;
+            color: #ffffff;
+            z-index: 1000;
+            font-weight: bolder;
           }
 
           /* Add a black background color to the top navigation */
@@ -519,6 +529,35 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             font-weight: bolder;
         }
 
+        #label9 {
+            position: absolute;
+            top:5%;
+            left: 15%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #c91414;
+            padding: 5px;
+            border-style: solid;
+            border-radius: 3px;
+            font-size: 10px;
+            z-index: 100;
+            font-weight: bolder;
+        }
+
+        #label10{
+          position: absolute;
+            top:80%;
+            left: 60%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #15ff00;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+            z-index: 100;
+            font-weight: bolder;
+        }
+
         #AltCanvas {
           position: absolute;
           top: 1%;
@@ -703,12 +742,14 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           <div id="label6">NO NAV SET </div>
           <div id="label7">FAIL 84</div>
           <div id="label8">THROTTLE:</div>
+          <div id="label9">NO DATA RESPONSE</div>
+          <div id="label10">TRGT: </div>
         </div>
 
         <div id = "terminal-area">
             <div id="terminal-panel">
               <div id = "PayloadStat">NO PAYLOAD</div>
-              <div id = "TAvar">V2</div>
+              <div id = "TAvar">ALT</div>
               <div id = "TAPressure"> Pressure</div>
               <div id = "TATemp"> OAT</div>
               <hr id = "Tline">
@@ -728,6 +769,7 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             </div>
 
             <div id = "initStat-menu">
+              <div id = "AltGraphTitle">Altitude</div>
               <canvas id="AltCanvas"></canvas>
             </div>
 
@@ -807,6 +849,11 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
 
 
         <script type="text/javascript">
+          //GLOBAL VARS
+          altitudeX = 0;
+
+
+          ////////////////////////////
           class LiveDataGraph {
           constructor(canvasId, maxDataPoints = 100, updateInterval = 1000) {
               this.container = document.getElementById(canvasId).parentElement;
@@ -891,7 +938,7 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
       }
 
       function updateGraph() {
-          sampleGraph.updateGraph(getRandomDataPoint());
+          sampleGraph.updateGraph(altitudeX);
           setTimeout(updateGraph, sampleGraph.updateInterval);
       }
 
@@ -899,18 +946,10 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
       //UPDATE PAGE
       function updatePageContinuously(){
             updateGraph();
-            updateLAT();
-            updateLONG();
-            updateSAT();
-            updatePTCH();
-            updateRLL();
-            updateYAW();
-            updateWFL();
-            updateWFR();
-            updateWRL();
-            updateWRR();
-            updateOAT();
-            updatePRESS();
+            updateGPS();
+            updateIMU1();
+            updateW1();
+            updateAMB();
           }
 
       setInterval(updatePageContinuously, 1000);
@@ -935,16 +974,50 @@ input.addEventListener('keydown', (event) => {
 });
 
 function executeCommand(command) {
-    const response = '> ' + command + '\n';
-    output.textContent += response;
+    //const response = '> ' + command + '\n';
+    //input.value += response;
+    
     if (currentPage === 'main') {
         handleMainPageCommand(command);
-    } else if (currentPage === 'fdpage1') {
-        handleGpsInitPageCommand(command);
-    } else if (currentPage === 'preflight') {
+    } 
+    else if (currentPage === 'fdpage1') {
+      handleFDPage2Command(command)
+    } 
+    else if (currentPage === 'pfpage1') {
         handlePreflightPageCommand(command);
-    } else if (currentPage === 'wingConfig') {
-        handleWingConfigPageCommand(command);
+    } 
+    else if (currentPage === 'hardwareConfig') {
+      handlehardwareConfigPageCommand(command);
+    }
+    else if (currentPage === 'SWPpage') {
+      handleSWPPageCommand(command);
+    }
+    else if (currentPage === 'MWPpage') {
+      handleMWPPageCommand(command);
+    }
+    else if (currentPage === 'imuStat') {
+      handleIMUPPageCommand(command);
+    }
+    else if (currentPage === 'gpsStat') {
+      handleGPSPageCommand(command);
+    }
+    else if (currentPage === 'syspage1') {
+      handleSYSPageCommand(command);
+    }
+    else if (currentPage === 'targetLatInput') {
+      handleLatInputPageCommand(command);
+    }
+    else if (currentPage === 'targetLongInput') {
+      handleLongInputPageCommand(command);
+    }
+    else if (currentPage === 'cruiseAltInput') {
+      handleCAltInputPageCommand(command);
+    }
+    else if (currentPage === 'targetVelocityInput') {
+      handleVelInputPageCommand(command);
+    }
+    else if (currentPage === 'targetAltInput') {
+      handleTAltInputPageCommand(command);
     }
     terminalDiv.scrollTop = output.scrollHeight;
 }
@@ -959,46 +1032,67 @@ function changePage(pageName) {
     currentPage = pageName;
     clearOutput();
     switch (pageName) {
+      case "main":
+      outputOnInit();
+      break;
     case "fdpage1":
       FDPAGE1();
-      break;
-    case "fdpage2":
-      FDPAGE2();
       break;
     case "pfpage1":
       PFPAGE1();
       break;
-    case 3:
-      dayName = "Wednesday";
+    case "hardwareConfig":
+      hardwarePage();
       break;
-    case 4:
-      dayName = "Thursday";
+    case 'gpsStat':
+      gpsStatPage();
       break;
-    case 5:
-      dayName = "Friday";
+    case 'imuStat':
+      imuStatPage();
       break;
-    case 6:
-      dayName = "Saturday";
+    case 'SWPpage':
+      SWPpage();
+      break;
+    case 'MWPpage':
+      MWPpage();
+      break;
+    case 'syspage1':
+      SYSpage();
+      break;
+    case 'targetLatInput':
+      targetLatInput();
+      break;
+    case 'targetLongInput':
+      targetLongInput();
+      break;
+    case 'targetAltInput':
+      targetAltInput();
+      break;
+    case 'cruiseAltInput':
+      cruiseAltInput();
+      break;
+    case 'targetVelocityInput':
+      targetVelocityInput();
       break;
     default:
-      dayName = "Invalid day number";
+      //dayName = "Invalid Input";
   }
 }
 
 function outputOnInit() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
   output.textContent += initialText;
   showMenuOptions([
     '\n\nFLIGHT DIRECTOR [1]',
-    '         SYS MISC [2]',
+    '              SYS MISC [2]',
     '\n\n\n\n\n\nPREFLIGHT [3]',
-    '   HRDWRE CONFIGURATION [4]',
+    '               CONFIGURATION [4]',
   ]);
-  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
+  showMenuOptions(['\n\n\n\n\n< BACK', '                                 NEXT >']);
 }
 
 function PFPAGE1() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
   output.textContent += initialText;
   showMenuOptions([
     '\n\n             FIRMWARE: V1.0',
@@ -1006,41 +1100,17 @@ function PFPAGE1() {
     '\n\n\n                ERROR DUMP',
 
   ]);
-  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            NEXT >']);
+  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            ']);
 }
 
 function FDPAGE1() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
   output.textContent += initialText;
   showMenuOptions([
-    '\n\n\n            SINGLE WAYPOINT [1]',
-    '\n\n\n\n\n\n            MULTI WAYPOINT [2]',
+    '\n\n\n               SINGLE WAYPOINT [1]',
+    '\n\n\n\n\n\n               MULTI WAYPOINT [2]',
   ]);
-  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
-}
-
-function FDPAGE2() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
-  output.textContent += initialText;
-  showMenuOptions([
-    '\n\n TARGET LATITUDE',
-    '         TARGET LONGITUDE [2]',
-    '\n\n\n\n\n\nCRUISE ALT [3]',
-    '   FINAL ALT [4]',
-  ]);
-  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
-}
-
-function outputOnInit() {
-  const initialText = '>     --- FLIGHT MANAGEMENT SYSTEM ---\n';
-  output.textContent += initialText;
-  showMenuOptions([
-    '\n\nFLIGHT DIRECTOR [1]',
-    '         SYS MISC [2]',
-    '\n\n\n\n\n\nPREFLIGHT [3]',
-    '   HRDWRE CONFIGURATION [4]',
-  ]);
-  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            NEXT >']);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                               NEXT >']);
 }
 
 // Clear the output
@@ -1061,45 +1131,378 @@ function handleMainPageCommand(command) {
             changePage('pfpage1');
             break;
         case '4':
-            changePage('wingConfig');
+            changePage('hardwareConfig');
             break;
         default:
             // Handle unknown commands
-            output.textContent += '> Invalid command\n';
+            input.value += '> Invalid command';
             break;
     }
 }
 
-// Function to handle commands on the GPS Init page
-function handlefdPageCommand(command) {
+function handleFDPage2Command(command){
   switch (command) {
         case '1':
-            changePage('fdpage2');
+            changePage('SWPpage');
             break;
         case '2':
-            changePage('fdpage3');
+            changePage('MWPpage');
             break;
         case '<':
-            changePage('wingConfig');
+            changePage('main');
             break;
         case '>':
-            changePage('wingConfig');
+            changePage('SWPpage');
             break;
         default:
             // Handle unknown commands
-            output.textContent += '> Invalid command\n';
+            input.value += '> Invalid command';
+            break;
+    }
+}
+// Function to handle commands on the Preflight page
+function handlePreflightPageCommand(command) {
+  switch (command) {
+        case '<':
+          changePage('main');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
             break;
     }
 }
 
-// Function to handle commands on the Preflight page
-function handlePreflightPageCommand(command) {
-    // Implement logic for Preflight page commands here
+function handleSYSPageCommand(command) {
+  switch (command) {
+        case '<':
+          changePage('main');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
 }
 
 // Function to handle commands on the Wing Configuration page
-function handleWingConfigPageCommand(command) {
-    // Implement logic for Wing Configuration page commands here
+function handlehardwareConfigPageCommand(command) {
+  switch (command) {
+        case '1':
+            changePage('imuStat');
+            break;
+        case '2':
+            changePage('gpsStat');
+            break;
+        case '<':
+            changePage('main');
+            break;
+        case '>':
+            changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
+}
+
+function handleIMUPPageCommand(command) {
+  switch (command) {
+        case '<':
+            changePage('hardwareConfig');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
+}
+
+function handleGPSPageCommand(command) {
+  switch (command) {
+        case '<':
+            changePage('hardwareConfig');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
+}
+
+function handleSWPPageCommand(command) {
+  switch (command) {
+        case '<':
+            changePage('fdpage1');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+          case '1':
+            changePage('targetLatInput');
+            break;
+          case '2':
+            changePage('targetLongInput');
+            break;
+          case '3':
+            changePage('targetAltInput');
+            break;
+          case '4':
+            changePage('cruiseAltInput');
+            break;
+          case '5':
+            changePage('targetVelocityInput');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
+}
+
+function handleMWPPageCommand(command) {
+  switch (command) {
+        case '<':
+          changePage('fdpage1');
+            break;
+        case '>':
+            //changePage('imuStat');
+            break;
+        default:
+            // Handle unknown commands
+            input.value += '> Invalid command';
+            break;
+    }
+}
+
+function handleLatInputPageCommand(command) {
+  if (isValidLatitude(command)) {
+    // Send Data
+    sendFLIGHTDIRECTORSWP(command,0,0,0,0);
+    // Move page step back
+    changePage('SWPpage');
+  } else if(command == '<') {
+    changePage('SWPpage');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Target Latitude';
+  }
+}
+
+function handleLongInputPageCommand(command) {
+  if (isValidLongitude(command)) {
+    // Send Data
+    // Move page step back
+    changePage('SWPpage');
+  } else if(command == '<') {
+    changePage('SWPpage');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Target Longitude';
+  }
+}
+
+function handleTAltInputPageCommand(command) {
+  if (isValidAltitude(command)) {
+    // Send Data
+    // Move page step back
+    changePage('SWPpage');
+  } else if(command == '<') {
+    changePage('SWPpage');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Target Altitude';
+  }
+}
+
+function handleCAltInputPageCommand(command) {
+  if (isValidAltitude(command)) {
+    // Send Data
+    // Move page step back
+    changePage('SWPpage');
+  } else if(command == '<') {
+    changePage('SWPpage');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Cruise Altitude';
+  }
+}
+
+function handleVelInputPageCommand(command) {
+  if (isValidVelocity(command)) {
+    // Send Data
+    // Move page step back
+    changePage('SWPpage');
+  } else if(command == '<') {
+    changePage('SWPpage');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Target Velocity';
+  }
+}
+
+// Function to check if a number is a valid latitude
+function isValidLatitude(latitude) {
+  const latitudeFloat = parseFloat(latitude);
+  if (!isNaN(latitudeFloat) && latitudeFloat >= -90 && latitudeFloat <= 90) {
+    return true;
+  }
+  return false;
+}
+
+// Function to check if a number is a valid longitude
+function isValidLongitude(longitude) {
+  // Longitude ranges from -180 to 180 degrees
+  return !isNaN(longitude) && Math.abs(longitude) <= 180;
+}
+
+// Function to check if a number is a valid altitude
+function isValidAltitude(altitude) {
+  // Altitude can be any real number (positive, negative, or zero)
+  return !isNaN(altitude);
+}
+
+// Function to check if a number is a valid velocity
+function isValidVelocity(velocity) {
+  // Velocity should be non-negative (assuming it represents speed)
+  return !isNaN(velocity) && velocity >= 0;
+}
+
+
+function SWPpage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n SINGLE WAYPOINT',
+    '\n\n\n           Target Latitude [1]: 0.000',
+    '\n\n          Target Longitude [2]: 0.000',
+    '\n\n           Target Altitude [3]: 0.000',
+    '\n\n           Cruise Altitude [4]: 0.000',
+    '\n\n                  Velocity [5]: 0.000',
+  ]);
+  showMenuOptions(['\n\n< BACK', '                                NEXT >']);
+}
+
+function MWPpage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n MULTI WAYPOINT',
+    '\n\n\n\n\n                   NO DATA'
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            NEXT >']);
+}
+
+function hardwarePage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n\n\n\nIMU[1]',
+    '                             GPS[2]',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            NEXT >']);
+}
+
+function imuStatPage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n IMU DATA',
+    '\n\n                   VX: 0.000',
+    '\n\n                   VY: 0.000',
+    '\n\n                   VZ: 0.000',
+    '\n\n                 ACCX: 0.000',
+    '\n\n                 ACCY: 0.000',
+    '\n\n                 ACCZ: 0.000',
+  ]);
+  showMenuOptions(['\n< BACK', '                            NEXT >']);
+}
+
+function gpsStatPage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n GPS DATA',
+    '\n\n               LATITUDE: 0.000',
+    '\n\n              LONGITUDE: 0.000',
+    '\n\n               ALTITUDE: 0.000',
+    '\n\n             SATELLITES: 0.000',
+    '\n\n               VELOCITY: 0.000',
+  ]);
+  showMenuOptions(['\n\n\n< BACK', '                            NEXT >']);
+}
+
+function SYSpage(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n SYS MISC',
+    '\n\n\n\n\n                   NO DATA'
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function targetLatInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n           ENTER TARGET LATITUDE',
+    '\n\n\nTarget Latitude is the desired latitude coordinate where your HIVE 2 vehicle will navigate to during the Single Waypoint mission. It specifies the north-south position on the surface of the earth',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function targetLongInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n           ENTER TARGET LONGITUDE',
+    '\n\n\nTarget Longitude is the desired longitude coordinate where your HIVE 2 vehicle will navigate to during the Single Waypoint mission. It specifies the east-west position on the surface of the earth',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function targetAltInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n           ENTER TARGET ALTITUDE',
+    '\n\n\nTarget Altitude is the approximate altitude at which your HIVE 2 vehicle will complete the Single Waypoint mission. It specifies the height above the ground level at the destination point',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function cruiseAltInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n           ENTER CRUISE ALTITUDE',
+    '\n\n\nCruise Altitude is the altitude at which your HIVE 2 vehicle will maintain during the cruise phase of the Single Waypoint mission. After reaching the target altitude, the vehicle will fly at this height until the mission completes'
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function targetVelocityInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n           ENTER TARGET VELOCITY',
+    '\n\n\nTarget Velocity is the desired speed at which your HIVE 2 vehicle will travel during the Single Waypoint mission. It determines how fast the vehicle will move towards the target coordinates'
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
 }
 
         // Call the function on webpage load
@@ -1114,36 +1517,27 @@ function handleWingConfigPageCommand(command) {
             xhttp.send();
           });
 
-           // Add an event listener to the SET LAT button
-           document.getElementById("LAT-set").addEventListener("click", function() {
-            // Send an AJAX request to the ESP32 server
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/LAT-set", true);
-            xhttp.send();
-          });
-
-           // Add an event listener to the SET LONG button
-           document.getElementById("LNG-set").addEventListener("click", function() {
-            // Send an AJAX request to the ESP32 server
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/LNG-set", true);
-            xhttp.send();
-          });
-
-           // Add an event listener to the SET ALT button
-           document.getElementById("Alt-set").addEventListener("click", function() {
-            // Send an AJAX request to the ESP32 server
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/Alt-set", true);
-            xhttp.send();
-          });
-
           ////////////////////////////////////////////////////////////////
-          function updateLAT(){
+          function unpackData(packed_data) {
+            const dataParts = packed_data.split('_');
+            const pack1 = dataParts[0].match(/([A-Z]+)([\d.]+)/).slice(1);
+            const pack2 = dataParts[1].match(/([A-Z]+)([\d.]+)/).slice(1);
+            const pack3 = dataParts[2].match(/([A-Z]+)([\d.]+)/).slice(1);
+            const pack4 = dataParts[3].match(/([A-Z]+)([\d.]+)/).slice(1);
+            
+            return [pack1, pack2, pack3, pack4];
+        }
+          
+        function packData(id1,val1,id2,val2,id3,val3,id4,val4,id5,val5){
+          const formattedValues = `${id1}${val1}_${id2}${val2}_${id3}${val3}_${id4}${val4}_${id5}${val5}`;
+          return formattedValues;
+        }
+
+          function updateGPS(){
             //Call API
             //Send backend request
             var xhr = new XMLHttpRequest();
-            var url = "/GET_LAT"; // Replace with your ESP32 server URL
+            var url = "/GET_GPS"; // Replace with your ESP32 server URL
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1153,7 +1547,20 @@ function handleWingConfigPageCommand(command) {
                     if (xhr.status === 200) {
                         // Request successful, handle the response here
                         var response = xhr.responseText;
-                        document.getElementById('Lat-num').innerHTML = response;
+                        const unpackedData = unpackData(response);
+                        //LAT
+                        var _lat = parseFloat(unpackedData[0][1]);
+                        document.getElementById('Lat-num').innerHTML = _lat;
+                        //LONG
+                        var _long = parseFloat(unpackedData[1][1]);
+                        document.getElementById('Long-num').innerHTML = _long;
+                        //SAT
+                        var _sat = parseFloat(unpackedData[2][1]);
+                        document.getElementById('Sat-num').innerHTML = _sat;
+                        //ALT
+                        var _alt = parseFloat(unpackedData[3][1]);
+                        document.getElementById('TAvar').innerHTML = "ALtitude<br>" + _alt;
+                        altitudeX = _alt;
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1167,11 +1574,11 @@ function handleWingConfigPageCommand(command) {
             xhr.send(data);
           }
 
-          function updateLONG(){
+          function updateIMU1(){
             //Call API
             //Send backend request
             var xhr = new XMLHttpRequest();
-            var url = "/GET_LONG"; // Replace with your ESP32 server URL
+            var url = "/GET_IMU1"; 
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1181,7 +1588,19 @@ function handleWingConfigPageCommand(command) {
                     if (xhr.status === 200) {
                         // Request successful, handle the response here
                         var response = xhr.responseText;
-                        document.getElementById('Long-num').innerHTML = response;
+                        const unpackedData = unpackData(response);
+                        //LAT
+                        var pitch = parseFloat(unpackedData[0][1]);
+                        document.getElementById('pitch-num').innerHTML = pitch;
+                        //LONG
+                        var roll = parseFloat(unpackedData[1][1]);
+                        document.getElementById('roll-num').innerHTML = roll;
+                        //SAT
+                        var yaw = parseFloat(unpackedData[2][1]);
+                        document.getElementById('yaw-num').innerHTML = yaw;
+                        //--
+                        //var tbd = parseFloat(unpackedData[3][1]);
+                        
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1195,11 +1614,11 @@ function handleWingConfigPageCommand(command) {
             xhr.send(data);
           }
 
-          function updateSAT(){
+          function updateW1(){
             //Call API
             //Send backend request
             var xhr = new XMLHttpRequest();
-            var url = "/GET_SAT"; // Replace with your ESP32 server URL
+            var url = "/GET_W1"; // Replace with your ESP32 server URL
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1209,7 +1628,24 @@ function handleWingConfigPageCommand(command) {
                     if (xhr.status === 200) {
                         // Request successful, handle the response here
                         var response = xhr.responseText;
-                        document.getElementById('Sat-num').innerHTML = response;
+                        const unpackedData = unpackData(response);
+                        //WFL
+                        var wfl = parseFloat(unpackedData[0][1]);
+                        document.getElementById('wfl-num').innerHTML = wfl;
+                        document.getElementById('label1').innerHTML = 'WingFL<br>' + wfl;
+                        //WFR
+                        var wfr = parseFloat(unpackedData[1][1]);
+                        document.getElementById('wfr-num').innerHTML = wfr;
+                        document.getElementById('label2').innerHTML = 'WingFR<br>' + wfr;
+                        //WRL
+                        var wrl = parseFloat(unpackedData[2][1]);
+                        document.getElementById('wrl-num').innerHTML = wrl;
+                        document.getElementById('label3').innerHTML = 'WingRL<br>' + wrl;
+                        //WRR
+                        var wrr = parseFloat(unpackedData[3][1]);
+                        document.getElementById('wrr-num').innerHTML = wrr;
+                        document.getElementById('label4').innerHTML = 'WingRR<br>' + wrr;
+
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1223,11 +1659,11 @@ function handleWingConfigPageCommand(command) {
             xhr.send(data);
           }
 
-          function updatePTCH(){
+          function updateAMB(){
             //Call API
             //Send backend request
             var xhr = new XMLHttpRequest();
-            var url = "/GET_PTCH"; // Replace with your ESP32 server URL
+            var url = "/GET_AMB";
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1237,7 +1673,14 @@ function handleWingConfigPageCommand(command) {
                     if (xhr.status === 200) {
                         // Request successful, handle the response here
                         var response = xhr.responseText;
-                        document.getElementById('pitch-num').innerHTML = response;
+                        const unpackedData = unpackData(response);
+                        //LAT
+                        var OTA = parseFloat(unpackedData[0][1]);
+                        document.getElementById("TATemp").innerHTML = 'OAT<br>' + OTA;
+                        //LONG
+                        var PRESS = parseFloat(unpackedData[1][1]);
+                        document.getElementById("TAPressure").innerHTML = 'Pressure<br>' + PRESS;
+                      
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1251,232 +1694,17 @@ function handleWingConfigPageCommand(command) {
             xhr.send(data);
           }
 
-          function updateRLL(){
+          function sendFLIGHTDIRECTORSWP(lat,long,Talt,Calt,vel){
             //Call API
             //Send backend request
             var xhr = new XMLHttpRequest();
-            var url = "/GET_RLL"; // Replace with your ESP32 server URL
+            var url = "/INC_SWP";
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('roll-num').innerHTML = response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateYAW(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_YAW"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('yaw-num').innerHTML = response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateWFL(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_WFL"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('wfl-num').innerHTML = response;
-                        document.getElementById('label1').innerHTML = 'WingFL\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateWFR(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_WFR"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('wfr-num').innerHTML = response;
-                        document.getElementById('label2').innerHTML = 'WingFR\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateWRL(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_WRL"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('wrl-num').innerHTML = response;
-                        document.getElementById('label3').innerHTML = 'WingRL\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateWRR(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_WRR"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('wrr-num').innerHTML = response;
-                        document.getElementById('label4').innerHTML = 'WingRR\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updateOAT(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_OAT"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('TATemp').innerHTML = 'OAT\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
-          }
-
-          function updatePRESS(){
-            //Call API
-            //Send backend request
-            var xhr = new XMLHttpRequest();
-            var url = "/GET_PRESS"; // Replace with your ESP32 server URL
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Request successful, handle the response here
-                        var response = xhr.responseText;
-                        document.getElementById('TAPressure').innerHTML = 'Pressure\n' + response;
-                    } else {
-                        // Request failed, handle the error here
-                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
-                        //document.getElementById('Lat-num').innerHTML = errorResponse;
-                    }
-                }
-            };
-
-            // You can add any data you want to send in the request body
-            var data = "key1=value1&key2=value2"; // Replace with your data
-            xhr.send(data);
+            var pkg = packData("LAT",lat,"LONG",long,"TALT",Talt,"CALT",Calt,"VEL",vel);
+            xhr.send(pkg);
           }
 
       </script>
