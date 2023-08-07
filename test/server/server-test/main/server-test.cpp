@@ -7,7 +7,7 @@
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
-#include "nvs_flash.h"
+#include"nvs_flash.h"
 #include<cmath>
 
 
@@ -31,20 +31,24 @@ extern "C" {
         BroadcastedServer server;
         server.wifi_init_softap();
 
-/*
+
     SSD1306_Init();
     printf("SSD1306 Initialized..\n");
-    
-    char str[16];
-    SSD1306_GotoXY(0,30);
-    sprintf(str,"HIVE PLATFORM");
-    SSD1306_Puts(str, &Font_7x10, SSD1306_COLOR_WHITE);
+    /*char strp[16];
+    char strp2[16];
+    sprintf(strp, "ERROR-S");
+    sprintf(strp2, "CLIENT -");
+    SSD1306_GotoXY(00,30);
+    SSD1306_Puts(strp, &Font_16x26, SSD1306_COLOR_WHITE);
+    SSD1306_GotoXY(25,40);
+    SSD1306_Puts(strp2, &Font_11x18, SSD1306_COLOR_WHITE);
     printf("printed text\n");
-    SSD1306_UpdateScreen();
+    SSD1306_UpdateScreen();*/
+    displayStandByClientSuccess();
     vTaskDelay(1);
-    SSD1306_GotoXY(10,10);
+    //SSD1306_GotoXY(10,10);
 
-
+/*
 uint8_t flag,flag2 = 1;
     int16_t ax,ay,az;
     int16_t gx,gy,gz;
@@ -69,7 +73,7 @@ uint8_t flag,flag2 = 1;
         ESP_LOGI("TAG","IMU PITCH: %f",pitch);*/
         // Process and use the accelerometer and gyroscopic values as needed
 
-        vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to allow other tasks to run
+        //vTaskDelay(pdMS_TO_TICKS(100)); // Add a delay to allow other tasks to run
     //}
 
     }

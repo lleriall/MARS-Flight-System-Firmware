@@ -104,7 +104,7 @@ void CONTROLLER_TASKS::_IDLE_(){
 void CONTROLLER_TASKS::_PREP_(){
     SharedMemory& sharedMemory = SharedMemory::getInstance();
     auto lat = sharedMemory.getLastDouble("TLat");
-    //ESP_LOGI("LAT", "%f",lat);
+    ESP_LOGI("LAT", "%f",lat);
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -166,6 +166,16 @@ void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
     sharedMemory.storeDouble("CAlt", 0);
     //Target Velocity
     sharedMemory.storeDouble("TVel", 0);
+    //Wing FL
+    sharedMemory.storeDouble("WingFL", 0);
+    //Wing FR
+    sharedMemory.storeDouble("WingFR", 0);
+    //Wing RL
+    sharedMemory.storeDouble("WingRL", 0);
+    //Wing RR
+    sharedMemory.storeDouble("WingRR", 0);
+    //Throttle
+    sharedMemory.storeDouble("THR", 0);
 
     //auto po = init.getStringData(std::string("stateDescript")).back();
     //std::cout << po << std::endl;

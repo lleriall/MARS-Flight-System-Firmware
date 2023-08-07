@@ -142,6 +142,13 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
+    httpd_uri_t SYS_uri = {
+        .uri       = "/INC_SYS",
+        .method    = HTTP_POST,
+        .handler   = handle_SYS_incoming,
+        .user_ctx  = NULL
+    };
+
 
     // Start the HTTP server
     if (httpd_start(&server, &config) == ESP_OK) {
@@ -152,6 +159,7 @@ void BroadcastedServer::wifi_init_softap(void)
         httpd_register_uri_handler(server, &W1_uri);
         httpd_register_uri_handler(server, &AMB1_uri);
         httpd_register_uri_handler(server, &SWP_uri);
+        httpd_register_uri_handler(server, &SYS_uri);
     }
 
 }
@@ -297,6 +305,82 @@ esp_err_t BroadcastedServer::handle_AMB_request(httpd_req_t *req) {
 }
 
 esp_err_t BroadcastedServer::handle_SWP_incoming(httpd_req_t *req){
+    char received_data[MAX_DATA_LEN] = "";
+    // Check if the request is a POST request
+    if (req->method == HTTP_POST) {
+        int total_len = req->content_len;
+    int cur_len = 0;
+    int received = 0;
+    
+    if (total_len >= MAX_DATA_LEN) {
+        return ESP_FAIL;
+    }
+
+    while (received < total_len) {
+        // Receive the data in chunks
+        cur_len = httpd_req_recv(req, received_data + received, MAX_DATA_LEN);
+        if (cur_len <= 0) {
+            if (cur_len == HTTPD_SOCK_ERR_TIMEOUT) {
+                continue;
+            }
+            return ESP_FAIL;
+        }
+        received += cur_len;
+    }
+
+    // Null-terminate the received_data string
+    received_data[received] = '\0';
+        // Send a response to the client
+        //httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        std::string data = received_data;
+        std::vector<std::string> ids;
+        std::vector<double> values;
+
+        extractValuesAndIds(data, ids, values);
+        ESP_LOGI("TAG", "%f",values[0]);
+        
+        //UPDATE PTAM REGISTERS
+        /*SharedMemory& sharedMemory = SharedMemory::getInstance();
+        //If value from frontend is not 0, update PTAM register for respective variable
+        if(values[0] != 0){
+            //Latitude
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TLat");
+            sharedMemory.storeDouble("TLat", values[0]);
+        }
+        if(values[1] != 0){
+            //Longitude
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TLong");
+            sharedMemory.storeDouble("TLong", values[1]);
+        }
+        if(values[2] != 0){
+            //Altitude - target
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TAlt");
+            sharedMemory.storeDouble("TAlt", values[2]);
+        }
+        if(values[3] != 0){
+            //Altitude - cruise
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("CAlt");
+            sharedMemory.storeDouble("CAlt", values[3]);
+        }
+        if(values[4] != 0){
+            //Velocity
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("TVel");
+            sharedMemory.storeDouble("TVel", values[4]);
+        }*/
+        return ESP_OK;
+    }
+
+    // If the request is not a POST request, return 404 Not Found
+    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
+    return ESP_OK;
+}
+
+esp_err_t BroadcastedServer::handle_SYS_incoming(httpd_req_t *req){
     char received_data[MAX_DATA_LEN] = "";
     // Check if the request is a POST request
     if (req->method == HTTP_POST) {

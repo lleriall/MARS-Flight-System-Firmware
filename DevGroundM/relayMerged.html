@@ -1017,6 +1017,21 @@ function executeCommand(command) {
     else if (currentPage === 'targetAltInput') {
       handleTAltInputPageCommand(command);
     }
+    else if (currentPage === 'FLInput') {
+      handleFLInputPageCommand(command);
+    }
+    else if (currentPage === 'FRInput') {
+      handleFRInputPageCommand(command);
+    }
+    else if (currentPage === 'RLInput') {
+      handleRLInputPageCommand(command);
+    }
+    else if (currentPage === 'RRInput') {
+      handleRRInputPageCommand(command);
+    }
+    else if (currentPage === 'THRInput') {
+      handleTHRInputPageCommand(command);
+    }
     terminalDiv.scrollTop = output.scrollHeight;
 }
 
@@ -1071,6 +1086,21 @@ function changePage(pageName) {
       break;
     case 'targetVelocityInput':
       targetVelocityInput();
+      break;
+    case 'FLInput':
+      FLInput();
+      break;
+    case 'FRInput':
+      FRInput();
+      break;
+    case 'RLInput':
+      RLInput();
+      break;
+    case 'RRInput':
+      RRInput();
+      break;
+    case 'THRInput':
+      THRInput();
       break;
     default:
       //dayName = "Invalid Input";
@@ -1181,6 +1211,21 @@ function handleSYSPageCommand(command) {
             break;
         case '>':
             //changePage('imuStat');
+            break;
+        case '1':
+            changePage('FLInput');
+            break;
+        case '2':
+            changePage('FRInput');
+            break;
+        case '3':
+            changePage('RLInput');
+            break;
+        case '4':
+            changePage('RRInput');
+            break;
+        case '5':
+            changePage('THRInput');
             break;
         default:
             // Handle unknown commands
@@ -1303,6 +1348,7 @@ function handleLatInputPageCommand(command) {
 function handleLongInputPageCommand(command) {
   if (isValidLongitude(command)) {
     // Send Data
+    sendFLIGHTDIRECTORSWP(0,command,0,0,0);
     // Move page step back
     changePage('SWPpage');
   } else if(command == '<') {
@@ -1316,6 +1362,7 @@ function handleLongInputPageCommand(command) {
 function handleTAltInputPageCommand(command) {
   if (isValidAltitude(command)) {
     // Send Data
+    sendFLIGHTDIRECTORSWP(0,0,command,0,0);
     // Move page step back
     changePage('SWPpage');
   } else if(command == '<') {
@@ -1329,6 +1376,7 @@ function handleTAltInputPageCommand(command) {
 function handleCAltInputPageCommand(command) {
   if (isValidAltitude(command)) {
     // Send Data
+    sendFLIGHTDIRECTORSWP(0,0,0,command,0);
     // Move page step back
     changePage('SWPpage');
   } else if(command == '<') {
@@ -1342,6 +1390,7 @@ function handleCAltInputPageCommand(command) {
 function handleVelInputPageCommand(command) {
   if (isValidVelocity(command)) {
     // Send Data
+    sendFLIGHTDIRECTORSWP(0,0,0,0,command);
     // Move page step back
     changePage('SWPpage');
   } else if(command == '<') {
@@ -1349,6 +1398,76 @@ function handleVelInputPageCommand(command) {
   }else{
     // Handle invalid input
     input.value += '> Invalid Target Velocity';
+  }
+}
+
+function handleFLInputPageCommand(command) {
+  if (isValidWingAngle(command)) {
+    // Send Data
+    sendSYSMISC(command,0,0,0,0);
+    // Move page step back
+    changePage('syspage1');
+  } else if(command == '<') {
+    changePage('syspage1');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Wing Value';
+  }
+}
+
+function handleFRInputPageCommand(command) {
+  if (isValidWingAngle(command)) {
+    // Send Data
+    sendSYSMISC(0,command,0,0,0);
+    // Move page step back
+    changePage('syspage1');
+  } else if(command == '<') {
+    changePage('syspage1');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Wing Value';
+  }
+}
+
+function handleRLInputPageCommand(command) {
+  if (isValidWingAngle(command)) {
+    // Send Data
+    sendSYSMISC(0,0,command,0,0);
+    // Move page step back
+    changePage('syspage1');
+  } else if(command == '<') {
+    changePage('syspage1');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Wing Value';
+  }
+}
+
+function handleRRInputPageCommand(command) {
+  if (isValidWingAngle(command)) {
+    // Send Data
+    sendSYSMISC(0,0,0,command,0);
+    // Move page step back
+    changePage('syspage1');
+  } else if(command == '<') {
+    changePage('syspage1');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Wing Value';
+  }
+}
+
+function handleTHRInputPageCommand(command) {
+  if (isValidThrottle(command)) {
+    // Send Data
+    sendSYSMISC(0,0,0,0,command);
+    // Move page step back
+    changePage('syspage1');
+  } else if(command == '<') {
+    changePage('syspage1');
+  }else{
+    // Handle invalid input
+    input.value += '> Invalid Throttle Value';
   }
 }
 
@@ -1377,6 +1496,24 @@ function isValidAltitude(altitude) {
 function isValidVelocity(velocity) {
   // Velocity should be non-negative (assuming it represents speed)
   return !isNaN(velocity) && velocity >= 0;
+}
+
+// Function to check if a wing angle is valid
+function isValidWingAngle(angle) {
+  // Velocity should be non-negative (assuming it represents speed)
+  if(angle >= 0 && angle <= 180){
+    return true;
+  }
+  return false;
+}
+
+// Function to check if throttle value is valid
+function isValidThrottle(value) {
+  // Velocity should be non-negative (assuming it represents speed)
+  if(value >= 0 && value <= 100){
+    return true;
+  }
+  return false;
 }
 
 
@@ -1447,10 +1584,14 @@ function SYSpage(){
   const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
   output.textContent += initialText;
   showMenuOptions([
-    '\n\n SYS MISC',
-    '\n\n\n\n\n                   NO DATA'
+    '\nSample the full command of the four wing servos and motor, providing precise control over their movements and operations. The vehicle must be in STANDBY mode',
+    '\n\n            FRONT-LEFT WING [1]: 0.000',
+    '\n\n           FRONT-RIGHT WING [2]: 0.000',
+    '\n\n             REAR-LEFT WING [3]: 0.000',
+    '\n\n            REAR-RIGHT WING [4]: 0.000',
+    '\n\n         THROTTLE (0 - 100) [5]: 0.000',
   ]);
-  showMenuOptions(['\n\n\n\n\n\n\n\n< BACK', '                            ']);
+  showMenuOptions(['\n\n< BACK', '                            ']);
 }
 
 function targetLatInput(){
@@ -1499,6 +1640,61 @@ function targetVelocityInput(){
   showMenuOptions([
     '\n\n\n           ENTER TARGET VELOCITY',
     '\n\n\nTarget Velocity is the desired speed at which your HIVE 2 vehicle will travel during the Single Waypoint mission. It determines how fast the vehicle will move towards the target coordinates'
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function FLInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n     ENTER FRONT LEFT WING TRANSLATE VALUE',
+    '\n\n\n     This is the angle the wing will move to',
+    '\n\n\n                    (0 - 180)',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function FRInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n     ENTER FRONT RIGHT WING TRANSLATE VALUE',
+    '\n\n\n     This is the angle the wing will move to',
+    '\n\n\n                    (0 - 180)',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function RLInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n      ENTER REAR LEFT WING TRANSLATE VALUE',
+    '\n\n\n     This is the angle the wing will move to',
+    '\n\n\n                    (0 - 180)',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function RRInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n      ENTER REAR RIGHT WING TRANSLATE VALUE',
+    '\n\n\n     This is the angle the wing will move to',
+    '\n\n\n                    (0 - 180)',
+  ]);
+  showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
+}
+
+function THRInput(){
+  const initialText = '>        --- FLIGHT MANAGEMENT SYSTEM ---\n';
+  output.textContent += initialText;
+  showMenuOptions([
+    '\n\n\n                ENTER THROTTLE VALUE',
+    '\n\n\n     This is the power the motor will be set to',
+    '\n\n\n                    (0 - 100)',
   ]);
   showMenuOptions(['\n\n\n\n\n\n< BACK', '                            ']);
 }
@@ -1702,6 +1898,19 @@ function targetVelocityInput(){
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             var pkg = packData("LAT",lat,"LONG",long,"TALT",Talt,"CALT",Calt,"VEL",vel);
+            xhr.send(pkg);
+          }
+
+          function sendSYSMISC(fl,fr,rl,rr,thr){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/INC_SYS";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var pkg = packData("FL",fl,"FR",fr,"RL",rl,"RR",rr,"THR",thr);
             xhr.send(pkg);
           }
 

@@ -60,6 +60,7 @@ class BroadcastedServer {
 
         static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
+        static esp_err_t handle_SYS_incoming(httpd_req_t *req);
 
     private:
         const char *html_content = responseXX;
