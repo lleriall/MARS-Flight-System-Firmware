@@ -49,7 +49,7 @@ uint32_t WingTranslate::servo_per_degree_init(uint32_t degree_of_rotation)
     return cal_pulsewidth;
 }
 
-uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin)
+uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin,uint8_t speed)
 {
     uint32_t angle, count;
     uint32_t SERVO_TARGET_ANGLE = target;
@@ -73,18 +73,18 @@ uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin)
 
     if(SP != target){
         if(target > SP){
-            for (count = SP; count < SERVO_TARGET_ANGLE; count++){
+            for (count = SP; count < SERVO_TARGET_ANGLE; count += speed){
                 angle = servo_per_degree_init(count);
                 mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-                vTaskDelay(10); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
+                vTaskDelay(10 * speed); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
             }
             UPDATE_SERVO_POS(pin,target);
         }
         if(target < SP){
-            for (count = SP; count > SERVO_TARGET_ANGLE; count -= 1){
+            for (count = SP; count > SERVO_TARGET_ANGLE; count -= speed){
                 angle = servo_per_degree_init(count);
                 mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-                vTaskDelay(10); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
+                vTaskDelay(10 * speed); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
             }
             UPDATE_SERVO_POS(pin,target);
         }

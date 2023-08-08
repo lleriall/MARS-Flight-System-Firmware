@@ -3,6 +3,8 @@
 #include"../components/HALX/MPU6050.h"
 #include"../components/HALX/ssd1306.h"
 #include"../components/HALX/ssd1306_fonts.h"
+#include"../components/HALX/Vmotor.h"
+#include"../components/HALX/_barometerEntry.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
@@ -46,7 +48,38 @@ extern "C" {
     SSD1306_UpdateScreen();*/
     displayStandByClientSuccess();
     vTaskDelay(1);
+
+    WingTranslate *obj = new WingTranslate();
+    obj -> mcpwm_servo_control(180,1,SPEED_FAST);
+    obj -> mcpwm_servo_control(0,1,SPEED_FAST);
+    obj -> mcpwm_servo_control(180,1,SPEED_FAST);
+    delete obj;
+
     //SSD1306_GotoXY(10,10);
+
+    /*VEHICLE_BARO *baro = new VEHICLE_BARO();
+    baro -> pushPressure();
+    delete baro;*/
+
+    /*V_MOTOR *motor = new V_MOTOR();
+    motor -> mcpwm_gpio_initialize();
+    //motor -> esc_arm_sequence();
+    motor -> mcpwm_motor_control(uint8_t(0));
+    vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
+    motor -> mcpwm_motor_control(uint16_t(1000));
+    vTaskDelay(pdMS_TO_TICKS(7000)); // Delay for 2 seconds
+    motor -> mcpwm_motor_control(uint8_t(0));*/
+
+
+
+    //motor -> mcpwm_motor_control(uint8_t(0));
+    //vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
+    /*motor -> mcpwm_motor_control(uint8_t(1));
+    vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
+    //motor -> mcpwm_motor_control(uint8_t(0));*/
+    
+    //motor -> esc_disarm();
+    //delete motor;
 
 /*
 uint8_t flag,flag2 = 1;

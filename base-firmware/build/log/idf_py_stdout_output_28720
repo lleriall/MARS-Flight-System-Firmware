@@ -1,0 +1,93 @@
+[1/13] Performing build step for 'bootloader'
+[1/1] cd /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/bootloader/esp-idf/esptool_py && /Users/nyameaama/.espressif/python_env/idf5.1_py3.11_env/bin/python /Users/nyameaama/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/bootloader/bootloader.bin
+Bootloader binary size 0x6810 bytes. 0x7f0 bytes (7%) free.
+[2/11] Building CXX object esp-idf/system/CMakeFiles/__idf_system.dir/_state.cpp.obj
+[3/11] Building CXX object esp-idf/main/CMakeFiles/__idf_main.dir/__/components/system/_state.cpp.obj
+[4/11] Building CXX object esp-idf/main/CMakeFiles/__idf_main.dir/base-firmware.cpp.obj
+[5/11] Linking C static library esp-idf/system/libsystem.a
+[6/11] Linking C static library esp-idf/main/libmain.a
+[7/11] Generating ld/sections.ld
+[8/11] Linking CXX executable base-firmware.elf
+[9/11] Generating binary image from built executable
+esptool.py v4.6.2
+Creating esp32 image...
+Merged 25 ELF sections
+Successfully created esp32 image.
+Generated /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/base-firmware.bin
+[10/11] cd /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/esp-idf/esptool_py && /Users/nyameaama/.espressif/python_env/idf5.1_py3.11_env/bin/python /Users/nyameaama/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/partition_table/partition-table.bin /Users/nyameaama/Documents/MARS-Firmware/base-firmware/build/base-firmware.bin
+base-firmware.bin binary size 0x122500 bytes. Smallest app partition is 0x177000 bytes. 0x54b00 bytes (23%) free.
+[10/11] cd /Users/nyameaama/esp/esp-idf/components/esptool_py && /usr/local/Cellar/cmake/3.17.3/bin/cmake -D IDF_PATH=/Users/nyameaama/esp/esp-idf -D "SERIAL_TOOL=/Users/nyameaama/.espressif/python_env/idf5.1_py3.11_env/bin/python;;/Users/nyameaama/esp/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/Users/nyameaama/Documents/MARS-Firmware/base-firmware/build -P /Users/nyameaama/esp/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool esp32 -p /dev/cu.usbserial-027D71AF -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 4MB 0x1000 bootloader/bootloader.bin 0x10000 base-firmware.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.6.2
+Serial port /dev/cu.usbserial-027D71AF
+Connecting......
+Chip is ESP32-D0WD-V3 (revision v3.0)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: ec:62:60:76:2c:8c
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00001000 to 0x00007fff...
+Flash will be erased from 0x00010000 to 0x00132fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Compressed 26640 bytes to 16668...
+Writing at 0x00001000... (50 %)
+Writing at 0x0000769b... (100 %)
+Wrote 26640 bytes (16668 compressed) at 0x00001000 in 0.7 seconds (effective 284.5 kbit/s)...
+Hash of data verified.
+Compressed 1189120 bytes to 673419...
+Writing at 0x00010000... (2 %)
+Writing at 0x0001b759... (4 %)
+Writing at 0x0002aff9... (7 %)
+Writing at 0x00036088... (9 %)
+Writing at 0x0003f077... (11 %)
+Writing at 0x000446c8... (14 %)
+Writing at 0x0004e6d4... (16 %)
+Writing at 0x000616b4... (19 %)
+Writing at 0x00066be2... (21 %)
+Writing at 0x0006d124... (23 %)
+Writing at 0x00072d69... (26 %)
+Writing at 0x00078b72... (28 %)
+Writing at 0x0007e71a... (30 %)
+Writing at 0x0008398a... (33 %)
+Writing at 0x00088d8f... (35 %)
+Writing at 0x0008e259... (38 %)
+Writing at 0x000935bf... (40 %)
+Writing at 0x00098bfc... (42 %)
+Writing at 0x0009e62e... (45 %)
+Writing at 0x000a46b4... (47 %)
+Writing at 0x000a9b97... (50 %)
+Writing at 0x000af2e6... (52 %)
+Writing at 0x000b4b6a... (54 %)
+Writing at 0x000ba2b4... (57 %)
+Writing at 0x000bfa8d... (59 %)
+Writing at 0x000c549e... (61 %)
+Writing at 0x000cb7a4... (64 %)
+Writing at 0x000d118b... (66 %)
+Writing at 0x000d85cc... (69 %)
+Writing at 0x000e1393... (71 %)
+Writing at 0x000e8b77... (73 %)
+Writing at 0x000f1019... (76 %)
+Writing at 0x000f687a... (78 %)
+Writing at 0x000fc3a2... (80 %)
+Writing at 0x00104f70... (83 %)
+Writing at 0x0010b5bd... (85 %)
+Writing at 0x00113f07... (88 %)
+Writing at 0x0011b143... (90 %)
+Writing at 0x001211a3... (92 %)
+Writing at 0x00126b51... (95 %)
+Writing at 0x0012c51c... (97 %)
+Writing at 0x0013197e... (100 %)
+Wrote 1189120 bytes (673419 compressed) at 0x00010000 in 16.8 seconds (effective 565.0 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 105...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (105 compressed) at 0x00008000 in 0.1 seconds (effective 440.7 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

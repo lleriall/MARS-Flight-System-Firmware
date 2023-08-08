@@ -113,6 +113,7 @@ SOFTWARE.*/
         SharedMemory& obj = SharedMemory::getInstance();
         //Get STATE data from PTAM
         auto dta = obj.getLastString("stateDescript");
+        //ESP_LOGI("STATE", "%s",dta.c_str());
         return dta;
     }
 

@@ -4,4 +4,6 @@ idf_component_register(SRCS "server-test.cpp"
                             "../components/HALX/MPU6050.cpp"
                             "../components/HALX/ssd1306.cpp"
                             "../components/HALX/ssd1306_fonts.cpp"
+                            "../components/HALX/Vmotor.cpp"
+                            "../components/HALX/_barometerEntry.cpp"
                     INCLUDE_DIRS ".")

@@ -104,7 +104,7 @@ void CONTROLLER_TASKS::_IDLE_(){
 void CONTROLLER_TASKS::_PREP_(){
     SharedMemory& sharedMemory = SharedMemory::getInstance();
     auto lat = sharedMemory.getLastDouble("TLat");
-    ESP_LOGI("LAT", "%f",lat);
+    //ESP_LOGI("LAT", "%f",lat);
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -126,17 +126,7 @@ void CONTROLLER_TASKS::_ARMED_(){
 //No function overloading possible so search SBC table to 
 //determine if return or non-return peripheral !! needs attention !!
 void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
-    //_ONBOARD_DISPLAY *dispInit = new  _ONBOARD_DISPLAY();
-    //dispInit.stateBYPASS();
-    //delete dispInit;
-    //if(sbc_id){
-        //bypass
-        
-    //}else{
-        //Sensor bypass
-        //Request sensor data
-        //
-    //}
+    
 }
  //Sensor bypass
 

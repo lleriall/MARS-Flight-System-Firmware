@@ -1,3 +1,25 @@
+/*MIT License
+
+Copyright (c) 2023 limitless Aeronautics
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 #include <stdio.h>
 #include"../components/Comms/_broadcast.h"
 #include"../components/HALX/mg90s_servo.h"
@@ -13,7 +35,7 @@
 #include "nvs_flash.h"
 #include<string>
 
-#define DRONE_STATE 1
+uint8_t DRONE_STATE = 1;
 
 extern "C"{
     void app_main(void){
@@ -32,72 +54,66 @@ extern "C"{
 
         SSD1306_Init();
         displayBOOT();
+        vTaskDelay(pdMS_TO_TICKS(4000)); // Boot delay
 
-        SharedMemory& sharedMemory = SharedMemory::getInstance();
         CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
         //Boot 
         CTobj -> _init_();
         STATE *change = new STATE();
         while(1){
-            #if DRONE_STATE == 1 // STANDBY
-            displayStandByClientFail();
-            //FROM STANDBY PREP WE CAN EITHER SWITCH TO ARMED OR BYPASS
-            CTobj -> _PREP_();
-            if(change -> SWITCH2ARMED() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 2
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
+            if(DRONE_STATE == 1){ // STANDBY
+                displayStandByClientFail();
+                //FROM STANDBY PREP WE CAN EITHER SWITCH TO ARMED OR BYPASS
+                CTobj -> _PREP_();
+                if(change -> SWITCH2ARMED() == 1){
+                    DRONE_STATE = 2;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
+                if(change -> SWITCH2BYPASS() == 1){
+                    DRONE_STATE = 3;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
             }
-            if(change -> SWITCH2BYPASS() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 3
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
-            }
-            #endif
 
-            #if DRONE_STATE == 2 // ARMED
-            displayARMED();
-            //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
-            CTobj -> _ARMED_();
-            if(change -> SWITCH2PREP() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 1
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
+            if(DRONE_STATE == 2){ // ARMED
+                displayARMED();
+                //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
+                CTobj -> _ARMED_();
+                if(change -> SWITCH2PREP() == 1){
+                    DRONE_STATE = 1;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
+                if(change -> SWITCH2BYPASS() == 1){
+                    DRONE_STATE = 3;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
             }
-            if(change -> SWITCH2BYPASS() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 3
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
-            }
-            #endif
             
-            #if DRONE_STATE == 3 // BYPASS
-            displayBYPASS();
-            //FROM BYPASS WE CAN EITHER SWITCH TO STANDY PREP OR ARMED
-            CTobj -> _bypass_(std::string("ID"));
-            if(change -> SWITCH2PREP() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 1
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
+            if(DRONE_STATE == 3){ // BYPASS
+                displayBYPASS();
+                //FROM BYPASS WE CAN EITHER SWITCH TO STANDY PREP OR ARMED
+                CTobj -> _bypass_(std::string("ID"));
+                if(change -> SWITCH2PREP() == 1){
+                    DRONE_STATE = 1;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
+                if(change -> SWITCH2ARMED() == 1){
+                    DRONE_STATE = 2;
+                    //Set a stategic delay so we dont trigger CPU1 watchdog timer
+                    vTaskDelay(1);
+                    continue;
+                }
             }
-            if(change -> SWITCH2ARMED() == 1){
-                #undef DRONE_STATE
-                #define DRONE_STATE 2
-                //Set a stategic delay so we dont trigger CPU1 watchdog timer
-                vTaskDelay(1);
-                continue;
-            }
-            #endif
 
         }
         delete change;
