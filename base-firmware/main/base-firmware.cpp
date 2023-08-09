@@ -24,6 +24,7 @@ SOFTWARE.*/
 #include"../components/Comms/_broadcast.h"
 #include"../components/HALX/mg90s_servo.h"
 #include"../components/HALX/ssd1306.h"
+#include"../components/HALX/fan_relay.h"
 #include"../components/PTAM/_ptam.h"
 #include"../components/system/validateSensors.h"
 #include"../components/system/_state.h"
@@ -56,13 +57,19 @@ extern "C"{
         displayBOOT();
         vTaskDelay(pdMS_TO_TICKS(4000)); // Boot delay
 
+        FAN_COOLING *cool = new FAN_COOLING();
+        cool -> init_relay();
+
         CONTROLLER_TASKS *CTobj = new CONTROLLER_TASKS();
         //Boot 
         CTobj -> _init_();
         STATE *change = new STATE();
         while(1){
             if(DRONE_STATE == 1){ // STANDBY
+                //Display Controller
                 displayStandByClientFail();
+                //Fan Controller
+                cool -> coolSierra_task();
                 //FROM STANDBY PREP WE CAN EITHER SWITCH TO ARMED OR BYPASS
                 CTobj -> _PREP_();
                 if(change -> SWITCH2ARMED() == 1){
@@ -80,7 +87,10 @@ extern "C"{
             }
 
             if(DRONE_STATE == 2){ // ARMED
+                //Display Controller
                 displayARMED();
+                //Fan Controller
+                cool -> coolSierra_task();
                 //FROM ARMED WE CAN EITHER SWITCH TO STANDY PREP OR BYPASS
                 CTobj -> _ARMED_();
                 if(change -> SWITCH2PREP() == 1){
@@ -98,7 +108,10 @@ extern "C"{
             }
             
             if(DRONE_STATE == 3){ // BYPASS
+                //Display Controller
                 displayBYPASS();
+                //Fan Controller
+                cool -> coolSierra_task();
                 //FROM BYPASS WE CAN EITHER SWITCH TO STANDY PREP OR ARMED
                 CTobj -> _bypass_(std::string("ID"));
                 if(change -> SWITCH2PREP() == 1){
@@ -116,6 +129,7 @@ extern "C"{
             }
 
         }
+        delete cool;
         delete change;
         delete CTobj;
     }

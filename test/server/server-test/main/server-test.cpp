@@ -5,6 +5,8 @@
 #include"../components/HALX/ssd1306_fonts.h"
 #include"../components/HALX/Vmotor.h"
 #include"../components/HALX/_barometerEntry.h"
+#include"../components/HALX/fan_relay.h"
+#include"../components/HALX/bno055.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
@@ -49,11 +51,20 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    WingTranslate *obj = new WingTranslate();
+    FAN_COOLING *cool = new FAN_COOLING();
+    cool -> init_relay();
+    while(1){
+       cool -> coolSierra_task();
+    vTaskDelay(pdMS_TO_TICKS(2000)); 
+    }
+    
+    delete cool;
+
+    /*WingTranslate *obj = new WingTranslate();
     obj -> mcpwm_servo_control(180,1,SPEED_FAST);
     obj -> mcpwm_servo_control(0,1,SPEED_FAST);
     obj -> mcpwm_servo_control(180,1,SPEED_FAST);
-    delete obj;
+    delete obj;*/
 
     //SSD1306_GotoXY(10,10);
 

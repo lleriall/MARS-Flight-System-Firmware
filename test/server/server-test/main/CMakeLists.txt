@@ -6,4 +6,6 @@ idf_component_register(SRCS "server-test.cpp"
                             "../components/HALX/ssd1306_fonts.cpp"
                             "../components/HALX/Vmotor.cpp"
                             "../components/HALX/_barometerEntry.cpp"
-                    INCLUDE_DIRS ".")
+                            "../components/HALX/fan_relay.cpp"
+                            "../components/HALX/bno055.cpp")
+ 
