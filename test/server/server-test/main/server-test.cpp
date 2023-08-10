@@ -7,6 +7,7 @@
 #include"../components/HALX/_barometerEntry.h"
 #include"../components/HALX/fan_relay.h"
 #include"../components/HALX/bno055.h"
+#include"../components/HALX/atgm336H.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
@@ -51,14 +52,18 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    FAN_COOLING *cool = new FAN_COOLING();
+    //ATGM336H *gps = new ATGM336H();
+    //gps -> pullATGM_data();
+    //delete gps;
+
+    /*FAN_COOLING *cool = new FAN_COOLING();
     cool -> init_relay();
     while(1){
        cool -> coolSierra_task();
     vTaskDelay(pdMS_TO_TICKS(2000)); 
     }
     
-    delete cool;
+    delete cool;*/
 
     /*WingTranslate *obj = new WingTranslate();
     obj -> mcpwm_servo_control(180,1,SPEED_FAST);

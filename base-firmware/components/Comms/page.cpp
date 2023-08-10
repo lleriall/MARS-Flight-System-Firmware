@@ -127,9 +127,9 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           }
           #DRONE-STATE{
             position: absolute;
-            width: 40%;
+            width: 30%;
             height:10%;
-            left:30%;
+            left:35%;
             top:50%;
             border-radius: 30px;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
@@ -547,7 +547,7 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
         #label10{
           position: absolute;
             top:80%;
-            left: 60%;
+            left: 66%;
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.7);
             color: #15ff00;
@@ -714,7 +714,12 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             <div id = "HIVE-IMG">
               <img id = "HIVE-PIC" src="data:image/png;base64,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" />
             </div>
-            <button id = "DRONE-STATE"> STANDBY</button>
+    
+            <select id="DRONE-STATE">
+              <option value="standby">STANDBY</option>
+              <option value="armed">ARMED</option>
+              <option value="bypass">BYPASS</option>
+            </select>
 
             <div id = "Config"> 
               <h3 id = "config-title"> Configuration</h3>
@@ -749,9 +754,9 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
         <div id = "terminal-area">
             <div id="terminal-panel">
               <div id = "PayloadStat">NO PAYLOAD</div>
-              <div id = "TAvar">ALT</div>
-              <div id = "TAPressure"> Pressure</div>
-              <div id = "TATemp"> OAT</div>
+              <div id = "TAvar">ALT<br> -</div>
+              <div id = "TAPressure"> Pressure<br> -</div>
+              <div id = "TATemp"> OAT<br> -</div>
               <hr id = "Tline">
               <div id = VL1></div>
               <div id = VL2></div>
@@ -805,43 +810,51 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             <tbody>
               <tr>
                 <td>Latitude</td>
-                <td id = "Lat-num">0</td>
+                <td id = "Lat-num">-</td>
               </tr>
               <tr>
                 <td>Longitude</td>
-                <td id = "Long-num">0</td>
+                <td id = "Long-num">-</td>
               </tr>
               <tr>
                 <td>Satellites</td>
-                <td id = "Sat-num">0</td>
+                <td id = "Sat-num">-</td>
               </tr>
               <tr>
                 <td>Pitch</td>
-                <td id = "pitch-num">0</td>
+                <td id = "pitch-num">-</td>
               </tr>
               <tr>
                 <td>Roll</td>
-                <td id = "roll-num">0</td>
+                <td id = "roll-num">-</td>
               </tr>
               <tr>
                 <td>Yaw</td>
-                <td id = "yaw-num">0</td>
+                <td id = "yaw-num">-</td>
               </tr>
               <tr>
-                <td>WingFL</td>
-                <td id = "wfl-num">0</td>
+                <td>accX</td>
+                <td id = "accX-num">-</td>
               </tr>
               <tr>
-                <td>WingFR</td>
-                <td id = "wfr-num">0</td>
+                <td>accY</td>
+                <td id = "accY-num">-</td>
               </tr>
               <tr>
-                <td>WingRL</td>
-                <td id = "wrl-num">0</td>
+                <td>accZ</td>
+                <td id = "accZ-num">-</td>
               </tr>
               <tr>
-                <td>WingRR</td>
-                <td id = "wrr-num">0</td>
+                <td>gyroX</td>
+                <td id = "gyroX-num">-</td>
+              </tr>
+              <tr>
+                <td>gyroY</td>
+                <td id = "gyroY-num">-</td>
+              </tr>
+              <tr>
+                <td>gyroZ</td>
+                <td id = "gyroZ-num">-</td>
               </tr>
             </tbody>
           </table>
@@ -849,8 +862,14 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
 
 
         <script type="text/javascript">
-          //GLOBAL VARS
+          //GLOBAL VARS & EVENT LISTENERS
           altitudeX = 0;
+
+          const selectElement = document.getElementById('DRONE-STATE');
+          selectElement.addEventListener('change', function() {
+            const selectedIndex = selectElement.selectedIndex;
+            sendstateData(selectedIndex + 1,0,0,0,0);
+          });
 
 
           ////////////////////////////
@@ -948,8 +967,10 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             updateGraph();
             updateGPS();
             updateIMU1();
+            updateIMU2();
             updateW1();
             updateAMB();
+            //updateNative();
           }
 
       setInterval(updatePageContinuously, 1000);
@@ -1729,6 +1750,15 @@ function THRInput(){
           return formattedValues;
         }
 
+          function updateNative(){
+            //Get state element
+            // Get the <select> element
+            const selectElement = document.getElementById('DRONE-STATE');
+            // Get the index of the selected option
+            const selectedIndex = selectElement.selectedIndex;
+            //sendstateData(selectedIndex,0,0,0,0);
+          }
+
           function updateGPS(){
             //Call API
             //Send backend request
@@ -1755,8 +1785,11 @@ function THRInput(){
                         document.getElementById('Sat-num').innerHTML = _sat;
                         //ALT
                         var _alt = parseFloat(unpackedData[3][1]);
-                        document.getElementById('TAvar').innerHTML = "ALtitude<br>" + _alt;
+                        document.getElementById('TAvar').innerHTML = "Altitude<br>" + _alt;
                         altitudeX = _alt;
+
+                        //Update TRGT Element
+                        document.getElementById('label10').innerHTML = "TRGT: " + _lat + " DEG " + _long + " DEG" ;
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1785,17 +1818,59 @@ function THRInput(){
                         // Request successful, handle the response here
                         var response = xhr.responseText;
                         const unpackedData = unpackData(response);
-                        //LAT
+                        
                         var pitch = parseFloat(unpackedData[0][1]);
                         document.getElementById('pitch-num').innerHTML = pitch;
-                        //LONG
+                        
                         var roll = parseFloat(unpackedData[1][1]);
                         document.getElementById('roll-num').innerHTML = roll;
-                        //SAT
+                        
                         var yaw = parseFloat(unpackedData[2][1]);
                         document.getElementById('yaw-num').innerHTML = yaw;
+                        //Piggyback gyroY data through this uri_handler to save memory
+                        var gyroY = parseFloat(unpackedData[3][1]);
+                        document.getElementById('gyroY-num').innerHTML = gyroY;
+                        
+                    } else {
+                        // Request failed, handle the error here
+                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
+                        //document.getElementById('Lat-num').innerHTML = errorResponse;
+                    }
+                }
+            };
+
+            // You can add any data you want to send in the request body
+            var data = "key1=value1&key2=value2"; // Replace with your data
+            xhr.send(data);
+          }
+
+          function updateIMU2(){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/GET_IMU2"; 
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Request successful, handle the response here
+                        var response = xhr.responseText;
+                        const unpackedData = unpackData(response);
+                        
+                        var accX = parseFloat(unpackedData[0][1]);
+                        document.getElementById('accX-num').innerHTML = accX;
+                        
+                        var accY = parseFloat(unpackedData[1][1]);
+                        document.getElementById('accY-num').innerHTML = accY;
+                        
+                        var accZ = parseFloat(unpackedData[2][1]);
+                        document.getElementById('accZ-num').innerHTML = accZ;
                         //--
-                        //var tbd = parseFloat(unpackedData[3][1]);
+                        var gyroX = parseFloat(unpackedData[3][1]);
+                        document.getElementById('gyroX-num').innerHTML = gyroX;
                         
                     } else {
                         // Request failed, handle the error here
@@ -1876,6 +1951,14 @@ function THRInput(){
                         //LONG
                         var PRESS = parseFloat(unpackedData[1][1]);
                         document.getElementById("TAPressure").innerHTML = 'Pressure<br>' + PRESS;
+
+                        //Piggyback gyroZ data through this uri_handler to save memory
+                        var gyroZ = parseFloat(unpackedData[2][1]);
+                        document.getElementById('gyroZ-num').innerHTML = gyroZ;
+
+                        //Piggyback throttle data through this uri_handler to save memory
+                        var throttle = parseFloat(unpackedData[2][1]);
+                        document.getElementById('label8').innerHTML = "THROTTLE: " + throttle;
                       
                     } else {
                         // Request failed, handle the error here
@@ -1913,6 +1996,19 @@ function THRInput(){
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             var pkg = packData("FL",fl,"FR",fr,"RL",rl,"RR",rr,"THR",thr);
+            xhr.send(pkg);
+          }
+
+          function sendstateData(st,fr,rl,rr,thr){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/INC_STATE";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var pkg = packData("ST",st,"XX",fr,"XX",rl,"XX",rr,"XX",thr);
             xhr.send(pkg);
           }
 

@@ -54,6 +54,8 @@ class BroadcastedServer {
 
         static esp_err_t handle_IMU1_request(httpd_req_t *req);
 
+        static esp_err_t handle_IMU2_request(httpd_req_t *req);
+
         static esp_err_t handle_W1_request(httpd_req_t *req);
 
         static esp_err_t handle_AMB_request(httpd_req_t *req);
@@ -61,6 +63,8 @@ class BroadcastedServer {
         static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
         static esp_err_t handle_SYS_incoming(httpd_req_t *req);
+
+        static esp_err_t handle_STATE_incoming(httpd_req_t *req);
 
     private:
         const char *html_content = responseXX;

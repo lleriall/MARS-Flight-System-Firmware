@@ -545,7 +545,7 @@
         #label10{
           position: absolute;
             top:80%;
-            left: 60%;
+            left: 66%;
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.7);
             color: #15ff00;
@@ -752,9 +752,9 @@
         <div id = "terminal-area">
             <div id="terminal-panel">
               <div id = "PayloadStat">NO PAYLOAD</div>
-              <div id = "TAvar">ALT</div>
-              <div id = "TAPressure"> Pressure</div>
-              <div id = "TATemp"> OAT</div>
+              <div id = "TAvar">ALT<br> -</div>
+              <div id = "TAPressure"> Pressure<br> -</div>
+              <div id = "TATemp"> OAT<br> -</div>
               <hr id = "Tline">
               <div id = VL1></div>
               <div id = VL2></div>
@@ -808,43 +808,51 @@
             <tbody>
               <tr>
                 <td>Latitude</td>
-                <td id = "Lat-num">0</td>
+                <td id = "Lat-num">-</td>
               </tr>
               <tr>
                 <td>Longitude</td>
-                <td id = "Long-num">0</td>
+                <td id = "Long-num">-</td>
               </tr>
               <tr>
                 <td>Satellites</td>
-                <td id = "Sat-num">0</td>
+                <td id = "Sat-num">-</td>
               </tr>
               <tr>
                 <td>Pitch</td>
-                <td id = "pitch-num">0</td>
+                <td id = "pitch-num">-</td>
               </tr>
               <tr>
                 <td>Roll</td>
-                <td id = "roll-num">0</td>
+                <td id = "roll-num">-</td>
               </tr>
               <tr>
                 <td>Yaw</td>
-                <td id = "yaw-num">0</td>
+                <td id = "yaw-num">-</td>
               </tr>
               <tr>
-                <td>WingFL</td>
-                <td id = "wfl-num">0</td>
+                <td>accX</td>
+                <td id = "accX-num">-</td>
               </tr>
               <tr>
-                <td>WingFR</td>
-                <td id = "wfr-num">0</td>
+                <td>accY</td>
+                <td id = "accY-num">-</td>
               </tr>
               <tr>
-                <td>WingRL</td>
-                <td id = "wrl-num">0</td>
+                <td>accZ</td>
+                <td id = "accZ-num">-</td>
               </tr>
               <tr>
-                <td>WingRR</td>
-                <td id = "wrr-num">0</td>
+                <td>gyroX</td>
+                <td id = "gyroX-num">-</td>
+              </tr>
+              <tr>
+                <td>gyroY</td>
+                <td id = "gyroY-num">-</td>
+              </tr>
+              <tr>
+                <td>gyroZ</td>
+                <td id = "gyroZ-num">-</td>
               </tr>
             </tbody>
           </table>
@@ -852,8 +860,14 @@
 
 
         <script type="text/javascript">
-          //GLOBAL VARS
+          //GLOBAL VARS & EVENT LISTENERS
           altitudeX = 0;
+
+          const selectElement = document.getElementById('DRONE-STATE');
+          selectElement.addEventListener('change', function() {
+            const selectedIndex = selectElement.selectedIndex;
+            sendstateData(selectedIndex + 1,0,0,0,0);
+          });
 
 
           ////////////////////////////
@@ -951,8 +965,10 @@
             updateGraph();
             updateGPS();
             updateIMU1();
+            updateIMU2();
             updateW1();
             updateAMB();
+            //updateNative();
           }
 
       setInterval(updatePageContinuously, 1000);
@@ -1732,6 +1748,15 @@ function THRInput(){
           return formattedValues;
         }
 
+          function updateNative(){
+            //Get state element
+            // Get the <select> element
+            const selectElement = document.getElementById('DRONE-STATE');
+            // Get the index of the selected option
+            const selectedIndex = selectElement.selectedIndex;
+            //sendstateData(selectedIndex,0,0,0,0);
+          }
+
           function updateGPS(){
             //Call API
             //Send backend request
@@ -1758,8 +1783,11 @@ function THRInput(){
                         document.getElementById('Sat-num').innerHTML = _sat;
                         //ALT
                         var _alt = parseFloat(unpackedData[3][1]);
-                        document.getElementById('TAvar').innerHTML = "ALtitude<br>" + _alt;
+                        document.getElementById('TAvar').innerHTML = "Altitude<br>" + _alt;
                         altitudeX = _alt;
+
+                        //Update TRGT Element
+                        document.getElementById('label10').innerHTML = "TRGT: " + _lat + " DEG " + _long + " DEG" ;
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1788,17 +1816,59 @@ function THRInput(){
                         // Request successful, handle the response here
                         var response = xhr.responseText;
                         const unpackedData = unpackData(response);
-                        //LAT
+                        
                         var pitch = parseFloat(unpackedData[0][1]);
                         document.getElementById('pitch-num').innerHTML = pitch;
-                        //LONG
+                        
                         var roll = parseFloat(unpackedData[1][1]);
                         document.getElementById('roll-num').innerHTML = roll;
-                        //SAT
+                        
                         var yaw = parseFloat(unpackedData[2][1]);
                         document.getElementById('yaw-num').innerHTML = yaw;
+                        //Piggyback gyroY data through this uri_handler to save memory
+                        var gyroY = parseFloat(unpackedData[3][1]);
+                        document.getElementById('gyroY-num').innerHTML = gyroY;
+                        
+                    } else {
+                        // Request failed, handle the error here
+                        //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
+                        //document.getElementById('Lat-num').innerHTML = errorResponse;
+                    }
+                }
+            };
+
+            // You can add any data you want to send in the request body
+            var data = "key1=value1&key2=value2"; // Replace with your data
+            xhr.send(data);
+          }
+
+          function updateIMU2(){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/GET_IMU2"; 
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Request successful, handle the response here
+                        var response = xhr.responseText;
+                        const unpackedData = unpackData(response);
+                        
+                        var accX = parseFloat(unpackedData[0][1]);
+                        document.getElementById('accX-num').innerHTML = accX;
+                        
+                        var accY = parseFloat(unpackedData[1][1]);
+                        document.getElementById('accY-num').innerHTML = accY;
+                        
+                        var accZ = parseFloat(unpackedData[2][1]);
+                        document.getElementById('accZ-num').innerHTML = accZ;
                         //--
-                        //var tbd = parseFloat(unpackedData[3][1]);
+                        var gyroX = parseFloat(unpackedData[3][1]);
+                        document.getElementById('gyroX-num').innerHTML = gyroX;
                         
                     } else {
                         // Request failed, handle the error here
@@ -1879,6 +1949,14 @@ function THRInput(){
                         //LONG
                         var PRESS = parseFloat(unpackedData[1][1]);
                         document.getElementById("TAPressure").innerHTML = 'Pressure<br>' + PRESS;
+
+                        //Piggyback gyroZ data through this uri_handler to save memory
+                        var gyroZ = parseFloat(unpackedData[2][1]);
+                        document.getElementById('gyroZ-num').innerHTML = gyroZ;
+
+                        //Piggyback throttle data through this uri_handler to save memory
+                        var throttle = parseFloat(unpackedData[2][1]);
+                        document.getElementById('label8').innerHTML = "THROTTLE: " + throttle;
                       
                     } else {
                         // Request failed, handle the error here
@@ -1916,6 +1994,19 @@ function THRInput(){
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             var pkg = packData("FL",fl,"FR",fr,"RL",rl,"RR",rr,"THR",thr);
+            xhr.send(pkg);
+          }
+
+          function sendstateData(st,fr,rl,rr,thr){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/INC_STATE";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var pkg = packData("ST",st,"XX",fr,"XX",rl,"XX",rr,"XX",thr);
             xhr.send(pkg);
           }
 

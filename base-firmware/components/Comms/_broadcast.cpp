@@ -121,6 +121,13 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
+    httpd_uri_t IMU2_uri = {
+        .uri       = "/GET_IMU2",
+        .method    = HTTP_POST,
+        .handler   = handle_IMU2_request,
+        .user_ctx  = NULL
+    };
+
     httpd_uri_t W1_uri = {
         .uri       = "/GET_W1",
         .method    = HTTP_POST,
@@ -149,6 +156,13 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
+    httpd_uri_t STATE_uri = {
+        .uri       = "/INC_STATE",
+        .method    = HTTP_POST,
+        .handler   = handle_STATE_incoming,
+        .user_ctx  = NULL
+    };
+
 
     // Start the HTTP server
     if (httpd_start(&server, &config) == ESP_OK) {
@@ -156,10 +170,12 @@ void BroadcastedServer::wifi_init_softap(void)
         httpd_register_uri_handler(server, &root_uri);
         httpd_register_uri_handler(server, &LAT1_uri);
         httpd_register_uri_handler(server, &IMU1_uri);
+        httpd_register_uri_handler(server, &IMU2_uri);
         httpd_register_uri_handler(server, &W1_uri);
         httpd_register_uri_handler(server, &AMB1_uri);
         httpd_register_uri_handler(server, &SWP_uri);
         httpd_register_uri_handler(server, &SYS_uri);
+        httpd_register_uri_handler(server, &STATE_uri);
     }
 
 }
@@ -238,7 +254,32 @@ esp_err_t BroadcastedServer::handle_IMU1_request(httpd_req_t *req) {
         double value2 = 42;
         std::string id3 = "YAW";
         double value3 = 87;
-        std::string id4 = "XXX";
+        std::string id4 = "GYROY";
+        double value4 =22;
+
+        std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
+        // Send a response to the client
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        return ESP_OK;
+    }
+
+    // If the request is not a POST request, return 404 Not Found
+    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
+    return ESP_OK;
+}
+
+/* Handler for the "/IMU1" endpoint */
+esp_err_t BroadcastedServer::handle_IMU2_request(httpd_req_t *req) {
+    // Check if the request is a POST request
+    if (req->method == HTTP_POST) {
+
+        std::string id1 = "ACCX";
+        double value1 = 98;
+        std::string id2 = "ACCY";
+        double value2 = 42;
+        std::string id3 = "ACCZ";
+        double value3 = 87;
+        std::string id4 = "GYROX";
         double value4 =22;
 
         std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
@@ -287,9 +328,9 @@ esp_err_t BroadcastedServer::handle_AMB_request(httpd_req_t *req) {
         double value1 = 165;
         std::string id2 = "PRESS";
         double value2 = 148;
-        std::string id3 = "WX1";
+        std::string id3 = "GYROZ";
         double value3 = 109;
-        std::string id4 = "WX2";
+        std::string id4 = "THROT";
         double value4 = 112;
 
         std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
@@ -447,6 +488,86 @@ esp_err_t BroadcastedServer::handle_SYS_incoming(httpd_req_t *req){
             //Clear previous register to avoid memory overflow
             sharedMemory.clearData("THR");
             sharedMemory.storeDouble("THR", values[4]);
+        }
+        return ESP_OK;
+    }
+
+    // If the request is not a POST request, return 404 Not Found
+    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
+    return ESP_OK;
+}
+
+esp_err_t BroadcastedServer::handle_STATE_incoming(httpd_req_t *req){
+    char received_data[MAX_DATA_LEN] = "";
+    // Check if the request is a POST request
+    if (req->method == HTTP_POST) {
+        int total_len = req->content_len;
+    int cur_len = 0;
+    int received = 0;
+    
+    if (total_len >= MAX_DATA_LEN) {
+        return ESP_FAIL;
+    }
+
+    while (received < total_len) {
+        // Receive the data in chunks
+        cur_len = httpd_req_recv(req, received_data + received, MAX_DATA_LEN);
+        if (cur_len <= 0) {
+            if (cur_len == HTTPD_SOCK_ERR_TIMEOUT) {
+                continue;
+            }
+            return ESP_FAIL;
+        }
+        received += cur_len;
+    }
+
+    // Null-terminate the received_data string
+    received_data[received] = '\0';
+        // Send a response to the client
+        //httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        std::string data = received_data;
+        std::vector<std::string> ids;
+        std::vector<double> values;
+
+        extractValuesAndIds(data, ids, values);
+        //ESP_LOGI("TAG", "%f",values[0]);
+        
+        //UPDATE PTAM REGISTERS
+        SharedMemory& sharedMemory = SharedMemory::getInstance();
+        //If value from frontend is not 0, update PTAM register for respective variable
+        if(values[0] != 0){
+            //Latitude
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("state");
+            sharedMemory.storeDouble("state", values[0]);
+
+            switch(int(values[0])){
+                case 1:
+                    sharedMemory.clearData("stateDescript");
+                    sharedMemory.storeString("stateDescript", "PREP");
+                    break;
+                case 2:
+                    sharedMemory.clearData("stateDescript");
+                    sharedMemory.storeString("stateDescript", "ARMED");
+                    break;
+                case 3:
+                    sharedMemory.clearData("stateDescript");
+                    sharedMemory.storeString("stateDescript", "BYPASS");
+                    break;
+            }
+            
+        }
+        if(values[1] != 0){
+
+        }
+        if(values[2] != 0){
+
+        }
+        if(values[3] != 0){
+
+        }
+        if(values[4] != 0){
+      
         }
         return ESP_OK;
     }
