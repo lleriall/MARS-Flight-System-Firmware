@@ -493,12 +493,13 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             left: 17%;
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.7);
-            color: #15ff00;
+            color: #2bd41c;
             padding: 5px;
             border-radius: 3px;
             font-size: 14px;
             z-index: 100;
             font-weight: bolder;
+            border-style: solid;
         }
         /* THROTTLE */
         #label8 {
@@ -704,6 +705,48 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           left: 50%;
           top: 20%;
         }
+
+        #BPnotification{
+          position: absolute;
+          z-index: 1000;
+          width: 20%;
+          height: 30%;
+          background: #4e4e4e;
+          border-radius: 15px;
+          margin-left: 22%;
+          margin-top: 5%;
+          visibility: hidden;
+          transition: all 0.1s ease;
+          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        #BPnotification-button {
+          width: 50%;
+          height: 30%;
+          border-radius: 20px;
+          margin-top: 50%;
+          margin-left: 0%;
+          border-width: 0pt;
+          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+          background: #000000;
+          color: #fff;
+          font-size: large;
+          font-weight: bolder;
+        }
+        #BPnotification-button:hover{
+          background-color: rgb(255, 255, 255);
+          color: #000;
+        }
+
+        #BP-text{
+          position: absolute;
+          color:#fff;
+          margin-bottom: 0%;
+          width:80%;
+          left:10%;
+          top:10%;
+        }
+
         </style>
       </head>
 
@@ -731,9 +774,9 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
         
         <div id = "attitude-ind-area">
           <div class="terminal" id="terminal">
-        <pre id="output"></pre>
-        <input type="text" id="input" autofocus>
-    </div>
+          <pre id="output"></pre>
+          <input type="text" id="input" autofocus>
+          </div>
         </div>
 
         <div id = "map-ind-area">
@@ -746,7 +789,7 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           <div id="label5">BATTERY : -</div>
           <div id="label6">NO NAV SET </div>
           <div id="label7">FAIL 84</div>
-          <div id="label8">THROTTLE:</div>
+          <div id="label8">THROTTLE: -  </div>
           <div id="label9">NO DATA RESPONSE</div>
           <div id="label10">TRGT: </div>
         </div>
@@ -764,6 +807,11 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
               <div id = VL4></div>
 
             </div>
+        </div>
+
+        <div id = "BPnotification">
+          <h3 id = "BP-text">Vehicle State needs to be in BYPASS before direct access to motors</h3>
+          <button id = "BPnotification-button">OKAY</button>
         </div>
 
         <div id = "stats-menu">
@@ -863,7 +911,10 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
 
         <script type="text/javascript">
           //GLOBAL VARS & EVENT LISTENERS
-          altitudeX = 0;
+          var altitudeX = 0;
+          var latE, longE, satE, altE, pitchE, rollE, yawE, velE;
+          var gyX, gyY, gyZ, acX, acY, acZ, _wfr, _wfl, _wrl, _wrr;
+          var _tmp, _pres, _thr;
 
           const selectElement = document.getElementById('DRONE-STATE');
           selectElement.addEventListener('change', function() {
@@ -871,7 +922,9 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
             sendstateData(selectedIndex + 1,0,0,0,0);
           });
 
-
+          document.getElementById("BPnotification-button").addEventListener("click", function () {
+            removeBPnotification();
+          });
           ////////////////////////////
           class LiveDataGraph {
           constructor(canvasId, maxDataPoints = 100, updateInterval = 1000) {
@@ -956,6 +1009,68 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
           return Math.random() * 100;
       }
 
+      function sendBPnotification(){
+        var setMenu = document.getElementById("BPnotification");
+        setMenu.style.visibility = "visible";
+        setMenu.style.pointerEvents = "auto";
+
+        var Section0 = document.getElementById("config-menu");
+        Section0.style.filter = "blur(4px)";
+        Section0.style.pointerEvents = "none";
+
+        var Section1 = document.getElementById("map-ind-area");
+        Section1.style.filter = "blur(4px)";
+        Section1.style.pointerEvents = "none";
+
+        var Section2 = document.getElementById("terminal-area");
+        Section2.style.filter = "blur(4px)";
+        Section2.style.pointerEvents = "none";
+
+        var Section3 = document.getElementById("data-area");
+        Section3.style.filter = "blur(4px)";
+        Section3.style.pointerEvents = "none";
+
+        var Section4 = document.getElementById("stats-menu");
+        Section4.style.filter = "blur(4px)";
+        Section4.style.pointerEvents = "none";
+
+        var Section5 = document.getElementById("attitude-ind-area");
+        Section4.style.filter = "blur(4px)";
+        Section4.style.pointerEvents = "none";
+      }
+
+      function removeBPnotification(){
+        var setMenu = document.getElementById("BPnotification");
+        setMenu.style.visibility = "hidden";
+        setMenu.style.pointerEvents = "none";
+
+        var Section0 = document.getElementById("config-menu");
+        Section0.style.filter = "blur(0px)";
+        Section0.style.pointerEvents = "auto";
+
+        var Section1 = document.getElementById("map-ind-area");
+        Section1.style.filter = "blur(0px)";
+        Section1.style.pointerEvents = "auto";
+
+        var Section2 = document.getElementById("terminal-area");
+        Section2.style.filter = "blur(0px)";
+        Section2.style.pointerEvents = "auto";
+
+        var Section3 = document.getElementById("data-area");
+        Section3.style.filter = "blur(0px)";
+        Section3.style.pointerEvents = "auto";
+
+        var Section4 = document.getElementById("stats-menu");
+        Section4.style.filter = "blur(0px)";
+        Section4.style.pointerEvents = "auto";
+
+        var Section5 = document.getElementById("attitude-ind-area");
+        Section4.style.filter = "blur(0px)";
+        Section4.style.pointerEvents = "auto";
+      }
+
+
+
       function updateGraph() {
           sampleGraph.updateGraph(altitudeX);
           setTimeout(updateGraph, sampleGraph.updateInterval);
@@ -965,10 +1080,10 @@ extern const char* responseXX =R"html(<!DOCTYPE html>
       //UPDATE PAGE
       function updatePageContinuously(){
             updateGraph();
+            updateW1();
             updateGPS();
             updateIMU1();
             updateIMU2();
-            updateW1();
             updateAMB();
             //updateNative();
           }
@@ -1579,14 +1694,14 @@ function imuStatPage(){
   output.textContent += initialText;
   showMenuOptions([
     '\n\n IMU DATA',
-    '\n\n                   VX: 0.000',
-    '\n\n                   VY: 0.000',
-    '\n\n                   VZ: 0.000',
-    '\n\n                 ACCX: 0.000',
-    '\n\n                 ACCY: 0.000',
-    '\n\n                 ACCZ: 0.000',
+    '\n\n                   VX: ' + gyX,
+    '\n\n                   VY: ' + gyY,
+    '\n\n                   VZ: ' + gyZ,
+    '\n\n                 ACCX: ' + acX,
+    '\n\n                 ACCY: ' + acY,
+    '\n\n                 ACCZ: ' + acZ,
   ]);
-  showMenuOptions(['\n< BACK', '                            NEXT >']);
+  showMenuOptions(['\n< BACK', '                           ']);
 }
 
 function gpsStatPage(){
@@ -1594,13 +1709,13 @@ function gpsStatPage(){
   output.textContent += initialText;
   showMenuOptions([
     '\n\n GPS DATA',
-    '\n\n               LATITUDE: 0.000',
-    '\n\n              LONGITUDE: 0.000',
-    '\n\n               ALTITUDE: 0.000',
-    '\n\n             SATELLITES: 0.000',
-    '\n\n               VELOCITY: 0.000',
+    '\n\n                LATITUDE: ' + latE,
+    '\n\n               LONGITUDE: ' + longE,
+    '\n\n                ALTITUDE: ' + altitudeX,
+    '\n\n              SATELLITES: ' + satE,
+    '\n\n                VELOCITY: ' + velE,
   ]);
-  showMenuOptions(['\n\n\n< BACK', '                            NEXT >']);
+  showMenuOptions(['\n\n\n< BACK', '                            ']);
 }
 
 function SYSpage(){
@@ -1608,11 +1723,11 @@ function SYSpage(){
   output.textContent += initialText;
   showMenuOptions([
     '\nSample the full command of the four wing servos and motor, providing precise control over their movements and operations. The vehicle must be in STANDBY mode',
-    '\n\n            FRONT-LEFT WING [1]: 0.000',
-    '\n\n           FRONT-RIGHT WING [2]: 0.000',
-    '\n\n             REAR-LEFT WING [3]: 0.000',
-    '\n\n            REAR-RIGHT WING [4]: 0.000',
-    '\n\n         THROTTLE (0 - 100) [5]: 0.000',
+    '\n\n            FRONT-LEFT WING [1]: ' + _wfl,
+    '\n\n           FRONT-RIGHT WING [2]: ' + _wfr,
+    '\n\n             REAR-LEFT WING [3]: ' + _wrl,
+    '\n\n            REAR-RIGHT WING [4]: ' + _wrr,
+    '\n\n         THROTTLE (0 - 100) [5]: ' + _thr,
   ]);
   showMenuOptions(['\n\n< BACK', '                            ']);
 }
@@ -1777,12 +1892,15 @@ function THRInput(){
                         //LAT
                         var _lat = parseFloat(unpackedData[0][1]);
                         document.getElementById('Lat-num').innerHTML = _lat;
+                        latE = _lat;
                         //LONG
                         var _long = parseFloat(unpackedData[1][1]);
                         document.getElementById('Long-num').innerHTML = _long;
+                        longE = _long;
                         //SAT
                         var _sat = parseFloat(unpackedData[2][1]);
                         document.getElementById('Sat-num').innerHTML = _sat;
+                        satE = _sat;
                         //ALT
                         var _alt = parseFloat(unpackedData[3][1]);
                         document.getElementById('TAvar').innerHTML = "Altitude<br>" + _alt;
@@ -1821,15 +1939,20 @@ function THRInput(){
                         
                         var pitch = parseFloat(unpackedData[0][1]);
                         document.getElementById('pitch-num').innerHTML = pitch;
+                        pitchE = pitch;
                         
                         var roll = parseFloat(unpackedData[1][1]);
                         document.getElementById('roll-num').innerHTML = roll;
+                        rollE = roll;
                         
                         var yaw = parseFloat(unpackedData[2][1]);
                         document.getElementById('yaw-num').innerHTML = yaw;
+                        yawE = yaw;
+
                         //Piggyback gyroY data through this uri_handler to save memory
                         var gyroY = parseFloat(unpackedData[3][1]);
                         document.getElementById('gyroY-num').innerHTML = gyroY;
+                        gY = gyroY
                         
                     } else {
                         // Request failed, handle the error here
@@ -1862,16 +1985,20 @@ function THRInput(){
                         
                         var accX = parseFloat(unpackedData[0][1]);
                         document.getElementById('accX-num').innerHTML = accX;
+                        acX = accX;
                         
                         var accY = parseFloat(unpackedData[1][1]);
                         document.getElementById('accY-num').innerHTML = accY;
+                        acY = accY;
                         
                         var accZ = parseFloat(unpackedData[2][1]);
                         document.getElementById('accZ-num').innerHTML = accZ;
+                        acZ = accZ;
                         //--
                         var gyroX = parseFloat(unpackedData[3][1]);
                         document.getElementById('gyroX-num').innerHTML = gyroX;
-                        
+                        gyX = gyroX;
+
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1902,20 +2029,20 @@ function THRInput(){
                         const unpackedData = unpackData(response);
                         //WFL
                         var wfl = parseFloat(unpackedData[0][1]);
-                        document.getElementById('wfl-num').innerHTML = wfl;
                         document.getElementById('label1').innerHTML = 'WingFL<br>' + wfl;
+                        _wfl = wfl;
                         //WFR
                         var wfr = parseFloat(unpackedData[1][1]);
-                        document.getElementById('wfr-num').innerHTML = wfr;
                         document.getElementById('label2').innerHTML = 'WingFR<br>' + wfr;
+                        _wfr = wfr;
                         //WRL
                         var wrl = parseFloat(unpackedData[2][1]);
-                        document.getElementById('wrl-num').innerHTML = wrl;
                         document.getElementById('label3').innerHTML = 'WingRL<br>' + wrl;
+                        _wrl = wrl;
                         //WRR
                         var wrr = parseFloat(unpackedData[3][1]);
-                        document.getElementById('wrr-num').innerHTML = wrr;
                         document.getElementById('label4').innerHTML = 'WingRR<br>' + wrr;
+                        _wrr = wrr;
 
                     } else {
                         // Request failed, handle the error here
@@ -1948,18 +2075,20 @@ function THRInput(){
                         //LAT
                         var OTA = parseFloat(unpackedData[0][1]);
                         document.getElementById("TATemp").innerHTML = 'OAT<br>' + OTA;
+                        _tmp = OTA;
                         //LONG
                         var PRESS = parseFloat(unpackedData[1][1]);
                         document.getElementById("TAPressure").innerHTML = 'Pressure<br>' + PRESS;
-
+                        _pres = PRESS;
                         //Piggyback gyroZ data through this uri_handler to save memory
                         var gyroZ = parseFloat(unpackedData[2][1]);
                         document.getElementById('gyroZ-num').innerHTML = gyroZ;
-
+                        gyZ = gyroZ;
                         //Piggyback throttle data through this uri_handler to save memory
                         var throttle = parseFloat(unpackedData[2][1]);
                         document.getElementById('label8').innerHTML = "THROTTLE: " + throttle;
-                      
+                        _thr = throttle;
+
                     } else {
                         // Request failed, handle the error here
                         //var errorResponse = "Error: " + xhr.status + " - " + xhr.statusText;
@@ -1989,6 +2118,11 @@ function THRInput(){
           function sendSYSMISC(fl,fr,rl,rr,thr){
             //Call API
             //Send backend request
+            const selectElement = document.getElementById('DRONE-STATE');
+            const selectedIndex = selectElement.selectedIndex;
+            if(selectedIndex != 2){
+              sendBPnotification();
+            }
             var xhr = new XMLHttpRequest();
             var url = "/INC_SYS";
 

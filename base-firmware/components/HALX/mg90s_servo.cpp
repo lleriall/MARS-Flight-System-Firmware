@@ -32,10 +32,10 @@ SOFTWARE.*/
 #define SERVO_MIN_PULSEWIDTH 1000 //Minimum pulse width in microsecond
 #define SERVO_MAX_PULSEWIDTH 2000 //Maximum pulse width in microsecond
 #define SERVO_MAX_DEGREE 90       //Maximum angle in degree upto which servo can rotate
-#define servo_pin 16              //gpio pin of servo
-#define servo_pin2 17              //gpio pin of servo
-#define servo_pin3 18              //gpio pin of servo
-#define servo_pin4 19              //gpio pin of servo
+#define servo_pin 16              //gpio pin of servo FL
+#define servo_pin2 17              //gpio pin of servo FR
+#define servo_pin3 18              //gpio pin of servo RL
+#define servo_pin4 19              //gpio pin of servo RR
 
 uint8_t SERVO_POS_1 = 0;
 

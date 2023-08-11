@@ -52,9 +52,15 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    //ATGM336H *gps = new ATGM336H();
-    //gps -> pullATGM_data();
-    //delete gps;
+    ATGM336H *gps = new ATGM336H();
+    gps -> init_ATGM_module();
+    while(1){
+        double gx = gps -> getLatitude();
+        ESP_LOGI("TAG","LAT: %f",gx);
+        vTaskDelay(1); 
+    }
+    
+    delete gps;
 
     /*FAN_COOLING *cool = new FAN_COOLING();
     cool -> init_relay();
@@ -74,7 +80,9 @@ extern "C" {
     //SSD1306_GotoXY(10,10);
 
     /*VEHICLE_BARO *baro = new VEHICLE_BARO();
-    baro -> pushPressure();
+    baro -> init_barometer();
+    double gb =baro -> pushPressure();
+    ESP_LOGI("TAG","Pressure: %f",gb);
     delete baro;*/
 
     /*V_MOTOR *motor = new V_MOTOR();

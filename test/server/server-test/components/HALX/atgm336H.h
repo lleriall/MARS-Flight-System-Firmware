@@ -5,7 +5,9 @@ class ATGM336H {
     public:
         static void init_ATGM_module();
 
-        static void pullATGM_data();
+        static char* pullATGM_data();
+
+        static void updateStack();
 
         static double getLatitude();
 

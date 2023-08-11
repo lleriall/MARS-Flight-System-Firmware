@@ -126,7 +126,56 @@ void CONTROLLER_TASKS::_ARMED_(){
 //No function overloading possible so search SBC table to 
 //determine if return or non-return peripheral !! needs attention !!
 void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
-    
+    //Check if there is any update to the ptam registers
+    SharedMemory& sharedMemory = SharedMemory::getInstance();
+    //If there is a difference between Wing Register and referenceupdate register there has been an update
+    auto dtaWFL = sharedMemory.getLastDouble("WingFL");
+    auto dtaWFR = sharedMemory.getLastDouble("WingFR");
+    auto dtaWRL = sharedMemory.getLastDouble("WingRL");
+    auto dtaWRR = sharedMemory.getLastDouble("WingRR");
+
+    auto dtaWFL_ref = sharedMemory.getLastDouble("FL-ref-byp");
+    auto dtaWFR_ref = sharedMemory.getLastDouble("FR-ref-byp");
+    auto dtaWRL_ref = sharedMemory.getLastDouble("RL-ref-byp");
+    auto dtaWRR_ref = sharedMemory.getLastDouble("RR-ref-byp");
+
+    ESP_LOGI("SEN", "FL %f",dtaWFL);
+    ESP_LOGI("SEN", "FL-ref %f",dtaWFL_ref);
+
+    WingTranslate *obj = new WingTranslate();
+    if(dtaWFL != dtaWFL_ref){
+        //There has been an update, wings can be commanded
+        obj -> mcpwm_servo_control(dtaWFL,0,SPEED_FAST);
+        //Update the reference register
+        //Clear previous register to avoid memory overflow
+        sharedMemory.clearData("FL-ref-byp");
+        sharedMemory.storeDouble("FL-ref-byp", dtaWFL);
+    }
+    if(dtaWFR != dtaWFR_ref){
+        //There has been an update, wings can be commanded
+        obj -> mcpwm_servo_control(dtaWFR,1,SPEED_FAST);
+        //Update the reference register
+        //Clear previous register to avoid memory overflow
+        sharedMemory.clearData("FR-ref-byp");
+        sharedMemory.storeDouble("FR-ref-byp", dtaWFR);
+    }
+    if(dtaWRL != dtaWRL_ref){
+        //There has been an update, wings can be commanded
+        obj -> mcpwm_servo_control(dtaWRL,2,SPEED_FAST);
+        //Update the reference register
+        //Clear previous register to avoid memory overflow
+        sharedMemory.clearData("RL-ref-byp");
+        sharedMemory.storeDouble("RL-ref-byp", dtaWRL);
+    }
+    if(dtaWRR != dtaWRR_ref){
+        //There has been an update, wings can be commanded
+        obj -> mcpwm_servo_control(dtaWRR,3,SPEED_FAST);
+        //Update the reference register
+        //Clear previous register to avoid memory overflow
+        sharedMemory.clearData("RR-ref-byp");
+        sharedMemory.storeDouble("RR-ref-byp", dtaWRR);
+    }
+    delete obj;
 }
  //Sensor bypass
 
@@ -158,14 +207,19 @@ void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
     sharedMemory.storeDouble("TVel", 0);
     //Wing FL
     sharedMemory.storeDouble("WingFL", 0);
+    sharedMemory.storeDouble("FL-ref-byp", 0);
     //Wing FR
     sharedMemory.storeDouble("WingFR", 0);
+    sharedMemory.storeDouble("FR-ref-byp", 0);
     //Wing RL
     sharedMemory.storeDouble("WingRL", 0);
+    sharedMemory.storeDouble("RL-ref-byp", 0);
     //Wing RR
     sharedMemory.storeDouble("WingRR", 0);
+    sharedMemory.storeDouble("RR-ref-byp", 0);
     //Throttle
     sharedMemory.storeDouble("THR", 0);
+    sharedMemory.storeDouble("THR-ref-byp", 0);
 
     //auto po = init.getStringData(std::string("stateDescript")).back();
     //std::cout << po << std::endl;

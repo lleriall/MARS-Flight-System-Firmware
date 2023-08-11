@@ -28,6 +28,7 @@ SOFTWARE.*/
 #include"../PTAM/_ptam.h"
 #include"validateSensors.h"
 #include"esp_log.h"
+#include"../HALX/mg90s_servo.h"
 
 class CONTROLLER_TASKS {
     private:
