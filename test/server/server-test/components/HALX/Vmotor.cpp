@@ -79,3 +79,20 @@ void V_MOTOR::esc_disarm(){
     mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, ESC_PWM_DUTY_MIN);
     vTaskDelay(pdMS_TO_TICKS(500));
 }
+
+void V_MOTOR::motor_control_task() {
+    // Control the motor speed by adjusting the duty cycle
+    while (1) {
+        // Increase duty cycle to speed up the motor
+        for (int duty = 0; duty <= 100; duty += 50) {
+            mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_GEN_A, duty);
+            vTaskDelay(pdMS_TO_TICKS(100)); // Delay for motor to respond
+        }
+
+        // Decrease duty cycle to slow down the motor
+        for (int duty = 100; duty >= 0; duty -= 50) {
+            mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_GEN_A, duty);
+            vTaskDelay(pdMS_TO_TICKS(100)); // Delay for motor to respond
+        }
+    }
+}

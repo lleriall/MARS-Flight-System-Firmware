@@ -37,9 +37,6 @@ SOFTWARE.*/
             sharedMemory.storeInt("state", 1);
             sharedMemory.storeString(std::string("stateDescript"),std::string("PREP"));
         } 
-        //std::cout << "SWITCHTOPREP RETURNING";
-        //std::string strChange = std::to_string(change);
-        //std::cout << strChange << std::endl;
         return change;
     }
 
@@ -58,9 +55,6 @@ SOFTWARE.*/
             sharedMemory.storeInt("state", 2);
             sharedMemory.storeString(std::string("stateDescript"),std::string("ARMED"));
         }
-        //std::cout << "SWITCHTOARMED RETURNING ";
-        //std::string strChange = std::to_string(change);
-        //std::cout << strChange << std::endl;
         return change;
     }
 
@@ -79,9 +73,6 @@ SOFTWARE.*/
             sharedMemory.storeInt("state", 3);
             sharedMemory.storeString(std::string("stateDescript"),std::string("BYPASS"));
         }
-        //std::cout << "SWITCHTOBYPASS RETURNING";
-        //std::string strChange = std::to_string(change);
-        //std::cout << strChange << std::endl;
         return change;
     }
 

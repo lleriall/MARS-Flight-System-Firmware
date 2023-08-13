@@ -52,7 +52,7 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    ATGM336H *gps = new ATGM336H();
+    /*ATGM336H *gps = new ATGM336H();
     gps -> init_ATGM_module();
     while(1){
         double gx = gps -> getLatitude();
@@ -60,7 +60,7 @@ extern "C" {
         vTaskDelay(1); 
     }
     
-    delete gps;
+    delete gps;*/
 
     /*FAN_COOLING *cool = new FAN_COOLING();
     cool -> init_relay();
@@ -85,14 +85,16 @@ extern "C" {
     ESP_LOGI("TAG","Pressure: %f",gb);
     delete baro;*/
 
-    /*V_MOTOR *motor = new V_MOTOR();
+    V_MOTOR *motor = new V_MOTOR();
     motor -> mcpwm_gpio_initialize();
+    //motor -> motor_control_task();
+    
     //motor -> esc_arm_sequence();
     motor -> mcpwm_motor_control(uint8_t(0));
     vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
     motor -> mcpwm_motor_control(uint16_t(1000));
     vTaskDelay(pdMS_TO_TICKS(7000)); // Delay for 2 seconds
-    motor -> mcpwm_motor_control(uint8_t(0));*/
+    motor -> mcpwm_motor_control(uint8_t(0));
 
 
 
@@ -100,12 +102,12 @@ extern "C" {
     //vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
     /*motor -> mcpwm_motor_control(uint8_t(1));
     vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
-    //motor -> mcpwm_motor_control(uint8_t(0));*/
+    //motor -> mcpwm_motor_control(uint8_t(0));
     
     //motor -> esc_disarm();
     //delete motor;
 
-/*
+
 uint8_t flag,flag2 = 1;
     int16_t ax,ay,az;
     int16_t gx,gy,gz;

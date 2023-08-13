@@ -16,6 +16,8 @@ class V_MOTOR {
         static void esc_arm_sequence();
 
         static void esc_disarm();
+
+        static void motor_control_task();
 };
 
 #endif // MG90S_SERVO_H
