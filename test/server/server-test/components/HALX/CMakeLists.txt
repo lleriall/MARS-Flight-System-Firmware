@@ -1,4 +1,6 @@
-idf_component_register(SRCS "minmea.cpp"
+idf_component_register(SRCS "servoControl.cpp" 
+                            "MotorController.cpp" 
+                            "minmea.cpp"
                             "Vmotor.cpp"
                             "_SD.cpp"
                             "ssd1306_fonts.cpp"

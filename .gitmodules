@@ -1,3 +1,0 @@
-[submodule "test/server/server-test/components/arduino"]
-	path = test/server/server-test/components/arduino
-	url = https://github.com/espressif/arduino-esp32.git

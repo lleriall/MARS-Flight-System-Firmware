@@ -12,6 +12,10 @@
 #define BUF_SIZE (1024)
 
 double latX,longX,speedX;
+double latdev,longdev,altdev;
+minmea_float* trueTrackdeg, magTrackdeg, speed_kph;
+int hrs,mins,secs,day,month,year,hour_offset,min_offset;
+int sat_nr, elevation, azimuth, snr;
 
 void ATGM336H::init_ATGM_module(){
     //Configure parameters of an UART driver,
@@ -33,6 +37,7 @@ void ATGM336H::init_ATGM_module(){
     ESP_ERROR_CHECK(uart_param_config(GPS_UART_NUM, &uart_config));
     ESP_ERROR_CHECK(uart_set_pin(GPS_UART_NUM, GPIO_NUM_TX, GPIO_NUM_RX, ECHO_TEST_RTS, ECHO_TEST_CTS));
     ESP_ERROR_CHECK(uart_driver_install(GPS_UART_NUM, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags));
+
 }
 
 char* ATGM336H::pullATGM_data() {
@@ -44,7 +49,7 @@ char* ATGM336H::pullATGM_data() {
 
     if (data == '\n') {
         // Print NMEA sentence buffer as a string
-        //ESP_LOGI("TAG", "Received NMEA: %s", nmea_buffer);
+        ESP_LOGI("TAG", "Received NMEA: %s", nmea_buffer);
         memset(nmea_buffer, 0, sizeof(nmea_buffer)); // Clear buffer
     } else {
         // Append received byte to NMEA sentence buffer
@@ -56,11 +61,6 @@ char* ATGM336H::pullATGM_data() {
 
 void ATGM336H::updateStack(){
     auto line = pullATGM_data();
-    //double latX,longX,speedX;
-    double latdev,longdev,altdev;
-    minmea_float* trueTrackdeg, magTrackdeg, speed_kph;
-    int hrs,mins,secs,day,month,year,hour_offset,min_offset;
-    int sat_nr, elevation, azimuth, snr;
     switch (minmea_sentence_id(line, false)) {
         case MINMEA_SENTENCE_RMC: {
             struct minmea_sentence_rmc frame;
@@ -164,9 +164,21 @@ double ATGM336H::getLatitude(){
 }
 
 double ATGM336H::getLongitude(){
+    updateStack();
     return longX;
 }
 
 double ATGM336H::getAltitude(){
+    //updateStack();
     return 0;
+}
+
+double ATGM336H::getSpeed(){
+    updateStack();
+    return speedX;
+}
+
+std::vector<int> ATGM336H::getTimeVector(){
+    std::vector<int> timeVx{hrs,mins,secs,day,month,year,hour_offset,min_offset};
+    return timeVx;
 }

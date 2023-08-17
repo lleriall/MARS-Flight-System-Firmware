@@ -22,9 +22,9 @@ void V_MOTOR::mcpwm_gpio_initialize()
 
     //Initial mcpwm configuration
     mcpwm_config_t pwm_config;
-    pwm_config.frequency = 50; //frequency = 50Hz, i.e. for every motor time period should be 20ms
-    pwm_config.cmpr_a = 0;     //duty cycle of PWMxA = 0
-    pwm_config.cmpr_b = 0;     //duty cycle of PWMxb = 0
+    pwm_config.frequency = 500; //frequency = 50Hz, i.e. for every motor time period should be 20ms
+    pwm_config.cmpr_a = 50;     //duty cycle of PWMxA = 0
+    pwm_config.cmpr_b = 50;     //duty cycle of PWMxb = 0
     pwm_config.counter_mode = MCPWM_UP_COUNTER;
     pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config); //Configure PWM0A & PWM0B with above settings
@@ -84,13 +84,13 @@ void V_MOTOR::motor_control_task() {
     // Control the motor speed by adjusting the duty cycle
     while (1) {
         // Increase duty cycle to speed up the motor
-        for (int duty = 0; duty <= 100; duty += 50) {
+        for (int duty = 1500; duty <= 2000; duty += 100) {
             mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_GEN_A, duty);
             vTaskDelay(pdMS_TO_TICKS(100)); // Delay for motor to respond
         }
 
         // Decrease duty cycle to slow down the motor
-        for (int duty = 100; duty >= 0; duty -= 50) {
+        for (int duty = 2000; duty >= 1500; duty -= 100) {
             mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_GEN_A, duty);
             vTaskDelay(pdMS_TO_TICKS(100)); // Delay for motor to respond
         }

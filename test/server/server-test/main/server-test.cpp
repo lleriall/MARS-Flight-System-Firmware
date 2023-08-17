@@ -8,6 +8,7 @@
 #include"../components/HALX/fan_relay.h"
 #include"../components/HALX/bno055.h"
 #include"../components/HALX/atgm336H.h"
+#include"../components/HALX/MotorController.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
@@ -52,15 +53,16 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    /*ATGM336H *gps = new ATGM336H();
+    ATGM336H *gps = new ATGM336H();
     gps -> init_ATGM_module();
     while(1){
-        double gx = gps -> getLatitude();
-        ESP_LOGI("TAG","LAT: %f",gx);
+        gps -> pullATGM_data();
+        double gx = gps -> getLongitude();
+        //ESP_LOGI("TAG","LAT: %f",gx);
         vTaskDelay(1); 
     }
-    
-    delete gps;*/
+
+    delete gps;
 
     /*FAN_COOLING *cool = new FAN_COOLING();
     cool -> init_relay();
@@ -85,16 +87,24 @@ extern "C" {
     ESP_LOGI("TAG","Pressure: %f",gb);
     delete baro;*/
 
-    V_MOTOR *motor = new V_MOTOR();
-    motor -> mcpwm_gpio_initialize();
+
+    /*MotorController *ec = new MotorController(gpio_num_t(15));
+    ec -> begin();
+    ec -> setThrottle(100);
+    vTaskDelay(pdMS_TO_TICKS(5000));
+    ec -> setThrottle(30);
+    //ec -> stop();
+    delete ec;*/
+    //V_MOTOR *motor = new V_MOTOR();
+    //motor -> mcpwm_gpio_initialize();
     //motor -> motor_control_task();
     
     //motor -> esc_arm_sequence();
-    motor -> mcpwm_motor_control(uint8_t(0));
+    /*motor -> mcpwm_motor_control(uint8_t(0));
     vTaskDelay(pdMS_TO_TICKS(2000)); // Delay for 2 seconds
     motor -> mcpwm_motor_control(uint16_t(1000));
     vTaskDelay(pdMS_TO_TICKS(7000)); // Delay for 2 seconds
-    motor -> mcpwm_motor_control(uint8_t(0));
+    motor -> mcpwm_motor_control(uint8_t(0));*/
 
 
 

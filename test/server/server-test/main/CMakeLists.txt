@@ -8,5 +8,6 @@ idf_component_register(SRCS "server-test.cpp"
                             "../components/HALX/_barometerEntry.cpp"
                             "../components/HALX/fan_relay.cpp"
                             "../components/HALX/bno055.cpp"
-                            "../components/HALX/atgm336H.cpp")
+                            "../components/HALX/atgm336H.cpp"
+                            "../components/HALX/MotorController.cpp")
  

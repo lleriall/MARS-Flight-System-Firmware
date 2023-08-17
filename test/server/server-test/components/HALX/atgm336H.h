@@ -1,6 +1,8 @@
 #ifndef ATGM336HX
 #define ATGM336HX
 
+#include<vector>
+
 class ATGM336H {
     public:
         static void init_ATGM_module();
@@ -14,6 +16,10 @@ class ATGM336H {
         static double getLongitude();
 
         static double getAltitude();
+
+        static double getSpeed();
+
+        std::vector<int> getTimeVector();
 };
 
 #endif //ATGM336HX
