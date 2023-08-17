@@ -1,17 +1,16 @@
 Reposity Structure
 
-On the root 
-
-| -- Component Circuits
-| -- DevGroundM
-| -- LIAM
-| -- MATLAB
-| -- assets
-| -- base-firmware
-| -- test
-| LICENSE
-| README
-| CONTRIBUTING.md --> THIS FILE
+|--Root
+|    | -- Component Circuits
+|    | -- DevGroundM
+|    | -- LIAM
+|    | -- MATLAB
+|    | -- assets
+|    | -- base-firmware
+|    | -- test
+|    | LICENSE
+|    | README
+|    | CONTRIBUTING.md --> THIS FILE
 
 Initial Description:
 
