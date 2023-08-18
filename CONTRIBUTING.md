@@ -1,16 +1,16 @@
-Reposity Structure
+Repository Structure
 
 |--Root
-|    | -- Component Circuits
-|    | -- DevGroundM
-|    | -- LIAM
-|    | -- MATLAB
-|    | -- assets
-|    | -- base-firmware
-|    | -- test
-|    | LICENSE
-|    | README
-|    | CONTRIBUTING.md --> THIS FILE
+|   | -- Component Circuits
+|   | -- DevGroundM
+|   | -- LIAM
+|   | -- MATLAB
+|   | -- assets
+|   | -- base-firmware
+|   | -- test
+|   | LICENSE
+|   | README
+|   | CONTRIBUTING.md --> THIS FILE
 
 Initial Description:
 
@@ -20,7 +20,7 @@ Component Circuits
 DevGroundM
     - This subdirectory contains the html file for the webpage hosted by the vehicle during initialization and flight setup
 
-LIAM
+LIAM`
     - This subdirectory contains the code for the LIAM sub project. Lightweight Intelligent Aerial Mapper is an internal project aimed at developing advanced onboard autonomous flight planning and navigation algorithms for HIVE platform vehicles
 
 assets
