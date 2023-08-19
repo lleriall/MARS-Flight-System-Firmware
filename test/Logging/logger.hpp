@@ -46,6 +46,7 @@ public:
 
     /* Returns the UAV current state
     ==============================================
+    |    NEUTRAL   A Default State
     |    STANDBY   Vehicle IDLE Mode
     |    BYPASS    Motor and Sensors Interface
     |    ARMED     Ready for takeoff
@@ -55,6 +56,7 @@ public:
 
     /* Sets the UAV current state
     ==============================================
+    |    NEUTRAL   A Default State
     |    STANDBY   Vehicle IDLE Mode
     |    BYPASS    Motor and Sensors Interface
     |    ARMED     Ready for takeoff
