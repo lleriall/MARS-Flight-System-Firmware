@@ -1,0 +1,14 @@
+Logged event: 3
+Logged event: 3
+Current machine state: 4
+Current machine state: 5
+Current machine state: 6
+Current machine state: 7
+Set current machine state: 7
+Set current machine state: 7
+Set current machine state: 5
+
+
+
+
+This file was generated from the unittest_logger.cpp file. 
