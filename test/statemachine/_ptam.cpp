@@ -24,6 +24,11 @@ void SharedMemory::storeInt(const std::string& id, int data) {
     intData_[id].push_back(data);
 }
 
+void SharedMemory::storeMessage(const Logger::flight_data_t& flight_data){
+    std::lock_guard<std::mutex> lock(mutex_);
+    msgData_[flight_data.id].push_back(flight_data);
+}
+
 std::vector<std::string> SharedMemory::getStringData(const std::string& id) {
     std::lock_guard<std::mutex> lock(mutex_);
     return stringData_[id];
