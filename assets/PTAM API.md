@@ -150,3 +150,68 @@ Function clears all data in all PTAM reggisters (!! Danger Zone !!)
 * Designated ID - This references the PTAM register assigned with this ID
 
 ---------------------------------------------------------
+
+PTAM REGISTERS
+
+"state" -> <int>
+- Register to store the vehile current state as integer (0 - 2) (Used in main statemchine)
+
+"stateDescript" -> <string>
+- Register to store the vehicle current state as string (STANDBY, ARMED, BYPASS)
+
+"GPScheck" -> <int>
+- Register for sensor validator submodule (GPS flag)
+
+"IMUcheck" -> <int>
+- Register for sensor validator submodule (IMU flag)
+
+"BMPcheck" -> <int>
+- Register for sensor validator submodule (Barometer flag)
+
+"setupSFlag" -> <int>
+- Register for initialization process
+
+"TLat" -> <double>
+- Register for web interface target latitude input
+
+"TLong" -> <double>
+- Register for web interface target longitude input
+
+"TAlt" -> <double>
+- Register for web interface target altitude input
+
+"CAlt" -> <double>
+- Register for web interface cruise altitude input
+
+"TVel" -> <double>
+- Register for web interface cruise velocity input
+
+"WingFL" -> <double>
+- Register for current wing position (Front Left Servo)
+
+"FL-ref-byp" -> <double>
+- Reference Register for FL wing (Direct servo access subroutine requires  a reference register to determine if user has requested movement of wing or throttle)
+
+"WingFR" -> <double>
+- Register for current wing position (Front Right Servo)
+
+"FR-ref-byp" -> <double>
+- Reference Register for FR wing (Direct servo access subroutine requires  a reference register to determine if user has requested movement of wing or throttle)
+
+"WingRL" -> <double>
+- Register for current wing position (Rear Left Servo)
+
+"RL-ref-byp" -> <double>
+- Reference Register for RL wing (Direct servo access subroutine requires  a reference register to determine if user has requested movement of wing or throttle)
+
+"WingRR" -> <double>
+- Register for current wing position (Rear Right Servo)
+
+"RR-ref-byp" -> <double>
+- Reference Register for RR wing (Direct servo access subroutine requires  a reference register to determine if user has requested movement of wing or throttle)
+
+"THR" -> <double>
+- Register for current throttle position
+
+"THR-ref-byp" -> <double>
+- Reference Register for throttle (Direct servo access subroutine requires  a reference register to determine if user has requested movement of wing or throttle)
