@@ -21,10 +21,9 @@ SOFTWARE.*/
 #define LOGTYPES_H_
 
 /* System includes */
-#include<inttypes.h>
-#include<stdio.h>
 #include<time.h>
 #include<iostream>
+
 
 /* Logging levels with 1 being severe, and 3 being safe */
 typedef enum

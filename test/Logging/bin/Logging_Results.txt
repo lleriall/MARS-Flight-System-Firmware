@@ -1,0 +1,10 @@
+
+LOG EVENT:
+	{
+		ID: UAV-UNIT-23
+		TIME: 1692551000
+		DATA: 1
+		MACHINE STATE: 5
+	}
+
+
