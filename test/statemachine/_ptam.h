@@ -1,11 +1,15 @@
 #ifndef SHARED_MEMORY_H
 #define SHARED_MEMORY_H
 
+/* System includes */
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include <mutex>
+
+/* logger includes */
+#include "../Logging/logger.hpp"
 
 class SharedMemory {
 public:
@@ -14,6 +18,7 @@ public:
     void storeString(const std::string& id, const std::string& data);
     void storeDouble(const std::string& id, double data);
     void storeInt(const std::string& id, int data);
+    void storeMessage(const Logger::flight_data_t& flight_data);
 
     std::vector<std::string> getStringData(const std::string& id);
     std::vector<double> getDoubleData(const std::string& id);
@@ -33,6 +38,7 @@ private:
     std::unordered_map<std::string, std::vector<std::string>> stringData_;
     std::unordered_map<std::string, std::vector<double>> doubleData_;
     std::unordered_map<std::string, std::vector<int>> intData_;
+    std::unordered_map<std::string, std::vector<Logger::flight_data_t>> msgData_;
 
     std::mutex mutex_;
 

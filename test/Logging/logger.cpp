@@ -16,21 +16,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+/* PTAM includes */
+#include"../statemachine/_ptam.h"
 
-/* Logger includes */
-#include "logger.hpp"
+/* System includes */
 #include <iostream>
 
-Loglevel_t Logger::status;
+
+SharedMemory& sharedMemory = SharedMemory::getInstance();
+Loglevel_t Logger::status = DEFAULT;
 Log_Machine_State_t Logger::machine_state = NEUTRAL;
-
-
 
 Loglevel_t Logger::log_event(const std::string id, const int data)
 {
     sharedMemory.storeInt(id, data);
     return status = LOG_INFO;
 };
+
+Loglevel_t Logger::log_event(const Logger::flight_data_t& flight_data )
+{
+    sharedMemory.storeMessage(flight_data);
+    return status = LOG_INFO;
+}
+
+Loglevel_t Logger::log_event(const Logger::flight_data_t flight_data, const Loglevel_t status_t)
+{
+    sharedMemory.storeMessage(flight_data);
+    return status = status_t;
+}
+
+Logger::flight_data_t Logger::create_log_message(const std::string id, const int data, const time_t& timestamp, const Log_Machine_State_t& machine_state)
+{
+    Logger::flight_data_t log_message = {id, data, timestamp, machine_state};
+    sharedMemory.storeMessage(log_message);
+    return log_message;
+}
 
 Log_Machine_State_t Logger::get_current_machine_state(Log_Machine_State_t machine_state){ return machine_state;}
 

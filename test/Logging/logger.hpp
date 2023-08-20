@@ -27,13 +27,31 @@ SOFTWARE.*/
 /* Log includes */
 #include"include/logtypes.h"
 
-/* PTAM includes */
-#include"../../base-firmware/components/PTAM/_ptam.h"
 
 class Logger
 {
 public:
-    ~Logger() {}
+
+    /* Flight data formatter
+    ==============================================
+    |   timestamp   Time log message is made
+    |   m_state     Machine state during message
+    ==============================================
+    */
+    typedef struct
+    {
+        std::string id;
+        int data;
+        const time_t timestamp;
+        Log_Machine_State_t m_state;
+
+        /* Add pressure functionality*/
+
+        /* Add altitude functionality */
+
+        /* Add speed functionality */
+
+    }flight_data_t;
 
     /* Logs a system event
     ==============================================
@@ -43,6 +61,17 @@ public:
     ==============================================
     */
     Loglevel_t log_event(const std::string id,const int data);
+
+    /* Takes flight_data_t reference */
+    Loglevel_t log_event(const Logger::flight_data_t& flight_data);
+
+    /* Takes both flight_data_t reference and Loglevel_t status to change */
+    Loglevel_t log_event(const Logger::flight_data_t flight_data, Loglevel_t status);
+
+
+
+    /* Returns struct obj of flight_data_t  */
+    flight_data_t create_log_message(const std::string id, const int data, const time_t& timestamp, const Log_Machine_State_t& machine_state);
 
     /* Returns the UAV current state
     ==============================================
@@ -66,11 +95,7 @@ public:
 
 private:
 
-    SharedMemory& sharedMemory = SharedMemory::getInstance();
-
     static Loglevel_t status;
-
     static Log_Machine_State_t machine_state;
 };
-
 #endif /* LOGGER_HPP_ */
