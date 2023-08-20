@@ -8,6 +8,7 @@
 #include"../components/HALX/fan_relay.h"
 #include"../components/HALX/bno055.h"
 #include"../components/HALX/atgm336H.h"
+#include"../components/HALX/_SD_FileSystem.h"
 #include"../components/HALX/MotorController.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
@@ -53,7 +54,12 @@ extern "C" {
     displayStandByClientSuccess();
     vTaskDelay(1);
 
-    ATGM336H *gps = new ATGM336H();
+
+    SD_FILESYSTEM *sdobj = new SD_FILESYSTEM();
+    sdobj -> SDFS_initialize();
+    delete sdobj;
+
+    /*ATGM336H *gps = new ATGM336H();
     gps -> init_ATGM_module();
     while(1){
         gps -> pullATGM_data();
@@ -62,7 +68,7 @@ extern "C" {
         vTaskDelay(1); 
     }
 
-    delete gps;
+    delete gps;*/
 
     /*FAN_COOLING *cool = new FAN_COOLING();
     cool -> init_relay();

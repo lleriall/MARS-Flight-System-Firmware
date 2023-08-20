@@ -1,8 +1,9 @@
-idf_component_register(SRCS "servoControl.cpp" 
+idf_component_register(SRCS "_SD_FileSystem.cpp"
+                            "servoControl.cpp" 
                             "MotorController.cpp" 
                             "minmea.cpp"
                             "Vmotor.cpp"
-                            "_SD.cpp"
+                           
                             "ssd1306_fonts.cpp"
                             "ssd1306.cpp"
                             "mg90s_servo.cpp"
@@ -13,4 +14,4 @@ idf_component_register(SRCS "servoControl.cpp"
                             "bno055.cpp"
                             "atgm336H.cpp"
                         INCLUDE_DIRS "."
-                        REQUIRES esp_wifi esp_netif esp_http_server nvs_flash driver)
+                        REQUIRES esp_wifi esp_netif esp_http_server nvs_flash driver fatfs sdmmc vfs)
