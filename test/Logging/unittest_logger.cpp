@@ -18,8 +18,7 @@ SOFTWARE.*/
 
 
 /* System includes */
-#include <iostream>
-#include <fstream>
+
 
 /* logger includes */
 #include "logger.hpp"
@@ -81,6 +80,18 @@ int main(void)
     auto results = obj.create_log_message("UAV_ID_2", 22, curr_time, Machine);
 
     log_results << "\n\nNEW LOGGED EVENT: " << "\n" << results.id << "\n" << results.data << "\n" << results.m_state << "\n" << results.timestamp;
+
+/* 8.20.23 Testing improved log formatting */
+    obj.create_log_message("UAV_ID_2", 22, curr_time, Machine);
+
+    /* Created new flight data variable to distinguish unit tests from previous */
+    time_t t_stamp = obj.get_timestamp();
+    Logger::flight_data_t format_msg2 = {"UAV-UNIT-23", 1, t_stamp, Machine};
+
+
+    obj.create_log_message(format_msg2);
+    log_results << "\n\nTimestamp: " << t_stamp;
+
 
     log_results << "\n\n\nThis file was generated from the unittest_logger.cpp file. ";
 
