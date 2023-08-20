@@ -21,8 +21,8 @@ SOFTWARE.*/
 #define LOGGER_HPP_
 
 /* System includes */
-#include<type_traits>
-#include<iostream>
+#include<fstream>
+#include<filesystem>
 
 /* Log includes */
 #include"include/logtypes.h"
@@ -70,9 +70,25 @@ public:
 
 
 
-    /* Returns struct obj of flight_data_t  */
+
+    //____________________________________________________________
+    /* Returns struct obj of flight_data_t
+    ==============================================
+    |   ID              Message ID String
+    |   Data            Info to be Sent
+    |   Timestamp       When message is Sent
+    |   Log State       Machine's current State
+    ==============================================
+    */
     flight_data_t create_log_message(const std::string id, const int data, const time_t& timestamp, const Log_Machine_State_t& machine_state);
 
+    /* Returns log level flag */
+    Loglevel_t create_log_message(flight_data_t& flight_data);
+
+
+
+
+    //____________________________________________________________
     /* Returns the UAV current state
     ==============================================
     |    NEUTRAL   A Default State
@@ -83,6 +99,7 @@ public:
     */
     Log_Machine_State_t get_current_machine_state(Log_Machine_State_t machine_state);
 
+    //____________________________________________________________
     /* Sets the UAV current state
     ==============================================
     |    NEUTRAL   A Default State
@@ -93,6 +110,11 @@ public:
     */
     Log_Machine_State_t set_current_machine_state(Loglevel_t loglevel);
 
+
+
+
+    /* Get the machine's current time */
+    time_t get_timestamp() noexcept;
 private:
 
     static Loglevel_t status;
