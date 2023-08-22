@@ -54,7 +54,8 @@ The majority of the code written is in either C/C++, or Assembly language. C++ c
 
 For example
 
-`Loglevel_t Logger::create_log_message(flight_data_t &flight_data)
+```
+Loglevel_t Logger::create_log_message(flight_data_t &flight_data)
 {
     SharedMemory &sharedMemory = SharedMemory::getInstance();
     std::ofstream logFile("Logging_Results.txt");
@@ -77,7 +78,8 @@ For example
 
     sharedMemory.storeMessage(flight_data);
     return status = LOG_INFO;
-}`
+}
+```
 
 The code presented here is an example of clang format being used. You may already be familiar with the style as it is learned early on in developer's career.
 
@@ -87,7 +89,7 @@ When writing new functions, it is required that you use the boxing or Doxygen co
 
 **Doxygen**
 
-`/**
+```/**
  * @brief Creates a log message based on flight data and stores it in a file.
  *
  * This function takes flight data as input and creates a log message containing
@@ -119,11 +121,12 @@ Loglevel_t Logger::create_log_message(flight_data_t &flight_data) {
     sharedMemory.storeMessage(flight_data);
     return status = LOG_INFO;
 }
-`
+```
 
 **Boxing style**
 
-`//____________________________________________________________
+```
+//____________________________________________________________
 /* Creates a log message based on flight data and stores it in a file.
 ===========================================================================
 |    flight_data   The flight data structure containing event information
@@ -152,7 +155,7 @@ Loglevel_t Logger::create_log_message(flight_data_t& flight_data) {
     sharedMemory.storeMessage(flight_data);
     return status = LOG_INFO;
 }
-`
+```
 
 # Code interfacing
 
@@ -162,7 +165,7 @@ For example, we would declare a function prototype named func_prototype within a
 
 **tool.h(pp)**
 
-`
+```
 class toolbox
 {
     toolbox(){}
@@ -174,7 +177,8 @@ public:
 private:
 
 
-}`
+}
+```
 
 We require functions pertaining to certain functionality within a subsystem to be declared within a class because of the modularity it comes with it. Everything we need will be within the scope of the class, so we can then easily reference the API to get what we need without conflicts.
 
@@ -185,7 +189,7 @@ Code visualization is a helpful way to describe what something does without havi
 
 Take a look at the following snippet:
 
-`;/////////////////////////////////////////////////////////////////////////////
+```;/////////////////////////////////////////////////////////////////////////////
 ; Name:        boot.asm
 ; Purpose:     Main boot sector code
 ; Author:      Lukas Jackson
@@ -283,7 +287,7 @@ msg db 'Booting into Curtains OS', 0    ;String that is null terminated.
 
 times 510-($-$$) db 0   ;Pad the rest of the sector to reach 510 bytes
 dw 0xAA55           ;PC boot signature.
-`
+```
 In the figure, the author shows a clear representation of memory segments without having to go into too much writing on it. Though it is not a strict requirement, it is greatly appreciated if you add a little visual context to your code so that we can understand more faster and without having to read through a bunch of functions.
 
 
@@ -294,21 +298,21 @@ Just like functions having a summary, and/or visualization, you also have the op
 For long paragraph comments, you should use the forward slash (/) and the asterisk (*) symbols to create a comment block.
 
 **Comment Block**
-
+```
 /* This is a comment block contained onto one line */
 
 /*
 This is a comment block spanning a few lines
 Code I put within these barriers are interpreted as comments.
 */
-
+```
 
 **Functions within a program**
 
 Just like a summary, you can also list of the name of each function prototype, class, enum, ect. inside a summary to reduce the need to manually search for functions.
 
 **Function summaries**
-
+```
 `example.h(pp)
 
 /* Within this file contain the following functions:
@@ -318,7 +322,7 @@ int function_getter             Function getter
 void*(*Function)(int, int)      Function pointer with no return value
 int*(Function)(void*, int)      Function pointer that returns a pointer to an integer
 
-`
+```
 
 # Commend indentation
 
