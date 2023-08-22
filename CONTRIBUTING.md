@@ -321,6 +321,7 @@ void function_prototype1        Function that returns nothing
 int function_getter             Function getter
 void*(*Function)(int, int)      Function pointer with no return value
 int*(Function)(void*, int)      Function pointer that returns a pointer to an integer
+
 */
 ```
 
