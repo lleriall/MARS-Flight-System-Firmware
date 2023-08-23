@@ -1,7 +1,0 @@
-{
-    "C_Cpp.default.compilerPath": "/usr/bin/g++-12",
-    "files.associations": {
-        "*.bin": "code-text-binary",
-        "iosfwd": "cpp"
-    }
-}
