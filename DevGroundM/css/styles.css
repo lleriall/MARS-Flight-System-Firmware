@@ -864,3 +864,67 @@ top:10%;
     width: 20%;
     height: 20%;
   }
+
+  #supdater-subMenu{
+    position: absolute;
+    top: 2%;
+    left: 1%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu2{
+    position: absolute;
+    top: 2%;
+    left: 51%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu3{
+    position: absolute;
+    top: 53%;
+    left: 1%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu4{
+    position: absolute;
+    top: 53%;
+    left: 51%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
