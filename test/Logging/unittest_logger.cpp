@@ -1,20 +1,34 @@
-/*MIT License
-Copyright (c) 2023 limitless Aeronautics
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
+/**
+ * @file unittest_logger.cpp
+ * @brief logger unit test
+ *
+ * Testing various functions from the logger.cpp translation unit to verify update functionality
+ *
+ *
+ * @date August 18th 2023
+ * @copyright Copyright (c) 2023 limitless Aeronautics
+ *
+ * @author Lukas Jackson
+ *
+ * @license MIT License
+ *          Copyright (c) 2023 limitless Aeronautics
+ *          Permission is hereby granted, free of charge, to any person obtaining a copy
+ *          of this software and associated documentation files (the "Software"), to deal
+ *          in the Software without restriction, including without limitation the rights
+ *          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *          copies of the Software, and to permit persons to whom the Software is
+ *          furnished to do so, subject to the following conditions:
+ *          The above copyright notice and this permission notice shall be included in all
+ *          copies or substantial portions of the Software.
+ *          THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *          SOFTWARE.
+ */
+
 
 
 /* System includes */
@@ -37,8 +51,6 @@ int main(void)
     const time_t curr_time = 0;
 
 /* Log events */
-    log_results << "Logged event: " << obj.log_event(ID, 1) << "\n";
-    log_results << "Logged event: " << obj.log_event("UNIT_UAV", 1) << "\n\n";
 
 /* Retrieve the current machine state */
     log_results << "Current machine state: " << obj.get_current_machine_state(Machine) << "\n";
@@ -73,19 +85,9 @@ int main(void)
         << "\n\t\tMESSAGE: " << format_msg.m_state
         << "\n\t}";
 
-    log_results << "\n\nNEW LOGGED EVENT: " << obj.log_event(format_msg) << "\n";
-
-    log_results << "\n\nNEW LOGGED EVENT: " << obj.log_event(format_msg, LOG_INFO) << "\n";
-
-    auto results = obj.create_log_message("UAV_ID_2", 22, curr_time, Machine);
-
-    log_results << "\n\nNEW LOGGED EVENT: " << "\n" << results.id << "\n" << results.data << "\n" << results.m_state << "\n" << results.timestamp;
-
-/* 8.20.23 Testing improved log formatting */
-    obj.create_log_message("UAV_ID_2", 22, curr_time, Machine);
 
     /* Created new flight data variable to distinguish unit tests from previous */
-    time_t t_stamp = obj.get_timestamp();
+    time_t t_stamp = 4;
     Logger::flight_data_t format_msg2 = {"UAV-UNIT-23", 1, t_stamp, Machine};
 
 

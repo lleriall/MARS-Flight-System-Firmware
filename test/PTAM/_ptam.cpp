@@ -41,6 +41,13 @@ void DataStore::storeData(const std::string& id, double data) {
     (*data_map)[id].push_back(new double(data));
 }
 
+void DataStore::storeData(const Logger::flight_data_t& flight_data){
+    if(!data_map){
+        data_map = new std::unordered_map<std::string, std::vector<void*>>();
+    }
+    (*data_map)[flight_data.id].push_back(new int(flight_data.data));
+}
+
 std::vector<std::string> DataStore::getStringData(const std::string& id) {
     std::vector<std::string> results;
     if (data_map && data_map->count(id) > 0) {

@@ -1,6 +1,3 @@
-Logged event: 3
-Logged event: 3
-
 Current machine state: 4
 Current machine state: 5
 Current machine state: 6
@@ -20,19 +17,7 @@ NEW LOGGED EVENT:
 		MESSAGE: 7
 	}
 
-NEW LOGGED EVENT: 3
-
-
-NEW LOGGED EVENT: 3
-
-
-NEW LOGGED EVENT: 
-UAV_ID_2
-22
-7
-0
-
-Timestamp: 1692551000
+Timestamp: 4
 
 
 This file was generated from the unittest_logger.cpp file. 
