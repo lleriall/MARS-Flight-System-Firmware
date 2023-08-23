@@ -52,7 +52,7 @@ To maintain maintenance and code readability, we have implemented a standard tha
 
 The majority of the code written is in either C/C++, or Assembly language. C++ code with follow the clang_format coding style to increase readability and prevent confusion among new contributors and new commits from established contributors.
 
-For example
+For example,
 
 ```
 Loglevel_t Logger::create_log_message(flight_data_t &flight_data)
@@ -83,11 +83,12 @@ Loglevel_t Logger::create_log_message(flight_data_t &flight_data)
 
 The code presented here is an example of clang format being used. You may already be familiar with the style as it is learned early on in developer's career.
 
+
 ## Commenting
 
 When writing new functions, it is required that you use the boxing or Doxygen commenting sytle to document your code. With Doxygen being the most preferred as it gives use the ability to generate documentation instead of manually creating the docs after the code.
 
-**Doxygen**
+**Doxygen Commenting Style**
 
 ```/**
  * @brief Creates a log message based on flight data and stores it in a file.
@@ -123,7 +124,7 @@ Loglevel_t Logger::create_log_message(flight_data_t &flight_data) {
 }
 ```
 
-**Boxing style**
+**Box Commenting Style**
 
 ```
 //____________________________________________________________
@@ -157,11 +158,13 @@ Loglevel_t Logger::create_log_message(flight_data_t& flight_data) {
 }
 ```
 
+
 # Code interfacing
 
 Our coding style involves declaring our necessary function prototypes and other tools within header files, then defining them within the translation unit(source file) to provide the needed APIs for future use.
 
 For example, we would declare a function prototype named func_prototype within a class in a file name tool.h(pp) to later define within a translation unit:
+
 
 **tool.h(pp)**
 
@@ -181,6 +184,7 @@ private:
 ```
 
 We require functions pertaining to certain functionality within a subsystem to be declared within a class because of the modularity it comes with it. Everything we need will be within the scope of the class, so we can then easily reference the API to get what we need without conflicts.
+
 
 
 ## Visualization
@@ -291,11 +295,13 @@ dw 0xAA55           ;PC boot signature.
 In the figure, the author shows a clear representation of memory segments without having to go into too much writing on it. Though it is not a strict requirement, it is greatly appreciated if you add a little visual context to your code so that we can understand more faster and without having to read through a bunch of functions.
 
 
+
 ## Code summary
 
 Just like functions having a summary, and/or visualization, you also have the option to summarize the usage of the file with a quick explaination at the top using simple commenting.
 
 For long paragraph comments, you should use the forward slash (/) and the asterisk (*) symbols to create a comment block.
+
 
 **Comment Block**
 ```
@@ -311,6 +317,7 @@ Code I put within these barriers are interpreted as comments.
 
 Just like a summary, you can also list of the name of each function prototype, class, enum, ect. inside a summary to reduce the need to manually search for functions.
 
+
 **Function summaries**
 ```
 `example.h(pp)
@@ -325,7 +332,7 @@ int*(Function)(void*, int)      Function pointer that returns a pointer to an in
 */
 ```
 
-# Commend indentation
+# Comment indentation
 
 Shown above in the example were very evenly aligned comments. The indentation of comments is a unique detail to add to your code when collaborating with us. This helps to keep comments more organised and not all over the place.
 
