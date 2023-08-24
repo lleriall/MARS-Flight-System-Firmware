@@ -928,3 +928,14 @@ top:10%;
     font-size: larger;
     border-style: none;
   }
+  
+  #controller-screen1-connected{
+    position: absolute;
+    top: 45%;
+    left: 43%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+    visibility: hidden;
+  }
