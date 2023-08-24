@@ -1,20 +1,32 @@
-/*MIT License
-Copyright (c) 2023 limitless Aeronautics
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
+/**
+ * @file _ptam.cpp
+ * @brief Main PTAM API interface
+ *
+ * Defines the ptam interface
+ *
+ * @date August 18th 2023
+ * @copyright Copyright (c) 2023 limitless Aeronautics
+ *
+ * @author Nyameaama Gambrah
+ *
+ * @license MIT License
+ *          Copyright (c) 2023 limitless Aeronautics
+ *          Permission is hereby granted, free of charge, to any person obtaining a copy
+ *          of this software and associated documentation files (the "Software"), to deal
+ *          in the Software without restriction, including without limitation the rights
+ *          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *          copies of the Software, and to permit persons to whom the Software is
+ *          furnished to do so, subject to the following conditions:
+ *          The above copyright notice and this permission notice shall be included in all
+ *          copies or substantial portions of the Software.
+ *          THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *          SOFTWARE.
+ */
 
 #include "_ptam.h"
 
@@ -39,13 +51,6 @@ void DataStore::storeData(const std::string& id, double data) {
         data_map = new std::unordered_map<std::string, std::vector<void*>>();
     }
     (*data_map)[id].push_back(new double(data));
-}
-
-void DataStore::storeData(const Logger::flight_data_t& flight_data){
-    if(!data_map){
-        data_map = new std::unordered_map<std::string, std::vector<void*>>();
-    }
-    (*data_map)[flight_data.id].push_back(new int(flight_data.data));
 }
 
 std::vector<std::string> DataStore::getStringData(const std::string& id) {

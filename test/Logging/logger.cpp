@@ -32,55 +32,6 @@
 /* PTAM includes */
 #include "../PTAM/_ptam.h"
 
-//  remove fstream usage
-//  clean registers
-//  remove global machine and status usage
-//  use proper ptam<DONE>
-//  interface to ptam<DONE>
-//  fix includes<DONE>
-//  update docs<DONE>
-
-
-/* System includes */
-
-Loglevel_t Logger::status = DEFAULT;
-Log_Machine_State_t Logger::machine_state = NEUTRAL;
-
-void Logger::log_event(const std::string id, const int data)
-{
-    DataStore *obj = new DataStore();
-    obj->storeData(id, data);
-};
-
-void Logger::log_event(const Logger::flight_data_t &flight_data)
-{
-    DataStore *obj = new DataStore();
-    obj->storeData(flight_data);
-}
-
-void Logger::create_log_message(flight_data_t &flight_data)
-{
-    DataStore *obj = new DataStore();
-    std::ofstream logFile("Logging_Results.txt");
-    if (logFile.is_open())
-    {
-        logFile << "\nLOG EVENT:" << std::endl;
-        logFile << "\t{" << std::endl;
-        logFile << "\t\tID: " << flight_data.id << std::endl;
-        logFile << "\t\tTIME: " << flight_data.timestamp << std::endl;
-        logFile << "\t\tDATA: " << flight_data.data << std::endl;
-        logFile << "\t\tMACHINE STATE: " << machine_state << std::endl;
-        logFile << "\t}\n\n" << std::endl;
-
-        logFile.close();
-    }
-    else
-    {
-        return;
-    }
-    obj->storeData(flight_data);
-    return;
-}
 
 Log_Machine_State_t Logger::get_current_machine_state(Log_Machine_State_t machine_state) { return machine_state; }
 

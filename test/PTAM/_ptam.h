@@ -51,13 +51,13 @@ public:
     static void storeData(const std::string& id, const std::string& data);
     static void storeData(const std::string& id, int data);
     static void storeData(const std::string& id, double data);
-    static void storeData(const Logger::flight_data_t& flight_data);
-
 
 
     static std::vector<std::string> getStringData(const std::string& id);
     static std::vector<int> getIntData(const std::string& id);
     static std::vector<double> getDoubleData(const std::string& id);
+
+    //static void* PTAM_QUERY(std::unordered_map<std::string, std::vector<void*>>* data_map);
 
     static void clearData(const std::string& id);
     static void clearData();

@@ -33,9 +33,6 @@
 #ifndef LOGGER_HPP_
 #define LOGGER_HPP_
 
-/* System includes */
-#include<fstream>
-
 /* Log includes */
 #include"include/logtypes.h"
 
@@ -45,50 +42,36 @@ class Logger
 public:
 
 
+
     /**
-     * @brief type struct
+     * @brief Sensor Data Dump(SDD) is ran periodically to collect system data
      *
+     * @return uint8_t 
      */
-    typedef struct
-    {
-        std::string id;
-        int data;
-        const time_t timestamp;
-        Log_Machine_State_t m_state;
+    uint8_t EVENT_LOG_SDD(void);
 
-        /* Add pressure functionality*/
-
-        /* Add altitude functionality */
-
-        /* Add speed functionality */
-
-    }flight_data_t;
 
 
     /**
-     * @brief
+     * @brief System State Logs(SSL) is ran periodically to collect the system state
+     * 
+     * @return uint8_t 
+     */
+    uint8_t EVENT_LOG_SSL(void);
+
+
+
+    /**
+     * @brief System Error Logs(SEL) is called by failing routines in submodules
      * 
      * @param id 
-     * @param data
+     * @param _param1
+     * @param info 
+     * @return uint8_t 
      */
-    void log_event(const std::string id,const int data);
+    uint8_t EVENT_LOG_SEL(std::string id,
+                            mars_exception_t _param1, std::string info);
 
-
-    /**
-     * @brief
-     * 
-     * @param flight_data
-     */
-    void log_event(const Logger::flight_data_t& flight_data);
-
-
-    /**
-     * @brief Create a log message object
-     * 
-     * @param flight_data 
-     * @return Loglevel_t
-     */
-    void create_log_message(flight_data_t& flight_data);
 
 
     /**
@@ -100,6 +83,7 @@ public:
     Log_Machine_State_t get_current_machine_state(Log_Machine_State_t machine_state);
 
 
+
     /**
      * @brief Set the current machine state object
      *
@@ -109,7 +93,12 @@ public:
     Log_Machine_State_t set_current_machine_state(Loglevel_t loglevel);
 
 
-    /* Get the machine's current time */
+
+    /**
+     * @brief Get the timestamp object
+     *
+     * @return time_t
+     */
     time_t get_timestamp() noexcept;
 
 private:
