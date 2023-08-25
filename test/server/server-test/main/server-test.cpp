@@ -55,9 +55,9 @@ extern "C" {
     vTaskDelay(1);
 
 
-    SD_FILESYSTEM *sdobj = new SD_FILESYSTEM();
+    /*SD_FILESYSTEM *sdobj = new SD_FILESYSTEM();
     sdobj -> SDFS_initialize();
-    delete sdobj;
+    delete sdobj;*/
 
     /*ATGM336H *gps = new ATGM336H();
     gps -> init_ATGM_module();
@@ -79,11 +79,11 @@ extern "C" {
     
     delete cool;*/
 
-    /*WingTranslate *obj = new WingTranslate();
-    obj -> mcpwm_servo_control(180,1,SPEED_FAST);
-    obj -> mcpwm_servo_control(0,1,SPEED_FAST);
-    obj -> mcpwm_servo_control(180,1,SPEED_FAST);
-    delete obj;*/
+    WingTranslate *obj = new WingTranslate();
+    obj -> mcpwm_servo_control(45, SERVO_FL);
+    obj -> mcpwm_servo_control(0, SERVO_FL);
+    obj -> mcpwm_servo_control(90, SERVO_FL);
+    delete obj;
 
     //SSD1306_GotoXY(10,10);
 
