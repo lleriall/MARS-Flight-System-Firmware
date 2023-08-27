@@ -939,3 +939,60 @@ top:10%;
     color: #fff;
     visibility: hidden;
   }
+
+  #left-stick{
+    position: absolute;
+    top: 36.5%;
+    left: -10%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #lstick-line{
+    position: absolute;
+    top: 36.5%;
+    left: 21%;
+    z-index: 500;
+    width: 25%;
+    color: #fff;
+  }
+
+  #right-stick{
+    position: absolute;
+    top: 36.5%;
+    left: 65%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #rstick-line{
+    position: absolute;
+    top: 36.5%;
+    left: 56.5%;
+    z-index: 500;
+    width: 25%;
+    color: #fff;
+  }
+
+  #right-trigger{
+    position: absolute;
+    top: 22%;
+    left: 65%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #rtrigger-line{
+    position: absolute;
+    top: 22%;
+    left: 65%;
+    z-index: 500;
+    width: 16.5%;
+    color: #fff;
+  }
