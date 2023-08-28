@@ -1,3 +1,25 @@
+/*MIT License
+
+Copyright (c) 2023 limitless Aeronautics
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 #include "mg90s_servo.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -23,6 +45,12 @@ uint8_t SERVO_POS_3 = 0;
 
 uint8_t SERVO_POS_4 = 0;
 
+//____________________________________________________________
+/* Initializes MG90S Servo using MCPWM
+===========================================================================
+|    motor selection   The identification of the motor intended to be interfaced
+===========================================================================
+*/
 void WingTranslate::mcpwm_gpio_initialize(uint8_t motor)
 {
     switch(motor) {
@@ -39,9 +67,15 @@ void WingTranslate::mcpwm_gpio_initialize(uint8_t motor)
             mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, servo_pin4); //Set servo_pin4 as PWM0A, to which servo is connected
         break;
     }
-    //mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, servo_pin); //Set GPIO 33 as PWM0A, to which servo is connected
 }
 
+
+//____________________________________________________________
+/* Utillity subroutine -> angle to pulsewidth converter
+===========================================================================
+|    motor rotation degree   The motor rotation bounded between 0 deg to 90 deg
+===========================================================================
+*/
 uint32_t WingTranslate::servo_per_degree_init(uint32_t degree_of_rotation)
 {
     uint32_t cal_pulsewidth = 0;
@@ -49,7 +83,14 @@ uint32_t WingTranslate::servo_per_degree_init(uint32_t degree_of_rotation)
     return cal_pulsewidth;
 }
 
-uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin,uint8_t speed)
+//____________________________________________________________
+/* Main API routine
+===========================================================================
+|    motor target angle   The motor rotation angle bounded between 0 deg to 90 deg
+|    motor selection   The identification of the motor intended to be interfaced
+===========================================================================
+*/
+uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin)
 {
     uint32_t angle, count;
     uint32_t SERVO_TARGET_ANGLE = target;
@@ -66,25 +107,26 @@ uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin,uint8_t s
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config); //Configure PWM0A & PWM0B with above settings
     
     //Hardware Check
-    if(target > 180){
+    if(target > 90){
+        //MARS LOGGER SOFT FAIL 
         return 0;
     }
     uint8_t SP = GET_SERVO_POS(pin);
 
     if(SP != target){
         if(target > SP){
-            for (count = SP; count < SERVO_TARGET_ANGLE; count += speed){
+            for (count = SP; count < SERVO_TARGET_ANGLE; count += (SERVO_TARGET_ANGLE - SP)){
                 angle = servo_per_degree_init(count);
                 mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-                vTaskDelay(10 * speed); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
+                vTaskDelay(10 * (SERVO_TARGET_ANGLE - SP)); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
             }
             UPDATE_SERVO_POS(pin,target);
         }
         if(target < SP){
-            for (count = SP; count > SERVO_TARGET_ANGLE; count -= speed){
+            for (count = SP; count > SERVO_TARGET_ANGLE; count -= (SERVO_TARGET_ANGLE - SP)){
                 angle = servo_per_degree_init(count);
                 mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-                vTaskDelay(10 * speed); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
+                vTaskDelay(10 * (SERVO_TARGET_ANGLE - SP)); //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
             }
             UPDATE_SERVO_POS(pin,target);
         }
@@ -92,6 +134,13 @@ uint8_t WingTranslate::mcpwm_servo_control(uint32_t target,uint8_t pin,uint8_t s
     return 1;
 }
 
+
+//____________________________________________________________
+/* Utillity subroutine -> retrieve current motor position 
+===========================================================================
+|    motor selection   The identification of the motor intended to be interfaced
+===========================================================================
+*/
 uint8_t WingTranslate::GET_SERVO_POS(uint8_t pin)
 {
      switch(pin) {
@@ -111,6 +160,14 @@ uint8_t WingTranslate::GET_SERVO_POS(uint8_t pin)
     return 0;
 }
 
+
+//____________________________________________________________
+/* Utillity subroutine -> update current motor position after movement change
+===========================================================================
+|    motor selection   The identification of the motor intended to be interfaced
+|    updated servo position      New motor position to be updated
+===========================================================================
+*/
 void WingTranslate::UPDATE_SERVO_POS(uint8_t pin, uint8_t updatedValue){
     switch(pin) {
         case 0:

@@ -2,8 +2,7 @@
  * @file logger.hpp
  * @brief API toolkit for logger
  *
- * This file provides the necessary prototypes for functions that will be
- * defined in the translation unit.
+ * This is the main logger module where prototypes are declared
  *
  * @date August 18th 2023
  * @copyright Copyright (c) 2023 limitless Aeronautics
