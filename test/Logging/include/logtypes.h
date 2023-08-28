@@ -32,6 +32,10 @@
 #ifndef LOGTYPES_H_
 #define LOGTYPES_H_
 
+#include<iostream>
+#include<inttypes.h>
+
+
 
 /**
  * @brief Level of logs sent to the PTAM regs

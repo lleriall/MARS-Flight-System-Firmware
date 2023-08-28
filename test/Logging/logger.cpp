@@ -33,6 +33,7 @@
 #include "../PTAM/_ptam.h"
 
 
+
 Log_Machine_State_t Logger::get_current_machine_state(Log_Machine_State_t machine_state) { return machine_state; }
 
 Log_Machine_State_t Logger::set_current_machine_state(Loglevel_t logLevel) {

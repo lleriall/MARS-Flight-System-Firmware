@@ -57,8 +57,6 @@ public:
     static std::vector<int> getIntData(const std::string& id);
     static std::vector<double> getDoubleData(const std::string& id);
 
-    //static void* PTAM_QUERY(std::unordered_map<std::string, std::vector<void*>>* data_map);
-
     static void clearData(const std::string& id);
     static void clearData();
     ~DataStore();

@@ -41,6 +41,21 @@ class Logger
 {
 public:
 
+    static Logger fout;
+
+    template<typename T>
+    Logger& operator<<(const T& value){
+        // Add file system API usage here
+
+        return *this;
+    }
+
+    template<typename... Args>
+    Logger& operator<<(const Args&... args){
+        // Add file system API usage here
+
+        return *this;
+    }
 
 
     /**
@@ -54,7 +69,7 @@ public:
 
     /**
      * @brief System State Logs(SSL) is ran periodically to collect the system state
-     * 
+     *
      * @return uint8_t 
      */
     uint8_t EVENT_LOG_SSL(void);
