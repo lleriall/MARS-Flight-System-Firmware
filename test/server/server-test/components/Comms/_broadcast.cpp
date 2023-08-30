@@ -87,7 +87,7 @@ void BroadcastedServer::wifi_init_softap(void)
     wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
     
 
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP)); //WIFI_AP_STA
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 

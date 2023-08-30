@@ -145,7 +145,7 @@ void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
     WingTranslate *obj = new WingTranslate();
     if(dtaWFL != dtaWFL_ref){
         //There has been an update, wings can be commanded
-        obj -> mcpwm_servo_control(dtaWFL,0,SPEED_FAST);
+        obj -> mcpwm_servo_control(dtaWFL,0);
         //Update the reference register
         //Clear previous register to avoid memory overflow
         sharedMemory.clearData("FL-ref-byp");
@@ -153,7 +153,7 @@ void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
     }
     if(dtaWFR != dtaWFR_ref){
         //There has been an update, wings can be commanded
-        obj -> mcpwm_servo_control(dtaWFR,1,SPEED_FAST);
+        obj -> mcpwm_servo_control(dtaWFR,1);
         //Update the reference register
         //Clear previous register to avoid memory overflow
         sharedMemory.clearData("FR-ref-byp");
@@ -161,7 +161,7 @@ void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
     }
     if(dtaWRL != dtaWRL_ref){
         //There has been an update, wings can be commanded
-        obj -> mcpwm_servo_control(dtaWRL,2,SPEED_FAST);
+        obj -> mcpwm_servo_control(dtaWRL,2);
         //Update the reference register
         //Clear previous register to avoid memory overflow
         sharedMemory.clearData("RL-ref-byp");
@@ -169,7 +169,7 @@ void CONTROLLER_TASKS::_bypass_(std::string sbc_id){
     }
     if(dtaWRR != dtaWRR_ref){
         //There has been an update, wings can be commanded
-        obj -> mcpwm_servo_control(dtaWRR,3,SPEED_FAST);
+        obj -> mcpwm_servo_control(dtaWRR,3);
         //Update the reference register
         //Clear previous register to avoid memory overflow
         sharedMemory.clearData("RR-ref-byp");

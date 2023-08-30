@@ -22,11 +22,24 @@ SharedMemory::SharedMemory() {}
 
 SharedMemory::~SharedMemory() {}
 
+//____________________________________________________________
+/* Main subroutine -> initialises PTAM instancce
+===========================================================================
+void
+===========================================================================
+*/
 SharedMemory& SharedMemory::getInstance() {
     static SharedMemory instance;
     return instance;
 }
 
+//____________________________________________________________
+/* Main subroutines -> stores value of datatypes (std::string, double, int)
+===========================================================================
+|    Designated ID   This creates the PTAM register with this ID an can only be referenced with this ID string
+|    Data Value      Data value of types std::string, double, int
+===========================================================================
+*/
 void SharedMemory::storeString(const std::string& id, const std::string& data) {
     std::lock_guard<std::mutex> lock(mutex_);
     stringData_[id].push_back(data);
@@ -42,6 +55,12 @@ void SharedMemory::storeInt(const std::string& id, int data) {
     intData_[id].push_back(data);
 }
 
+//____________________________________________________________
+/* Main subroutines -> retrieves all the values from PTAM register of appropriate typdef
+===========================================================================
+|   Designated ID   This references the PTAM register assigned with this ID
+===========================================================================
+*/
 std::vector<std::string> SharedMemory::getStringData(const std::string& id) {
     std::lock_guard<std::mutex> lock(mutex_);
     return stringData_[id];
@@ -57,6 +76,12 @@ std::vector<int> SharedMemory::getIntData(const std::string& id) {
     return intData_[id];
 }
 
+//____________________________________________________________
+/* Main subroutine -> Clear data in specific PTAM register
+===========================================================================
+|    Designated ID   This references the PTAM register assigned with this ID
+===========================================================================
+*/
 void SharedMemory::clearData(const std::string& id) {
     std::lock_guard<std::mutex> lock(mutex_);
     stringData_.erase(id);
@@ -64,6 +89,12 @@ void SharedMemory::clearData(const std::string& id) {
     intData_.erase(id);
 }
 
+//____________________________________________________________
+/* Main subroutine -> Clear data in all PTAM registers
+===========================================================================
+|    void
+===========================================================================
+*/
 void SharedMemory::clearAllData() {
     std::lock_guard<std::mutex> lock(mutex_);
     stringData_.clear();
@@ -71,6 +102,12 @@ void SharedMemory::clearAllData() {
     intData_.clear();
 }
 
+//____________________________________________________________
+/* Main subroutines -> retrieves the last and most recent value in PTAM register of appropriate typdef
+===========================================================================
+|    Designated ID   This references the PTAM register assigned with this ID
+===========================================================================
+*/
 std::string SharedMemory::getLastString(const std::string& id) {
     std::lock_guard<std::mutex> lock(mutex_);
     return getLastElement(stringData_[id]);
@@ -86,6 +123,12 @@ int SharedMemory::getLastInt(const std::string& id) {
     return getLastElement(intData_[id]);
 }
 
+//____________________________________________________________
+/* Utillity subroutines -> Retrieve last element in a vectors
+===========================================================================
+|    typdef -> std::vector
+===========================================================================
+*/
 std::string SharedMemory::getLastElement(const std::vector<std::string>& vec) {
     return vec.empty() ? "" : vec.back();
 }
