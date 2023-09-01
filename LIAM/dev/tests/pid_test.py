@@ -7,8 +7,8 @@ ki = 0.1
 kd = 0.7
 
 # Set initial and target values for vx, vy, and vz
-initial_values = [7.6, 8.8, 3.6]
-target_values = [7, 8, 9]
+initial_values = [76, 8, 0]
+target_values = [78, 88, 0]
 
 # Simulation parameters
 dt = 0.1
@@ -24,7 +24,7 @@ num_steps = int(duration / dt)
 for step in range(num_steps):
     # Calculate control signals using PID controller
     control_signals = PID.pid_controller(
-        target_values, initial_values, kp, ki, kd, integral, previous_errors, dt
+        target_values, initial_values, kp, ki, kd, integral, previous_errors, dt,-90,90
     )
 
     # Update variables for the next iteration
