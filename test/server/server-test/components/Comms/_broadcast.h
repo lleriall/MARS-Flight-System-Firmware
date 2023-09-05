@@ -60,6 +60,8 @@ class BroadcastedServer {
 
         static esp_err_t handle_AMB_request(httpd_req_t *req);
 
+        static esp_err_t handle_arm_token_request(httpd_req_t *req);
+
         static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
         static esp_err_t handle_SYS_incoming(httpd_req_t *req);

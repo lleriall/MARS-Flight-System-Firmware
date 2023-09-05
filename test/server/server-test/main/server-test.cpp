@@ -16,7 +16,7 @@
 #include "esp_log.h"
 #include"nvs_flash.h"
 #include<cmath>
-
+#include"esp_random.h"
 
 //#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 
@@ -53,7 +53,7 @@ extern "C" {
     SSD1306_UpdateScreen();*/
     displayStandByClientSuccess();
     vTaskDelay(1);
-
+ 
 
     /*SD_FILESYSTEM *sdobj = new SD_FILESYSTEM();
     sdobj -> SDFS_initialize();

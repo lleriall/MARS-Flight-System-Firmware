@@ -136,6 +136,13 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
+    httpd_uri_t TOKEN_uri = {
+        .uri       = "/GET_TOKEN",
+        .method    = HTTP_POST,
+        .handler   = handle_arm_token_request,
+        .user_ctx  = NULL
+    };
+
     httpd_uri_t SWP_uri = {
         .uri       = "/INC_SWP",
         .method    = HTTP_POST,
@@ -157,6 +164,13 @@ void BroadcastedServer::wifi_init_softap(void)
         .user_ctx  = NULL
     };
 
+    httpd_uri_t AUTH_uri = {
+        .uri       = "/INC_AUTH",
+        .method    = HTTP_POST,
+        .handler   = handle_AUTH_incoming,
+        .user_ctx  = NULL
+    };
+
 
     // Start the HTTP server
     if (httpd_start(&server, &config) == ESP_OK) {
@@ -170,6 +184,8 @@ void BroadcastedServer::wifi_init_softap(void)
         httpd_register_uri_handler(server, &SWP_uri);
         httpd_register_uri_handler(server, &SYS_uri);
         httpd_register_uri_handler(server, &STATE_uri);
+        httpd_register_uri_handler(server, &TOKEN_uri);
+        httpd_register_uri_handler(server, &AUTH_uri);
     }
 
 }
@@ -329,6 +345,28 @@ esp_err_t BroadcastedServer::handle_AMB_request(httpd_req_t *req) {
 
         std::string packed_data = packData(id1, value1, id2, value2, id3, value3, id4, value4);
 
+        // Send a response to the client
+        httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        return ESP_OK;
+    }
+
+    // If the request is not a POST request, return 404 Not Found
+    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
+    return ESP_OK;
+}
+
+esp_err_t BroadcastedServer::handle_arm_token_request(httpd_req_t *req) {
+    // Check if the request is a POST request
+    if (req->method == HTTP_POST) {
+        uint32_t seed1 = esp_random();
+        uint32_t seed2 = esp_random();
+        CONTROLLER_TASKS *cobj = new CONTROLLER_TASKS();
+        std::string packed_data = cobj -> generateRandomAlphanumericToken(seed1, seed2, 6);
+        delete cobj;
+        //UPDATE PTAM REGISTERS
+        SharedMemory& sharedMemory = SharedMemory::getInstance();
+        sharedMemory.clearData("arm_token");
+        sharedMemory.storeString("arm_token", packed_data);
         // Send a response to the client
         httpd_resp_send(req, packed_data.c_str(), packed_data.length());
         return ESP_OK;
@@ -563,6 +601,64 @@ esp_err_t BroadcastedServer::handle_STATE_incoming(httpd_req_t *req){
         if(values[4] != 0){
       
         }
+        return ESP_OK;
+    }
+
+    // If the request is not a POST request, return 404 Not Found
+    httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not Found");
+    return ESP_OK;
+}
+
+esp_err_t BroadcastedServer::handle_AUTH_incoming(httpd_req_t *req){
+    char received_data[MAX_DATA_LEN] = "";
+    // Check if the request is a POST request
+    if (req->method == HTTP_POST) {
+        int total_len = req->content_len;
+    int cur_len = 0;
+    int received = 0;
+    
+    if (total_len >= MAX_DATA_LEN) {
+        return ESP_FAIL;
+    }
+
+    while (received < total_len) {
+        // Receive the data in chunks
+        cur_len = httpd_req_recv(req, received_data + received, MAX_DATA_LEN);
+        if (cur_len <= 0) {
+            if (cur_len == HTTPD_SOCK_ERR_TIMEOUT) {
+                continue;
+            }
+            return ESP_FAIL;
+        }
+        received += cur_len;
+    }
+
+    // Null-terminate the received_data string
+    received_data[received] = '\0';
+        // Send a response to the client
+        //httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        std::string data = received_data;
+        //Compare token data sent with token data in PTAM register
+        //If they match state can be changed to armed
+        SharedMemory& sharedMemory = SharedMemory::getInstance();
+        std::string token_saved = sharedMemory.getLastString("arm_token");
+        if(received_data != token_saved){
+            // Send a response to the client indicating no match
+            std::string packed_data = "STATE-CHANGE-FAIL";
+            httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        }else{
+            //Change state to armed by modifying PTAM register
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("state");
+            sharedMemory.storeDouble("state", 2);
+            //Clear previous register to avoid memory overflow
+            sharedMemory.clearData("stateDescript");
+            sharedMemory.storeString("stateDescript", "ARMED");
+            // Send a response to the client indicating direct match
+            std::string packed_data = "STATE-CHANGE-SUCCESS";
+            httpd_resp_send(req, packed_data.c_str(), packed_data.length());
+        }
+
         return ESP_OK;
     }
 

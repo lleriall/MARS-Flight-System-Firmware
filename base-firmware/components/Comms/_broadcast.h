@@ -31,7 +31,9 @@ SOFTWARE.*/
 #include<vector>
 #include"page.h"
 #include"esp_log.h"
+#include"esp_random.h"
 #include"../PTAM/_ptam.h"
+#include"../system/sys_controller.h"
 
 class BroadcastedServer {
     public:
@@ -60,11 +62,15 @@ class BroadcastedServer {
 
         static esp_err_t handle_AMB_request(httpd_req_t *req);
 
+        static esp_err_t handle_arm_token_request(httpd_req_t *req);
+
         static esp_err_t handle_SWP_incoming(httpd_req_t *req);
 
         static esp_err_t handle_SYS_incoming(httpd_req_t *req);
 
         static esp_err_t handle_STATE_incoming(httpd_req_t *req);
+
+        static esp_err_t handle_AUTH_incoming(httpd_req_t *req);
 
     private:
         const char *html_content = responseXX;

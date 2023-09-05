@@ -22,12 +22,6 @@ SOFTWARE.*/
 
 #include"sys_controller.h"
 
-
-//Setup pins based on config
-void CONTROLLER_TASKS::pin_setup(){
-   
-}
-
 //Start comms and attach RF interrupt 
 //ATTACH PIN NUMBERS
 void CONTROLLER_TASKS::_init_(){
@@ -105,6 +99,58 @@ void CONTROLLER_TASKS::_PREP_(){
     SharedMemory& sharedMemory = SharedMemory::getInstance();
     auto lat = sharedMemory.getLastDouble("TLat");
     //ESP_LOGI("LAT", "%f",lat);
+    //Check for full configuraton completion
+
+}
+
+uint8_t CONTROLLER_TASKS::verifyFlightConfiguration(){
+    //To verify flight config, we just check to make sure all flight critical PTAM 
+    //registers have valid data (non-zero) and we return 1 or 0
+    /*Flight Critical Registers
+        SWP:
+        Target Latitude
+        Target Longitude
+        Target Altitude
+        Final Altitude
+        Target Velocity
+    */
+    SharedMemory& sharedMemory = SharedMemory::getInstance();
+    uint8_t verified = 0;
+    auto _lat = sharedMemory.getLastDouble("TLat");
+    auto _long = sharedMemory.getLastDouble("TLong");
+    auto _Talt = sharedMemory.getLastDouble("TAlt");
+    auto _Calt = sharedMemory.getLastDouble("CAlt");
+    auto _vel = sharedMemory.getLastDouble("TVel");
+
+    // Check if all variables contain non-zero values
+    if (_lat != 0.0 && 
+        _long != 0.0 && 
+        _Talt != 0.0 && 
+        _Calt != 0.0 && 
+        _vel != 0.0) {
+        // All variables contain non-zero values
+        // We can provide authorization
+        verified = 1;
+    } else {
+        // At least one variable contains a zero value
+        // Configuration not finished
+        verified = 0;
+    }
+    return verified;
+}
+
+std::string CONTROLLER_TASKS::generateRandomAlphanumericToken(uint32_t seed1, uint32_t seed2, int length) {
+
+    const std::string characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    std::string token;
+
+    for (int i = 0; i < length; i++) {
+        seed1 = (seed1 * 1664525 + 1013904223) % characters.size();
+        seed2 = (seed2 * 1664525 + 1013904223) % characters.size();
+        token += characters[seed1 ^ seed2];
+    }
+
+    return token;
 }
 
 void CONTROLLER_TASKS::_ARMED_(){
@@ -187,6 +233,9 @@ void CONTROLLER_TASKS::PTAM_REGISTER_SET(){
 
     sharedMemory.storeInt("state", 1);
     sharedMemory.storeString("stateDescript", "PREP");
+
+    sharedMemory.storeString("arm_token", "");
+
     //GPS functionality flag
     sharedMemory.storeInt("GPScheck", 0);
     //IMU functionality flag

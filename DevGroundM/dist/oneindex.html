@@ -1,751 +1,1139 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 <title>HIVE 2</title>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 
 
-<style>          html { font-family: sans-serif; text-align: center; background-color: rgb(0, 0, 0);}
-          body { display: inline-flex; flex-direction: column;overflow: hidden; }
-          .table-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-            left: 20%;
-        }
-        table {
-            width: 80%; /* Set the width of the table to 80% of the container */
-            border-collapse: collapse;
-            color: white;
-            font-size: 110%;
-        }
-        table, th, td {
-            border: 1px solid rgb(174, 174, 174);
-            padding: 2%; /* Use percentage-based padding for cells */
-        }
-        th {
-            background-color: #222;
-        }
-          #unit-title{
-            color: #fff;
-            left: 2%;
-            top: 2%;
-          }
-
-          canvas { border: 1px solid #ccc; display: block; }
-
-          #config-menu{
-            position: absolute;
-            width: 29.5%;
-            height: 70%;
-            border-radius: 5px;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left: 0.5%;
-            top: 0%;
-            background-color: rgb(35, 35, 35);
-          }
-          #terminal-area{
-            position: absolute;
-            width: 29.5%;
-            height: 28.5%;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left: 0.5%;
-            top: 70.5%;
-            background-color: rgb(35, 35, 35);
-          }
-          #attitude-ind-area{
-            position: absolute;
-            width: 34%;
-            height: 48%;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left: 30.5%;
-            top: 0%;
-            background-color: rgb(35, 35, 35);
-          }
-          #map-ind-area{
-            position: absolute;
-            width: 34%;
-            height: 48%;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left:65%;
-            top: 0%;
-            background-color: rgb(0, 0, 0);
-            overflow: hidden;
-          }
-          #stats-menu{
-            position: absolute;
-            width: 50.5%;
-            height: 50%;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left:30.5%;
-            top: 49%;
-            background-color: rgb(35, 35, 35);
-          }
-
-          #data-area{
-            position: absolute;
-            width: 18%;
-            height: 50%;
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            left:81.5%;
-            top: 49%;
-            background-color: rgb(35, 35, 35);
-            
-          }
-          #HIVE-IMG{
-            position: absolute;
-            width: 80%;
-            height:30%;
-            left:10%;
-            top:15%;
-            background-color: rgb(0, 0, 0);
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-          }
-
-          #HIVE-PIC{
-            position: absolute;
-            width: 200%;
-            height:180%;
-            left: -57%;
-            top:-50%;
-            object-fit: contain;
-            border-radius: 15px;
-            z-index: 5000;
-            overflow: hidden;
-            z-index: 50;
-          }
-          #DRONE-STATE{
-            position: absolute;
-            width: 30%;
-            height:10%;
-            left:35%;
-            top:50%;
-            border-radius: 30px;
-            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
-            color: rgb(0, 0, 0);
-            text-align: center;
-            font-size: larger;
-            font-weight: bolder;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            background-color: #fff;
-          }
-          #terminal-panel{
-            position: absolute;
-            width: 90%;
-            height:80%;
-            left:5%;
-            top:10%;
-            background-color: rgb(0, 0, 0);
-            border-radius: 15px;
-            border-style: none;
-            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
-            color: rgb(255, 255, 255);
-
-          }
-          #Raw-Data{
-            color: #fff;
-            padding-bottom: 10%;
-          }
-          #Config{
-            position: absolute;
-            width: 80%;
-            height:30%;
-            left:10%;
-            top:65%;
-            background-color: rgb(35, 35, 35);
-            border-radius: 15px;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-          }
-          #config-title{
-            color: #fff;
-          }
-
-          #AltGraphTitle{
-            position: absolute;
-            width: 10%;
-            height:5%;
-            left:45%;
-            top:7%;
-            color: #ffffff;
-            z-index: 1000;
-            font-weight: bolder;
-          }
-
-          /* Add a black background color to the top navigation */
-            .topnav {
-            background-color: #333;
-            overflow: hidden;
-            }
-
-            /* Style the links inside the navigation bar */
-            .topnav a {
-            float: left;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-            }
-
-            /* Change the color of links on hover */
-            .topnav a:hover {
-            background-color: #ddd;
-            color: black;
-            }
-
-            /* Add a color to the active/current link */
-            .topnav a.active {
-            background-color: #04AA6D;
-            color: white;
-            }
-
-            #actions-menu{
-                position: absolute;
-                width:96%;
-                height:85%;
-                background-color: rgb(35, 35, 35);
-                left:2%;
-                top:12%;
-                z-index: 100;
-                
-            }
-
-            #opt-menu{
-                position: absolute;
-                width:48%;
-                height:100%;
-                left:0%;
-                top:0%;
-                z-index: 100;
-                border-width: 1px;
-                border-style: solid;
-            }
-
-            #configSWP{
-                position: absolute;
-                width:50%;
-                height:100%;
-                left:50%;
-                top:0%;
-                z-index: 100;
-                border-width: 1px;
-                border-style: solid;
-            }
-            
-            #SWP-menuitem{
-                position: absolute;
-                width: 70%;
-                height:11.5%;
-                left:15%;
-                top:5%;
-                box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
-                color: rgb(0, 0, 0);
-                text-align: center;
-                font-size:medium;
-                justify-content: center;
-                align-items: center;
-                display: flex;
-                background-color: #ddd;
-            }
-
-            #MWP-menuitem{
-                position: absolute;
-                width: 70%;
-                height:11.5%;
-                left:15%;
-                top:20%;
-                box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
-                color: rgb(0, 0, 0);
-                text-align: center;
-                font-size:medium;
-                justify-content: center;
-                align-items: center;
-                display: flex;
-                background-color: #ddd;
-            }
-
-            #VehicleConfig{
-                position: absolute;
-                width: 70%;
-                height:11.5%;
-                left:15%;
-                top:35%;
-                color: rgb(0, 0, 0);
-                text-align: center;
-                font-size:medium;
-                justify-content: center;
-                align-items: center;
-                display: flex;
-                background-color: #ddd;
-            }
-
-            .numField{
-                position: absolute;
-                width: 30%;
-                height:10%;
-            }
-
-            #LAT-f{
-                left:15%;
-                top:5%;
-                background-color: #000000;
-                color: #ffffff;
-                border-style: none;
-            }
-            #LAT-set{
-                position: absolute;
-                width: 40%;
-                height:11.5%;
-                left:46%;
-                top:5%;
-            }
-
-            #LNG-f{
-                left:15%;
-                top:25%;
-                background-color: #000000;
-                color: #ffffff;
-                border-style: none;
-            }
-            #LNG-set{
-                position: absolute;
-                width: 40%;
-                height:11.5%;
-                left:46%;
-                top:25%;
-            }
-
-            #ALT-f{
-                position: absolute;
-                width: 30%;
-                height:10%;
-                left:15%;
-                top:45%;
-                background-color: #000000;
-                color: #ffffff;
-                border-style: none;
-            }
-            #Alt-set{
-                position: absolute;
-                width: 40%;
-                height:11.5%;
-                left:46%;
-                top:45%;
-            }
-
-            .terminal {
-            width: 95%;
-            height: 95%;
-            border: 0.5px solid #fff;
-            border-radius: 8px;
-            padding: 10px;
-            overflow: hidden;
-            background-color: #000;
-        }
-
-        #output {
-          white-space: pre-wrap;
-            overflow-y: scroll;
-            height: calc(100% - 35px); /* Adjust the height to leave space for the input field */
-            margin: 0;
-            padding: 0; /* Remove default padding */
-            border-bottom: 1px solid #fff;
-            text-align: left; /* Set text alignment to left */
-            color: #fff;
-            font-size:large;
-        }
-        /* New CSS style for menu options */
-        .menu-options {
-          display: grid;
-          grid-template-columns: 1fr 1fr; /* Two equal columns */
-          gap: 5px; /* Gap between grid items */
-          text-align: center; /* Center the text within the grid items */
-        }
-
-        /* Style the scrollbar for Webkit (Chrome, Safari, Edge) */
-        #output::-webkit-scrollbar {
-            width: 8px; /* Set the width of the scrollbar */
-        }
-
-        #output::-webkit-scrollbar-thumb {
-            background-color: #ffffff; /* Set the color of the scrollbar thumb */
-            border-radius: 10px; /* Round the corners of the thumb */
-        }
-
-        #output::-webkit-scrollbar-thumb:hover {
-            background-color: #ffffff; /* Set the color of the scrollbar thumb on hover */
-        }
-
-        /* Style the scrollbar for Firefox */
-        #output::-moz-scrollbar {
-            width: 8px; /* Set the width of the scrollbar */
-        }
-
-        #output::-moz-scrollbar-thumb {
-            background-color: #ffffff; /* Set the color of the scrollbar thumb */
-            border-radius: 10px; /* Round the corners of the thumb */
-        }
-
-        #output::-moz-scrollbar-thumb:hover {
-            background-color: #ffffff; /* Set the color of the scrollbar thumb on hover */
-        }
 
 
-        #input {
-            width: 100%;
-            height:10%;
-            margin-bottom: 0%;
-            border: none;
-            outline: none;
-            background-color: rgb(255, 255, 255);
-            color: #000000;
+<style>html { font-family: sans-serif; text-align: center; background-color: rgb(0, 0, 0);}
+body { display: inline-flex; flex-direction: column;overflow: hidden; }
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+  left: 20%;
+}
+table {
+  width: 80%; /* Set the width of the table to 80% of the container */
+  border-collapse: collapse;
+  color: white;
+  font-size: 110%;
+}
+table, th, td {
+  border: 1px solid rgb(174, 174, 174);
+  padding: 2%; /* Use percentage-based padding for cells */
+}
+th {
+  background-color: #222;
+}
+#unit-title{
+  color: #fff;
+  left: 2%;
+  top: 2%;
+}
 
-            font-size: 16px;
-        }
-        /* Style for the text label */
-        /* WING */
-        #label1 {
-            position: absolute;
-            top:20%;
-            left: 17%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        /* WING */
-        #label2 {
-            position: absolute;
-            top:19%;
-            left: 85%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        /* WING */
-        #label3 {
-            position: absolute;
-            top:52%;
-            left: 17%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        /* WING */
-        #label4 {
-            position: absolute;
-            top:52%;
-            left: 85%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        /* BATTERY */
-        #label5 {
-            position: absolute;
-            top:80%;
-            left: 17%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #15ff00;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        /* CAM BOOT */
-        #label6 {
-            position: absolute;
-            top:90%;
-            left: 17%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #2bd41c;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-            border-style: solid;
-        }
-        /* THROTTLE */
-        #label8 {
-            position: absolute;
-            top:90%;
-            left: 70%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #15ff00;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
-        #label7 {
-            position: absolute;
-            top:33%;
-            left: 70%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #c91414;
-            padding: 5px;
-            border-style: solid;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
+canvas { border: 1px solid #ccc; display: block; }
 
-        #label9 {
-            position: absolute;
-            top:5%;
-            left: 15%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #c91414;
-            padding: 5px;
-            border-style: solid;
-            border-radius: 3px;
-            font-size: 10px;
-            z-index: 100;
-            font-weight: bolder;
-        }
+#config-menu{
+  position: absolute;
+  width: 29.5%;
+  height: 70%;
+  border-radius: 5px;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left: 0.5%;
+  top: 0%;
+  background-color: rgb(35, 35, 35);
+}
+#terminal-area{
+  position: absolute;
+  width: 29.5%;
+  height: 28.5%;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left: 0.5%;
+  top: 70.5%;
+  background-color: rgb(35, 35, 35);
+}
+#attitude-ind-area{
+  position: absolute;
+  width: 34%;
+  height: 48%;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left: 30.5%;
+  top: 0%;
+  background-color: rgb(35, 35, 35);
+}
+#map-ind-area{
+  position: absolute;
+  width: 34%;
+  height: 48%;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left:65%;
+  top: 0%;
+  background-color: rgb(0, 0, 0);
+  overflow: hidden;
+}
+#stats-menu{
+  position: absolute;
+  width: 50.5%;
+  height: 50%;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left:30.5%;
+  top: 49%;
+  background-color: rgb(35, 35, 35);
+}
 
-        #label10{
-          position: absolute;
-            top:80%;
-            left: 66%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #15ff00;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 14px;
-            z-index: 100;
-            font-weight: bolder;
-        }
+#data-area{
+  position: absolute;
+  width: 18%;
+  height: 50%;
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  left:81.5%;
+  top: 49%;
+  background-color: rgb(35, 35, 35);
+  
+}
+#HIVE-IMG{
+  position: absolute;
+  width: 80%;
+  height:30%;
+  left:10%;
+  top:15%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
 
-        #AltCanvas {
-          position: absolute;
-          top: 1%;
-          left: 1.5%;
-          width: 100%;
-          height: 100%;
-          z-index: 500;
-          background-color: #000;
-        }
-        
-        #initStat-menu {
-            position: relative;
-            width: 97%;
-            height: 85%;
-        }
+#HIVE-PIC{
+  position: absolute;
+  width: 200%;
+  height:180%;
+  left: -57%;
+  top:-50%;
+  object-fit: contain;
+  border-radius: 15px;
+  z-index: 5000;
+  overflow: hidden;
+  z-index: 50;
+}
+#DRONE-STATE{
+  position: absolute;
+  width: 30%;
+  height:10%;
+  left:35%;
+  top:50%;
+  border-radius: 30px;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-size: larger;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: #fff;
+}
+#terminal-panel{
+  position: absolute;
+  width: 90%;
+  height:80%;
+  left:5%;
+  top:10%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 15px;
+  border-style: none;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
 
-        #MV-Button{
-          position: absolute;
-          top: 30%;
-          left: 65%;
-          z-index: 500;
-          width: 30%;
-          height: 60%;
-          background-color: rgb(0, 0, 0);
-          border-radius: 15px;
-          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-          color: #fff;
-          font-weight: bolder;
-          border-style: none;
-        }
-        #MV-Button:hover{
-          background-color: rgb(255, 255, 255);
-          color: #000;
-        }
+}
+#Raw-Data{
+  color: #fff;
+  padding-bottom: 10%;
+}
+#Config{
+  position: absolute;
+  width: 80%;
+  height:30%;
+  left:10%;
+  top:65%;
+  background-color: rgb(35, 35, 35);
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+#config-title{
+  color: #fff;
+}
 
-        #VHSN{
-          position: absolute;
-          top: 25%;
-          left: 5%;
-          color:#fff;
-          font-weight: 400;
-          font-size: small;
-        }
+#AltGraphTitle{
+  position: absolute;
+  width: 10%;
+  height:5%;
+  left:45%;
+  top:7%;
+  color: #ffffff;
+  z-index: 1000;
+  font-weight: bolder;
+}
 
-        #VHTME{
-          position: absolute;
-          top: 40%;
-          left: 5%;
-          color:#fff;
-          font-weight: 400;
-          font-size: small;
-        }
+/* Add a black background color to the top navigation */
+  .topnav {
+  background-color: #333;
+  overflow: hidden;
+  }
 
-        #TATemp{
-          position: absolute;
-          top: 65%;
-          left: 5%;
-          width:25%;
-          height:25%;
-          color:#fff;
-          font-weight: 400;
-          font-size: small;
-          border-style: solid;
-          border-radius: 5px;
-          border-color: #ccc;
-        }
+  /* Style the links inside the navigation bar */
+  .topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: bold;
+  }
 
-        #TAPressure{
-          position: absolute;
-          top: 65%;
-          left: 37.5%;
-          width:25%;
-          height:25%;
-          color:#fff;
-          font-weight: 400;
-          font-size: small;
-          border-style: solid;
-          border-radius: 5px;
-          border-color: #ccc;
-        }
+  /* Change the color of links on hover */
+  .topnav a:hover {
+  background-color: #ddd;
+  color: black;
+  }
 
-        #TAvar{
-          position: absolute;
-          top: 65%;
-          left: 70%;
-          width:25%;
-          height:25%;
-          color:#ffffff;
-          font-weight: 400;
-          font-size: small;
-          border-style: solid;
-          border-radius: 5px;
-          border-color: #ccc;
-        }
+  /* Add a color to the active/current link */
+  .topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+  }
 
-        #PayloadStat{
-          position: absolute;
-          top: 9%;
-          left:30%;
-          width:40%;
-          height:20%;
-          color: #15ff00;
-          font-weight: bolder;
-          font-size: medium;
-        }
+  .topnav a.nonactive {
+    background-color: #333;
+    color: white;
+  }
 
-        #Tline{
-          position: absolute;
-          top: 35%;
-          left:17.5%;
-          width: 64.25%;
-        }
+  #actions-menu{
+      position: absolute;
+      width:96%;
+      height:85%;
+      background-color: rgb(35, 35, 35);
+      left:2%;
+      top:12%;
+      z-index: 100;
+      
+  }
 
-        #VL1{
-          border-left: 1px solid rgb(255, 255, 255);
-          height: 20%;
-          position: absolute;
-          left: 17.5%;
-          top: 40%;
-        }
+  #opt-menu{
+      position: absolute;
+      width:48%;
+      height:100%;
+      left:0%;
+      top:0%;
+      z-index: 100;
+      border-width: 1px;
+      border-style: solid;
+  }
 
-        #VL2{
-          border-left: 1px solid rgb(255, 255, 255);
-          height: 20%;
-          position: absolute;
-          left: 50%;
-          top: 40%;
-        }
+  #configSWP{
+      position: absolute;
+      width:50%;
+      height:100%;
+      left:50%;
+      top:0%;
+      z-index: 100;
+      border-width: 1px;
+      border-style: solid;
+  }
+  
+  #SWP-menuitem{
+      position: absolute;
+      width: 70%;
+      height:11.5%;
+      left:15%;
+      top:5%;
+      box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
+      color: rgb(0, 0, 0);
+      text-align: center;
+      font-size:medium;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: #ddd;
+  }
 
-        #VL3{
-          border-left: 1px solid rgb(255, 255, 255);
-          height: 20%;
-          position: absolute;
-          left: 82.5%;
-          margin-left: -3px;
-          top: 40%;
-          
-        }
+  #MWP-menuitem{
+      position: absolute;
+      width: 70%;
+      height:11.5%;
+      left:15%;
+      top:20%;
+      box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
+      color: rgb(0, 0, 0);
+      text-align: center;
+      font-size:medium;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: #ddd;
+  }
 
-        #VL4{
-          border-left: 1px solid rgb(255, 255, 255);
-          height: 20%;
-          position: absolute;
-          left: 50%;
-          top: 20%;
-        }
+  #VehicleConfig{
+      position: absolute;
+      width: 70%;
+      height:11.5%;
+      left:15%;
+      top:35%;
+      color: rgb(0, 0, 0);
+      text-align: center;
+      font-size:medium;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: #ddd;
+  }
 
-        #BPnotification{
-          position: absolute;
-          z-index: 1000;
-          width: 20%;
-          height: 30%;
-          background: #4e4e4e;
-          border-radius: 15px;
-          margin-left: 22%;
-          margin-top: 5%;
-          visibility: hidden;
-          transition: all 0.1s ease;
-          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-        }
+  .numField{
+      position: absolute;
+      width: 30%;
+      height:10%;
+  }
 
-        #BPnotification-button {
-          width: 50%;
-          height: 30%;
-          border-radius: 20px;
-          margin-top: 50%;
-          margin-left: 0%;
-          border-width: 0pt;
-          box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-          background: #000000;
-          color: #fff;
-          font-size: large;
-          font-weight: bolder;
-        }
-        #BPnotification-button:hover{
-          background-color: rgb(255, 255, 255);
-          color: #000;
-        }
+  #LAT-f{
+      left:15%;
+      top:5%;
+      background-color: #000000;
+      color: #ffffff;
+      border-style: none;
+  }
+  #LAT-set{
+      position: absolute;
+      width: 40%;
+      height:11.5%;
+      left:46%;
+      top:5%;
+  }
 
-        #BP-text{
-          position: absolute;
-          color:#fff;
-          margin-bottom: 0%;
-          width:80%;
-          left:10%;
-          top:10%;
-        }
-</style></head>
+  #LNG-f{
+      left:15%;
+      top:25%;
+      background-color: #000000;
+      color: #ffffff;
+      border-style: none;
+  }
+  #LNG-set{
+      position: absolute;
+      width: 40%;
+      height:11.5%;
+      left:46%;
+      top:25%;
+  }
+
+  #ALT-f{
+      position: absolute;
+      width: 30%;
+      height:10%;
+      left:15%;
+      top:45%;
+      background-color: #000000;
+      color: #ffffff;
+      border-style: none;
+  }
+  #Alt-set{
+      position: absolute;
+      width: 40%;
+      height:11.5%;
+      left:46%;
+      top:45%;
+  }
+
+  .terminal {
+  width: 95%;
+  height: 95%;
+  border: 0.5px solid #fff;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+#output {
+white-space: pre-wrap;
+  overflow-y: scroll;
+  height: calc(100% - 35px); /* Adjust the height to leave space for the input field */
+  margin: 0;
+  padding: 0; /* Remove default padding */
+  border-bottom: 1px solid #fff;
+  text-align: left; /* Set text alignment to left */
+  color: #fff;
+  font-size:large;
+}
+/* New CSS style for menu options */
+.menu-options {
+display: grid;
+grid-template-columns: 1fr 1fr; /* Two equal columns */
+gap: 5px; /* Gap between grid items */
+text-align: center; /* Center the text within the grid items */
+}
+
+/* Style the scrollbar for Webkit (Chrome, Safari, Edge) */
+#output::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+#output::-webkit-scrollbar-thumb {
+  background-color: #ffffff; /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Round the corners of the thumb */
+}
+
+#output::-webkit-scrollbar-thumb:hover {
+  background-color: #ffffff; /* Set the color of the scrollbar thumb on hover */
+}
+
+/* Style the scrollbar for Firefox */
+#output::-moz-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+#output::-moz-scrollbar-thumb {
+  background-color: #ffffff; /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Round the corners of the thumb */
+}
+
+#output::-moz-scrollbar-thumb:hover {
+  background-color: #ffffff; /* Set the color of the scrollbar thumb on hover */
+}
+
+
+#input {
+  width: 100%;
+  height:10%;
+  margin-bottom: 0%;
+  border: none;
+  outline: none;
+  background-color: rgb(255, 255, 255);
+  color: #000000;
+
+  font-size: 16px;
+}
+/* Style for the text label */
+/* WING */
+#label1 {
+  position: absolute;
+  top:20%;
+  left: 17%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+/* WING */
+#label2 {
+  position: absolute;
+  top:19%;
+  left: 85%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+/* WING */
+#label3 {
+  position: absolute;
+  top:52%;
+  left: 17%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+/* WING */
+#label4 {
+  position: absolute;
+  top:52%;
+  left: 85%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+/* BATTERY */
+#label5 {
+  position: absolute;
+  top:80%;
+  left: 17%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #15ff00;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+/* CAM BOOT */
+#label6 {
+  position: absolute;
+  top:90%;
+  left: 17%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #2bd41c;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+  border-style: solid;
+}
+/* THROTTLE */
+#label8 {
+  position: absolute;
+  top:90%;
+  left: 70%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #15ff00;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+#label7 {
+  position: absolute;
+  top:33%;
+  left: 70%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #c91414;
+  padding: 5px;
+  border-style: solid;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+
+#label9 {
+  position: absolute;
+  top:5%;
+  left: 15%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #c91414;
+  padding: 5px;
+  border-style: solid;
+  border-radius: 3px;
+  font-size: 10px;
+  z-index: 100;
+  font-weight: bolder;
+}
+
+#label10{
+position: absolute;
+  top:80%;
+  left: 66%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #15ff00;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 100;
+  font-weight: bolder;
+}
+
+#AltCanvas {
+position: absolute;
+top: 1%;
+left: 1.5%;
+width: 100%;
+height: 100%;
+z-index: 500;
+background-color: #000;
+}
+
+#initStat-menu {
+  position: relative;
+  width: 97%;
+  height: 85%;
+}
+
+#MV-Button{
+position: absolute;
+top: 30%;
+left: 65%;
+z-index: 500;
+width: 30%;
+height: 60%;
+background-color: rgb(0, 0, 0);
+border-radius: 15px;
+box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+color: #fff;
+font-weight: bolder;
+border-style: none;
+}
+#MV-Button:hover{
+background-color: rgb(255, 255, 255);
+color: #000;
+}
+
+#VHSN{
+position: absolute;
+top: 25%;
+left: 5%;
+color:#fff;
+font-weight: 400;
+font-size: small;
+}
+
+#VHTME{
+position: absolute;
+top: 40%;
+left: 5%;
+color:#fff;
+font-weight: 400;
+font-size: small;
+}
+
+#TATemp{
+position: absolute;
+top: 65%;
+left: 5%;
+width:25%;
+height:25%;
+color:#fff;
+font-weight: 400;
+font-size: small;
+border-style: solid;
+border-radius: 5px;
+border-color: #ccc;
+}
+
+#TAPressure{
+position: absolute;
+top: 65%;
+left: 37.5%;
+width:25%;
+height:25%;
+color:#fff;
+font-weight: 400;
+font-size: small;
+border-style: solid;
+border-radius: 5px;
+border-color: #ccc;
+}
+
+#TAvar{
+position: absolute;
+top: 65%;
+left: 70%;
+width:25%;
+height:25%;
+color:#ffffff;
+font-weight: 400;
+font-size: small;
+border-style: solid;
+border-radius: 5px;
+border-color: #ccc;
+}
+
+#PayloadStat{
+position: absolute;
+top: 9%;
+left:30%;
+width:40%;
+height:20%;
+color: #15ff00;
+font-weight: bolder;
+font-size: medium;
+}
+
+#Tline{
+position: absolute;
+top: 35%;
+left:17.5%;
+width: 64.25%;
+}
+
+#VL1{
+border-left: 1px solid rgb(255, 255, 255);
+height: 20%;
+position: absolute;
+left: 17.5%;
+top: 40%;
+}
+
+#VL2{
+border-left: 1px solid rgb(255, 255, 255);
+height: 20%;
+position: absolute;
+left: 50%;
+top: 40%;
+}
+
+#VL3{
+border-left: 1px solid rgb(255, 255, 255);
+height: 20%;
+position: absolute;
+left: 82.5%;
+margin-left: -3px;
+top: 40%;
+
+}
+
+#VL4{
+border-left: 1px solid rgb(255, 255, 255);
+height: 20%;
+position: absolute;
+left: 50%;
+top: 20%;
+}
+
+#BPnotification{
+position: absolute;
+z-index: 1000;
+width: 20%;
+height: 30%;
+background: #4e4e4e;
+border-radius: 15px;
+margin-left: 22%;
+margin-top: 5%;
+visibility: hidden;
+transition: all 0.1s ease;
+box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+#BPnotification-button {
+width: 50%;
+height: 30%;
+border-radius: 20px;
+margin-top: 50%;
+margin-left: 0%;
+border-width: 0pt;
+box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+background: #000000;
+color: #fff;
+font-size: large;
+font-weight: bolder;
+}
+#BPnotification-button:hover{
+background-color: rgb(255, 255, 255);
+color: #000;
+}
+
+#BP-text{
+position: absolute;
+color:#fff;
+margin-bottom: 0%;
+width:80%;
+left:10%;
+top:10%;
+}
+
+#initStat-menu{
+  visibility:visible;
+}
+
+#mainTelem-menu{
+  visibility: hidden;
+}
+
+#actions-menu{
+  visibility: hidden;
+}
+
+#emi-menu{
+  visibility: hidden;
+}
+
+#emi-mpopup{
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  z-index: 500;
+  width: 30%;
+  height: 70%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 15px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-weight: bolder;
+  font-size: larger;
+  border-style: none;
+  }
+  #emi-mpopup:hover{
+  background-color: rgb(255, 255, 255);
+  color: #000;
+  }
+
+  #ECV-menu{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    z-index: 1100;
+    width: 80%;
+    height: 80%;
+    background-color: rgb(22, 21, 21);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+  }
+
+  #ECV-menu-close{
+    position: absolute;
+    width: 1%;
+    height: 1%;
+    border-radius: 40px;
+    padding: 2%;
+    left: 93%;
+    top: 3%;
+    border-width: 0pt;
+    background-color: #fff;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #ECV-menu-close:hover{
+    background-color: rgb(0, 0, 0);
+    color: #ffffff;
+  }
+
+  #ECV-PIC{
+    position: absolute;
+    top: 15%;
+    left:24%;
+  }
+
+  #controller-status{
+    position: absolute;
+    top: 70%;
+    left: 40%;
+    color: #fff;
+  }
+
+  #response-status{
+    position: absolute;
+    top: 80%;
+    left: 43%;
+    color: #fff;
+    font-weight: lighter;
+  }
+
+  #emi-title{
+    position:absolute;
+    top: 15%;
+    left: 45%;
+    color: #fff;
+  }
+
+  #emi-version{
+    position: absolute;
+    top: 25%;
+    left: 57%;
+    color: #fff;
+  }
+
+  #controller-stat-check{
+    position: absolute;
+    top: 47%;
+    left: 53%;
+    color: #fff;
+  }
+
+  #emi-loading{
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    width: 20%;
+    height: 20%;
+  }
+
+  #supdater-subMenu{
+    position: absolute;
+    top: 2%;
+    left: 1%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu2{
+    position: absolute;
+    top: 2%;
+    left: 51%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu3{
+    position: absolute;
+    top: 53%;
+    left: 1%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+
+  #subMenu4{
+    position: absolute;
+    top: 53%;
+    left: 51%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: bolder;
+    font-size: larger;
+    border-style: none;
+  }
+  
+  #controller-screen1-connected{
+    position: absolute;
+    top: 45%;
+    left: 43%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+    visibility: hidden;
+  }
+
+  #left-stick{
+    position: absolute;
+    top: 36.5%;
+    left: -10%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #lstick-line{
+    position: absolute;
+    top: 36.5%;
+    left: 21%;
+    z-index: 500;
+    width: 25%;
+    color: #fff;
+  }
+
+  #right-stick{
+    position: absolute;
+    top: 36.5%;
+    left: 65%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #rstick-line{
+    position: absolute;
+    top: 36.5%;
+    left: 56.5%;
+    z-index: 500;
+    width: 25%;
+    color: #fff;
+  }
+
+  #right-trigger{
+    position: absolute;
+    top: 22%;
+    left: 65%;
+    z-index: 500;
+    width: 48%;
+    height: 48%;
+    color: #fff;
+  }
+
+  #rtrigger-line{
+    position: absolute;
+    top: 22%;
+    left: 65%;
+    z-index: 500;
+    width: 16.5%;
+    color: #fff;
+  }
+
+  #arm_seq_ui{
+    position: absolute;
+    left: 30.5%;
+    top: 0%;
+    width: 34%;
+    height:48%;
+    z-index: 1000;
+    border-radius: 15px;
+    background-color: rgb(35,35,35);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+  }
+
+  #arm_seq_ui-title{
+    position: absolute;
+    left: 5%;
+    top:3%;
+    color: #fff;
+  }
+
+  #arm_seq_auth_req{
+    position: absolute;
+    left: 25%;
+    top: 23%;
+    width: 50%;
+    height:10%;
+    background-color: #fff;
+    border-radius: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  #arm_seq_auth_req:hover{
+    background-color: #000000;
+    color: #fff;
+  }
+
+  #arm_seq_ui-label1{
+    position: absolute;
+    left: 5%;
+    top:40%;
+    color: #fff;
+  }
+
+  #arm_seq_ui-input{
+    position: absolute;
+    left: 5%;
+    top: 55%;
+    width: 30%;
+    height:5%;
+    border-radius: 5px;
+  }
+
+  #arm_seq_auth_ARM{
+    position: absolute;
+    left: 5%;
+    top: 82%;
+    width: 30%;
+    height:10%;
+    background-color: #fff;
+    border-radius: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  #arm_seq_auth_ARM:hover{
+    background-color: #000000;
+    color: #fff;
+  }
+
+  #arm_seq_auth_autofill{
+    position: absolute;
+    left: 5%;
+    top:68%;
+    width: 20%;
+    height:7%;
+    background-color: rgb(57, 57, 57);
+    color: #fff;
+    border-radius: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  #arm_seq_auth_autofill:hover{
+    background-color: rgb(0, 0, 0);
+    color: #fff;
+  }
+
+  #arm_seq_terminal{
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    width: 50%;
+    height:50%;
+    background-color: #000000;
+    border-radius: 20px;
+    overflow: auto;
+    padding: 10px;
+    color: #fff;
+  }
+
+  #arm_seq_ui_close{
+    position: absolute;
+    width: 3%;
+    height: 3%;
+    border-radius: 40px;
+    padding: 2%;
+    left: 90%;
+    top: 5%;
+    border-width: 0pt;
+    background-color: #fff;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #arm_seq_ui_close:hover{
+    background-color: #000000;
+    color: #ffffff;
+  }</style></head>
 <body>
 <div id="config-menu">
 <h1 id="unit-title">HIVE 2 UNIT</h1>
@@ -764,6 +1152,16 @@
 <button id="MV-Button"> Mission Viewer</button>
 </div>
 </div>
+<div id="arm_seq_ui">
+<h1 id="arm_seq_ui-title"> Vehicle Arming</h1>
+<div id="arm_seq_auth_req"> Request Authorization Token</div>
+<h3 id="arm_seq_ui-label1">Token Entry</h3>
+<input id="arm_seq_ui-input"/>
+<div id="arm_seq_auth_ARM"> ARM</div>
+<div id="arm_seq_auth_autofill"> Autofill</div>
+<div id="arm_seq_terminal"></div>
+<div id="arm_seq_ui_close">X</div>
+</div>
 <div id="attitude-ind-area">
 <div class="terminal" id="terminal">
 <pre id="output"></pre>
@@ -773,10 +1171,10 @@
 <div id="map-ind-area">
 <img alt="" id="HIVE-PIC" src="data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oACAECEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8QALxAAAQMCBAUEAgEFAQAAAAAAAQACAxRSERMyUSAzYXBxBBASITFAQSJCYoHAU//aAAgBAQABPwD/AIz9sJIH2qN+6MB3WQbkQQSD3rjb8nJp+wVmfIfhOjKwwU7foO71w/lyYMSh7PCl5R71w6XKIe79JT+W/wAd64zgwdSo9PvhinYYOHQ91I/RjDF5VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VHF1VJF1VHF1VJF1VJF1VJF1VJF1VJF1TmiPBoUegcGGJIVJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1VJF1TvRsOklOaWOLT27j5jPI/XKm1KPQOBupD9f1fO7dx8xnkfrlTa1HoHA3Uh+v6vndu4+YzyFiN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iN1iNwsRuFiNwi4bhS6lHoHA3UgQsRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRusRuvV87t20/Eg7FVklrVWSWtVZJa1VklrVWSWtVZJa1VklrVWSWtVZJa1VklrVWSWtVZJa1VklrVWSWtVZJa1VklrVWSWtVZJa1VklrVWSWtVZJa1VklrVVyWtXyMjQ4qPQODHD5FVkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NVZLs1VkuzVWS7NUkhkd8j3Tj5Y8qPQOB2l/g964+WPKj0Dgdpf4PeuPljyo9A4HaX+D3rj5Y8qPQOB2l/g964+WPKj0Dgdpf4PeuPljyo9A4HaX+D3rj5Y8qPQOB2l/g964+WPKj0Dgdpf4PeuPljyo9A4HaX+D3rj5Y8qPQOB2l/g9649A8lR6BwPBwd9/we9cfLHlR6BwO0v8AB71x8seVHoHA7S/we9cfLHlR6BwO0v8AB71x8seVHoHA7S/we9cfLHlR6BwO0v8AB71x8seVHoHA7S/we9cfLHlQHGMcAJdG4nY964+WPK9PyhwM5R8HvXHyx5K9PyhwN5f+j3rj5YUHKHAzlHwe9cfLCg5Q4Gco+D3rj5YUHKHvimco+D3rj5aib8R8fd5wBXx+LHDoe9cfLHlMIOJHu8f0lOIIdhse9cfLHlRABg4DgA4DY91YY8x4ahBEBoCyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisastloRAH49/yQFlstCyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxqyYrGrJisasmKxq9TAI8HN7f+i1u8frke2KaDjj+v6zlf77f+i1u8fstH1+x6zldv4pDG8OQ9TCRqVRDeFUQ3hVEN4VRDeFUQ3hVEN4VRDeFUQ3hVEN4VRDeFUQ3hVEN4VRDeFUQ3hVEN4VRDeFUQ3hVEN4VRDeFUQ3hCaMjEOQe0jEFYrEhAovaMcSqiG8KohvCqIbwqiG8KohvCqIbwqiG8KohvCqIbwqiG8KohvCqIbwqiG8KohvCqIbwqiG8KohvCqIbwqiG8KohvCqIbwvUT5uAGnurCfsjdRH+Pc/QJXqHYMA371tOBBQOBTTimjFS/TAp3YyeO9kRJ+yfoKN7LU0t/hq9VI86fr4onHvZD/co/wAqP8L1Ol/nvbEHY6TgQmflQDCNepxd9Afz3k+IvCDBe1CFv/oFTtvVOy4qnj6qnjWTFssiLZfNseolYjFRnCMlPlY9xaCQnxMJJRhG6yjusty+Dtlge8WJXyduV833FZj7ivm64oklNlIA+lWPDCzALE44rMfcUJXrOdsFnHYLO/xWd/ijI2xYstX9HX/lBf/EABQRAQAAAAAAAAAAAAAAAAAAAMD/2gAIAQIBAT8AKMf/xAAUEQEAAAAAAAAAAAAAAAAAAADA/9oACAEDAQE/ACjH/9k="/>
 <div class="line"></div>
-<div id="label1">Wing FL</div>
-<div id="label2">Wing FR</div>
-<div id="label3">Wing RL</div>
-<div id="label4">Wing RR</div>
+<div id="label1">Wing FL<br/> -</div>
+<div id="label2">Wing FR<br/> -</div>
+<div id="label3">Wing RL<br/> -</div>
+<div id="label4">Wing RR<br/> -</div>
 <div id="label5">BATTERY : -</div>
 <div id="label6">NO NAV SET </div>
 <div id="label7">FAIL 84</div>
@@ -803,9 +1201,10 @@
 </div>
 <div id="stats-menu">
 <div class="topnav">
-<a class="active">Stats</a>
-<a>Actions</a>
-<a>Logs</a>
+<a class="active" id="stats-select">Stats</a>
+<a class="nonactive" id="actions-select">Actions</a>
+<a class="nonactive" id="logs-select">Logs</a>
+<a class="nonactive" id="emi-select">EMI</a>
 </div>
 <div id="initStat-menu">
 <div id="AltGraphTitle">Altitude</div>
@@ -827,7 +1226,40 @@
               <input  id = "ALT-f"type="number" class = "numField" min="1" max="9" step="1" value="1">
               <button id = "Alt-set"> Set ALT</button>
           </div>-->
+<div id="supdater-subMenu">
+<div>
 </div>
+</div>
+<div id="subMenu2">
+</div>
+<div id="subMenu3">
+</div>
+<div id="subMenu4">
+</div>
+</div>
+<div id="emi-menu">
+<button id="emi-mpopup"> Control Viewer</button>
+<h2 id="emi-title"> Experimental Manual Control</h2>
+<h2 id="emi-version"> Version 1.0.1</h2>
+<div id="controller-screen1-connected">
+<h3 id="controller-screen1-connected-label"> Controller Connected</h3>
+<h4 id="controller-screen1-connected-label"> See Control Viewer for additional details</h4>
+</div>
+<h3 id="controller-stat-check"> Checking for Controller</h3>
+<img alt="" id="emi-loading" src="data:image/gif;base64,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"/>
+</div>
+</div>
+<div id="ECV-menu">
+<img alt="" id="ECV-PIC" src="data:image/png;base64,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"/>
+<h2 id="controller-status"> No Controller Detected</h2>
+<h4 id="response-status"> Vehicle Response Time: </h4>
+<div id="left-stick"> - </div>
+<hr id="lstick-line"/>
+<div id="right-stick"> - </div>
+<hr id="rstick-line"/>
+<div id="right-trigger"> - </div>
+<hr id="rtrigger-line"/>
+<div id="ECV-menu-close">X</div>
 </div>
 <div class="table-container" id="data-area">
 <table id="Raw-Data">
@@ -895,15 +1327,49 @@
           var gyX, gyY, gyZ, acX, acY, acZ, _wfr, _wfl, _wrl, _wrr;
           var _tmp, _pres, _thr;
 
+          var mostRecentToken = "";
+
           const selectElement = document.getElementById('DRONE-STATE');
           selectElement.addEventListener('change', function() {
             const selectedIndex = selectElement.selectedIndex;
-            sendstateData(selectedIndex + 1,0,0,0,0);
+            //If state change is to ARMED we call arm request sequence else send other state
+            // 0 -> STANDBY
+            // 1 -> ARMED
+            // 2 -> BYPASS
+            if(selectedIndex != 1){
+              sendstateData(selectedIndex + 1,0,0,0,0);
+            }else{
+              //Pop out the arming sequence UI
+              var openmenuArm = document.getElementById("arm_seq_ui");
+              openmenuArm.style.visibility = "visible";
+              //Dont allow state to be switched yet
+              selectElement.selectedIndex = 0;
+            }
+            
           });
 
           document.getElementById("BPnotification-button").addEventListener("click", function () {
             removeBPnotification();
           });
+
+          document.getElementById("arm_seq_auth_req").addEventListener("click", function () {
+            //Send token request
+            requestToken();
+            writeToArmTerminal("<b>TOKEN REQUEST SENT");
+          });
+
+          document.getElementById("arm_seq_auth_autofill").addEventListener("click", function () {
+            var token_entry = document.getElementById("arm_seq_ui-input");
+            token_entry.value = mostRecentToken;
+          });
+
+          document.getElementById("arm_seq_auth_ARM").addEventListener("click", function () {
+            //Send token to be authorized
+            var token_entry = document.getElementById("arm_seq_ui-input").value;
+            handleAuth(token_entry);
+            writeToArmTerminal("<b>AUTH SENT");
+          });
+
           ////////////////////////////
           class LiveDataGraph {
           constructor(canvasId, maxDataPoints = 100, updateInterval = 1000) {
@@ -2124,5 +2590,259 @@ function THRInput(){
             var pkg = packData("ST",st,"XX",fr,"XX",rl,"XX",rr,"XX",thr);
             xhr.send(pkg);
           }
-</script></body>
+
+          function handleAuth(token){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/INC_AUTH";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var pkg = token;
+            xhr.send(pkg);
+
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      // Request successful, handle the response here
+                      var response = xhr.responseText;
+                      if(response == "STATE-CHANGE-SUCCESS"){
+                        //Send confirmation to terminal
+                        writeToArmTerminal("> " + response);
+                        //Modify state element
+                        selectElement.selectedIndex = 1;
+                      }else{
+                        //Send failure notice to terminal and do not modify state element
+                        writeToArmTerminal("> " + response);
+                      }
+                  } else {
+                      // Request failed, handle the error here
+                      writeToArmTerminal("> DEV-FAIL-REQUEST");
+                  }
+              }
+          };
+          }
+
+          function requestToken(){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/GET_TOKEN";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Request successful, handle the response here
+                        var response = xhr.responseText;
+                        //Send to terminal
+                        writeToArmTerminal("> " + response);
+                        //Save to buffer
+                        mostRecentToken = response;
+                    } else {
+                        // Request failed, handle the error here
+                        writeToArmTerminal("> DEV-FAIL-REQUEST");
+                    }
+                }
+            };
+
+            // You can add any data you want to send in the request body
+            var data = "key1=value1&key2=value2"; // Replace with your data
+            xhr.send(data);
+          }
+
+          function writeToArmTerminal(text) {
+            const terminal = document.getElementById('arm_seq_terminal');
+            terminal.innerHTML += `<div>${text}</div>`;
+            // Scroll to the bottom to show the latest output
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+var cPage = 1;
+
+document.getElementById("emi-select").addEventListener("click", function () {
+    utilitySwitcher(4);
+});
+
+document.getElementById("actions-select").addEventListener("click", function () {
+    utilitySwitcher(2);
+});
+
+document.getElementById("logs-select").addEventListener("click", function () {
+    utilitySwitcher(3);
+});
+
+document.getElementById("stats-select").addEventListener("click", function () {
+    utilitySwitcher(1);
+});
+
+document.getElementById("emi-mpopup").addEventListener("click", function () {
+    var menu = document.getElementById("ECV-menu");
+    menu.style.visibility = "visible";
+});
+
+document.getElementById("ECV-menu-close").addEventListener("click", function () {
+    var closemenu = document.getElementById("ECV-menu");
+    closemenu.style.visibility = "hidden";
+});
+
+document.getElementById("arm_seq_ui_close").addEventListener("click", function () {
+    var closemenuArm = document.getElementById("arm_seq_ui");
+    closemenuArm.style.visibility = "hidden";
+});
+
+function hideStatsMenu(){
+    var smnu = document.getElementById("initStat-menu");
+    //Set no visibility
+    smnu.style.visibility = "hidden";
+}
+
+function showStatsMenu(){
+    var smnu = document.getElementById("initStat-menu");
+    //Set no visibility
+    smnu.style.visibility = "visible";
+}
+
+function hideActionsMenu(){
+    var smnu = document.getElementById("actions-menu");
+    //Set no visibility
+    smnu.style.visibility = "hidden";
+}
+
+function showActionsMenu(){
+    var smnu = document.getElementById("actions-menu");
+    //Set no visibility
+    smnu.style.visibility = "visible";
+}
+
+function hideLogsMenu(){
+    var smnu = document.getElementById("mainTelem-menu");
+    //Set no visibility
+    smnu.style.visibility = "hidden";
+}
+
+function showLogsMenu(){
+    var smnu = document.getElementById("mainTelem-menu");
+    //Set no visibility
+    smnu.style.visibility = "visible";
+}
+
+function hideEMIMenu(){
+    var smnu = document.getElementById("emi-menu");
+    //Set no visibility
+    smnu.style.visibility = "hidden";
+}
+
+function showEMIMenu(){
+    var smnu = document.getElementById("emi-menu");
+    //Set no visibility
+    smnu.style.visibility = "visible";
+}
+
+function utilitySwitcher(pageFlag){
+    /*
+        1 -> Stats Menu
+        2 -> Actions Menu
+        3 -> Logs Menu
+        4 -> EMI Menu
+    */
+   //Hide previous page
+   switch(cPage){
+    case 1:
+        hideStatsMenu();
+        document.getElementById("stats-select").className = "nonactive";
+        break;
+    case 2:
+        hideActionsMenu();
+        document.getElementById("actions-select").className = "nonactive";
+        break;
+    case 3:
+        hideLogsMenu();
+        document.getElementById("logs-select").className = "nonactive";
+        break;
+    case 4:
+        hideEMIMenu();
+        document.getElementById("emi-select").className = "nonactive";
+        break;
+}
+   //Switch current page flag
+    switch(pageFlag){
+        case 1:
+            showStatsMenu();
+            document.getElementById("stats-select").className = "active";
+            break;
+        case 2:
+            showActionsMenu();
+            document.getElementById("actions-select").className = "active";
+            break;
+        case 3:
+            showLogsMenu();
+            document.getElementById("logs-select").className = "active";
+            break;
+        case 4:
+            showEMIMenu();
+            document.getElementById("emi-select").className = "active";
+            break;
+    }
+    //Set new current page
+    cPage = pageFlag;
+}
+
+
+var Xconnected = true
+
+window.addEventListener("gamepadconnected", (event) => {
+    handleConnectDisconnect(event, true);
+    updateSticks();
+});
+  
+window.addEventListener("gamepaddisconnected", (event) => {
+    handleConnectDisconnect(event, false);
+});
+
+function handleConnectDisconnect(event, connected){
+    if(connected == true){
+        //Hide conntroller loading UI
+        document.getElementById("controller-stat-check").style.visibility = "hidden";
+        document.getElementById("emi-loading").style.visibility = "hidden";
+
+        //Show controller connected UI
+        document.getElementById("controller-screen1-connected").style.visibility = "visible";
+
+        //Modify contrller status text in control viewer
+        document.getElementById("controller-status").innerHTML = "Controller Connected";
+    }else{
+        //Hide controller connected UI
+        document.getElementById("controller-screen1-connected").style.visibility = "hidden";
+
+        //Show conntroller loading UI
+        document.getElementById("controller-stat-check").style.visibility = "visible";
+        document.getElementById("emi-loading").style.visibility = "visible";
+
+        //Modify contrller status text in control viewer
+        document.getElementById("controller-status").innerHTML = "No Controller Detected";
+    }
+    
+}
+
+function updateSticks() {
+    setInterval(() => {
+        const myGamepad = navigator.getGamepads()[0]; // use the first gamepad
+    
+        const lstick = document.getElementById("left-stick");
+        lstick.innerHTML = `(${myGamepad.axes[0].toFixed(4)}, ${myGamepad.axes[1].toFixed(4)})`;
+
+        const rstick = document.getElementById("right-stick");
+        rstick.innerHTML = `(${myGamepad.axes[2].toFixed(4)}, ${myGamepad.axes[3].toFixed(4)})`;
+
+        const rtrig = document.getElementById("right-trigger");
+        rtrig.innerHTML = `(${myGamepad.buttons[7].value.toFixed(4)})`;
+        
+    }, 50) // update axes 5 times per second
+  }
+
+  </script></body>
 </html>

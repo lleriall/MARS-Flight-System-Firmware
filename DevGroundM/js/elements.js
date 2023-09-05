@@ -1,4 +1,4 @@
-var currentPage = 1;
+var cPage = 1;
 
 document.getElementById("emi-select").addEventListener("click", function () {
     utilitySwitcher(4);
@@ -24,6 +24,11 @@ document.getElementById("emi-mpopup").addEventListener("click", function () {
 document.getElementById("ECV-menu-close").addEventListener("click", function () {
     var closemenu = document.getElementById("ECV-menu");
     closemenu.style.visibility = "hidden";
+});
+
+document.getElementById("arm_seq_ui_close").addEventListener("click", function () {
+    var closemenuArm = document.getElementById("arm_seq_ui");
+    closemenuArm.style.visibility = "hidden";
 });
 
 function hideStatsMenu(){
@@ -82,7 +87,7 @@ function utilitySwitcher(pageFlag){
         4 -> EMI Menu
     */
    //Hide previous page
-   switch(currentPage){
+   switch(cPage){
     case 1:
         hideStatsMenu();
         document.getElementById("stats-select").className = "nonactive";
@@ -120,6 +125,6 @@ function utilitySwitcher(pageFlag){
             break;
     }
     //Set new current page
-    currentPage = pageFlag;
+    cPage = pageFlag;
 }
 

@@ -4,9 +4,10 @@
         <title>HIVE 2</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel= "stylesheet" type= "text/css" href= "css/styles.css">
+        
         <script type = "module" src="js/main.js"> </script>
-        <script type = "module" src="js/mini_apps.js"> </script>
         <script type = "module" src="js/elements.js"> </script>
+        <script type = "module" src="js/mini_apps.js"> </script>
       </head>
 <body>
   <div id = "config-menu">
@@ -27,6 +28,17 @@
         <h4 id = "VHTME"> Vehicle Time: --</h4>
         <button id = "MV-Button"> Mission Viewer</button>
       </div>
+  </div>
+
+  <div id = "arm_seq_ui">
+    <h1 id = "arm_seq_ui-title"> Vehicle Arming</h1>
+    <div id = "arm_seq_auth_req"> Request Authorization Token</div>
+    <h3 id = "arm_seq_ui-label1">Token Entry</h3>
+    <input id = "arm_seq_ui-input">
+    <div id = "arm_seq_auth_ARM"> ARM</div>
+    <div id = "arm_seq_auth_autofill"> Autofill</div>
+    <div id = "arm_seq_terminal"></div>
+    <div id = "arm_seq_ui_close">X</div>
   </div>
   
   <div id = "attitude-ind-area">

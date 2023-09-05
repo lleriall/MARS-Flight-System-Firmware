@@ -4,15 +4,49 @@
           var gyX, gyY, gyZ, acX, acY, acZ, _wfr, _wfl, _wrl, _wrr;
           var _tmp, _pres, _thr;
 
+          var mostRecentToken = "";
+
           const selectElement = document.getElementById('DRONE-STATE');
           selectElement.addEventListener('change', function() {
             const selectedIndex = selectElement.selectedIndex;
-            sendstateData(selectedIndex + 1,0,0,0,0);
+            //If state change is to ARMED we call arm request sequence else send other state
+            // 0 -> STANDBY
+            // 1 -> ARMED
+            // 2 -> BYPASS
+            if(selectedIndex != 1){
+              sendstateData(selectedIndex + 1,0,0,0,0);
+            }else{
+              //Pop out the arming sequence UI
+              var openmenuArm = document.getElementById("arm_seq_ui");
+              openmenuArm.style.visibility = "visible";
+              //Dont allow state to be switched yet
+              selectElement.selectedIndex = 0;
+            }
+            
           });
 
           document.getElementById("BPnotification-button").addEventListener("click", function () {
             removeBPnotification();
           });
+
+          document.getElementById("arm_seq_auth_req").addEventListener("click", function () {
+            //Send token request
+            requestToken();
+            writeToArmTerminal("<b>TOKEN REQUEST SENT");
+          });
+
+          document.getElementById("arm_seq_auth_autofill").addEventListener("click", function () {
+            var token_entry = document.getElementById("arm_seq_ui-input");
+            token_entry.value = mostRecentToken;
+          });
+
+          document.getElementById("arm_seq_auth_ARM").addEventListener("click", function () {
+            //Send token to be authorized
+            var token_entry = document.getElementById("arm_seq_ui-input").value;
+            handleAuth(token_entry);
+            writeToArmTerminal("<b>AUTH SENT");
+          });
+
           ////////////////////////////
           class LiveDataGraph {
           constructor(canvasId, maxDataPoints = 100, updateInterval = 1000) {
@@ -1233,3 +1267,74 @@ function THRInput(){
             var pkg = packData("ST",st,"XX",fr,"XX",rl,"XX",rr,"XX",thr);
             xhr.send(pkg);
           }
+
+          function handleAuth(token){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/INC_AUTH";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var pkg = token;
+            xhr.send(pkg);
+
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      // Request successful, handle the response here
+                      var response = xhr.responseText;
+                      if(response == "STATE-CHANGE-SUCCESS"){
+                        //Send confirmation to terminal
+                        writeToArmTerminal("> " + response);
+                        //Modify state element
+                        selectElement.selectedIndex = 1;
+                      }else{
+                        //Send failure notice to terminal and do not modify state element
+                        writeToArmTerminal("> " + response);
+                      }
+                  } else {
+                      // Request failed, handle the error here
+                      writeToArmTerminal("> DEV-FAIL-REQUEST");
+                  }
+              }
+          };
+          }
+
+          function requestToken(){
+            //Call API
+            //Send backend request
+            var xhr = new XMLHttpRequest();
+            var url = "/GET_TOKEN";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Request successful, handle the response here
+                        var response = xhr.responseText;
+                        //Send to terminal
+                        writeToArmTerminal("> " + response);
+                        //Save to buffer
+                        mostRecentToken = response;
+                    } else {
+                        // Request failed, handle the error here
+                        writeToArmTerminal("> DEV-FAIL-REQUEST");
+                    }
+                }
+            };
+
+            // You can add any data you want to send in the request body
+            var data = "key1=value1&key2=value2"; // Replace with your data
+            xhr.send(data);
+          }
+
+          function writeToArmTerminal(text) {
+            const terminal = document.getElementById('arm_seq_terminal');
+            terminal.innerHTML += `<div>${text}</div>`;
+            // Scroll to the bottom to show the latest output
+            terminal.scrollTop = terminal.scrollHeight;
+        }

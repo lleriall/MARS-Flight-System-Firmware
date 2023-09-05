@@ -31,11 +31,11 @@ SOFTWARE.*/
 #include"../HALX/mg90s_servo.h"
 
 class CONTROLLER_TASKS {
-    private:
-        //Setup Pins
-        void pin_setup();
-
     public: 
+        uint8_t verifyFlightConfiguration();
+
+        std::string generateRandomAlphanumericToken(uint32_t seed1, uint32_t seed2, int length);
+
         void PTAM_REGISTER_SET();
 
         //Start comms and attach interrupts 

@@ -27,39 +27,45 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 import base64
 
+# Read the original HTML
 original_html_text = Path('index.html').read_text(encoding="utf-8")
-soup = BeautifulSoup(original_html_text)
+soup = BeautifulSoup(original_html_text, 'html.parser')
 
-# Find link tags. example: <link rel="stylesheet" href="css/somestyle.css">
-for tag in soup.find_all('link', href=True):
+# Lists to store CSS and JavaScript content
+css_content = []
+js_content = []
+
+# Find link tags (CSS)
+for tag in soup.find_all('link', rel='stylesheet'):
     if tag.has_attr('href'):
         file_text = Path(tag['href']).read_text(encoding="utf-8")
-
-        # remove the tag from soup
+        css_content.append(file_text)
         tag.extract()
 
-        # insert style element
-        new_style = soup.new_tag('style')
-        new_style.string = file_text
-        soup.html.head.append(new_style)
-
-
-# Find script tags. example: <script src="js/somescript.js"></script>
+# Find script tags (JavaScript)
 for tag in soup.find_all('script', src=True):
     if tag.has_attr('src'):
         file_text = Path(tag['src']).read_text()
-
-        # remove the tag from soup
+        js_content.append(file_text)
         tag.extract()
 
-        # insert script element
-        new_script = soup.new_tag('script')
-        new_script.string = file_text
-        soup.html.body.append(new_script)
+# Insert merged CSS content
+if css_content:
+    style_tag = soup.new_tag('style')
+    style_tag.string = '\n'.join(css_content)
+    soup.head.append(style_tag)
+
+# Insert merged JavaScript content
+if js_content:
+    script_tag = soup.new_tag('script')
+    script_tag.string = '\n'.join(js_content)
+    soup.body.append(script_tag)
 
 # Create the 'dist' directory if it doesn't exist
 Path("dist").mkdir(parents=True, exist_ok=True)
 
-# Save onefile
+# Save the merged HTML file
 with open("dist/oneindex.html", "w", encoding="utf-8") as outfile:
     outfile.write(str(soup))
+    
+print('Done')
