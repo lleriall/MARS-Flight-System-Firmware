@@ -40,8 +40,6 @@
  */
 std::string Logger::EVENT_LOG_SDD(void)
 {
-    /* Temporary timer start*/
-    uint64_t start_time = esp_timer_get_time();
     SharedMemory &obj = SharedMemory::getInstance();
 
     /* Query ptam registers for required data */
@@ -57,7 +55,7 @@ std::string Logger::EVENT_LOG_SDD(void)
     double RRS = obj.getLastDouble("WingRR");
 
     uint64_t end_time = esp_timer_get_time();
-    uint64_t elapsed_time = end_time - start_time;
+    uint64_t elapsed_time = end_time;
 
     std::string log_ev = "LOG_SDD";
 
@@ -87,8 +85,6 @@ std::string Logger::EVENT_LOG_SDD(void)
  */
 std::string Logger::EVENT_LOG_SSL(void)
 {
-    /* Start temporary timer */
-    uint64_t start_time = esp_timer_get_time();
     SharedMemory &obj = SharedMemory::getInstance();
 
     /* Query ptam registers */
@@ -98,7 +94,7 @@ std::string Logger::EVENT_LOG_SSL(void)
     int state_data = obj.getLastInt("state");
 
     uint64_t end_time = esp_timer_get_time();
-    uint64_t elapsed_time = start_time - end_time;
+    uint64_t elapsed_time = end_time;
 
     /* Format and output data */
     std::string log_ev = "LOG_SSL";
@@ -128,15 +124,13 @@ std::string Logger::EVENT_LOG_SSL(void)
 std::string Logger::EVENT_LOG_SEL(std::string ID, mars_exception_t::Type exception_type,
                                   std::string additional_info)
 {
-    /* Set temporary timer */
-    uint64_t start_time = esp_timer_get_time();
     SharedMemory &obj = SharedMemory::getInstance();
 
     /* Get ptam data */
     int state_data = obj.getLastInt("state");
 
     uint64_t end_time = esp_timer_get_time();
-    uint64_t elapsed_time = end_time - start_time;
+    uint64_t elapsed_time = end_time;
 
     /* Check which routine fail occurred */
     std::string exceptionTypeStr;
