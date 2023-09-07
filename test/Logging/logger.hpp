@@ -1,3 +1,4 @@
+
 /**
  * @file logger.hpp
  * @brief API toolkit for logger
@@ -28,96 +29,43 @@
  *          SOFTWARE.
  */
 
-
 #ifndef LOGGER_HPP_
 #define LOGGER_HPP_
 
 /* Log includes */
-#include"include/logtypes.h"
-
+#include "include/logtypes.h"
 
 class Logger
 {
+
 public:
-
-    static Logger fout;
-
-    template<typename T>
-    Logger& operator<<(const T& value){
-        // Add file system API usage here
-
-        return *this;
-    }
-
-    template<typename... Args>
-    Logger& operator<<(const Args&... args){
-        // Add file system API usage here
-
-        return *this;
-    }
-
-
     /**
      * @brief Sensor Data Dump(SDD) is ran periodically to collect system data
      *
-     * @return uint8_t 
+     * @return uint8_t
      */
-    uint8_t EVENT_LOG_SDD(void);
-
-
+    std::string EVENT_LOG_SDD(void);
 
     /**
      * @brief System State Logs(SSL) is ran periodically to collect the system state
      *
-     * @return uint8_t 
+     * @return uint8_t
      */
-    uint8_t EVENT_LOG_SSL(void);
-
-
+    std::string EVENT_LOG_SSL(void);
 
     /**
      * @brief System Error Logs(SEL) is called by failing routines in submodules
-     * 
-     * @param id 
+     *
+     * @param id
      * @param _param1
-     * @param info 
-     * @return uint8_t 
+     * @param info
+     * @return uint8_t
      */
-    uint8_t EVENT_LOG_SEL(std::string id,
-                            mars_exception_t _param1, std::string info);
+    std::string EVENT_LOG_SEL(std::string ID, mars_exception_t::Type exceptionType,
+                                                            std::string additionalInfo);
 
 
-
-    /**
-     * @brief Get the current machine state object
-     * 
-     * @param machine_state 
-     * @return Log_Machine_State_t 
-     */
-    Log_Machine_State_t get_current_machine_state(Log_Machine_State_t machine_state);
-
-
-
-    /**
-     * @brief Set the current machine state object
-     *
-     * @param loglevel
-     * @return Log_Machine_State_t
-     */
-    Log_Machine_State_t set_current_machine_state(Loglevel_t loglevel);
-
-
-
-    /**
-     * @brief Get the timestamp object
-     *
-     * @return time_t
-     */
-    time_t get_timestamp() noexcept;
 
 private:
-
-    static Loglevel_t status;
-    static Log_Machine_State_t machine_state;
 };
 #endif /* LOGGER_HPP_ */

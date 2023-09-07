@@ -28,27 +28,142 @@
  *          SOFTWARE.
  */
 
+#include "../statemachine/_ptam.h"
+#include "logger.hpp"
+#include "esp_timer.h"
 
-/* PTAM includes */
-#include "../PTAM/_ptam.h"
+
+/**
+ * @brief Queries all required ptam registers, formats them, logs them, and returns the log
+ *
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SDD(void)
+{
+    /* Temporary timer start*/
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
+
+    /* Query ptam registers for required data */
+    std::string ID = obj.getLastString("stateDescript");
+    int state_data = obj.getLastInt("state");
+
+    double FLS = obj.getLastDouble("WingFL");
+
+    double FRS = obj.getLastDouble("WingFR");
+
+    double RLS = obj.getLastDouble("WingRL");
+
+    double RRS = obj.getLastDouble("WingRR");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = end_time - start_time;
+
+    std::string log_ev = "LOG_SDD";
+
+    // Build the formatted string combining format and data
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tDATA: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tWING-FL-POS: " + std::to_string(FLS) + "\n";
+    formatted_output += "\t\tWING-FR-POS: " + std::to_string(FRS) + "\n";
+    formatted_output += "\t\tWING-RL-POS: " + std::to_string(RLS) + "\n";
+    formatted_output += "\t\tWING-RR-POS: " + std::to_string(RRS) + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
+}
 
 
 
-Log_Machine_State_t Logger::get_current_machine_state(Log_Machine_State_t machine_state) { return machine_state; }
+/**
+ * @brief Queries all required ptam registers, formats them, logs them, and returns the log
+ *
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SSL(void)
+{
+    /* Start temporary timer */
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
 
-Log_Machine_State_t Logger::set_current_machine_state(Loglevel_t logLevel) {
-    switch (logLevel) {
-        case LOG_ERROR:
-            machine_state = STANDBY;
-            break;
-        case LOG_WARNING:
-        case LOG_INFO:
-            machine_state = ARMED;
-            break;
-        default:
-            machine_state = STANDBY;
-            break;
+    /* Query ptam registers */
+    std::string state = obj.getLastString("stateDescript");
+    std::string ID = "LOG_SSL_ID";
+
+    int state_data = obj.getLastInt("state");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = start_time - end_time;
+
+    /* Format and output data */
+    std::string log_ev = "LOG_SSL";
+
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tSTATE: " + state + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
+}
+
+
+
+/**
+ * @brief Called when an error rises. Formats data and logs it
+ *
+ * @param ID
+ * @param exception_type
+ * @param additional_info
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SEL(std::string ID, mars_exception_t::Type exception_type,
+                                  std::string additional_info)
+{
+    /* Set temporary timer */
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
+
+    /* Get ptam data */
+    int state_data = obj.getLastInt("state");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = end_time - start_time;
+
+    /* Check which routine fail occurred */
+    std::string exceptionTypeStr;
+    switch (exception_type)
+    {
+    case mars_exception_t::ROUTINE_SOFT_FAIL:
+        exceptionTypeStr = "ROUTINE_SOFT_FAIL";
+        break;
+    case mars_exception_t::ROUTINE_HARD_FAIL:
+        exceptionTypeStr = "ROUTINE_HARD_FAIL";
+        break;
+    default:
+        exceptionTypeStr = "UNKNOWN";
+        break;
     }
+    /* Format and output the data */
+    std::string log_ev = "LOG_SEL";
 
-    return machine_state;
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tEXCEPTION-TYPE: " + std::to_string(exception_type) + "\n";
+    formatted_output += "\t\tINFO: " + additional_info + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
 }
