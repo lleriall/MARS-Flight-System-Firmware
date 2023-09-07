@@ -1,137 +1,169 @@
-/*MIT License
-Copyright (c) 2023 limitless Aeronautics
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
+/**
+ * @file logger.cpp
+ * @brief Logger API
+ *
+ * Functions defined from logger.hpp prototypes
+ *
+ * @date August 18th 2023
+ * @copyright Copyright (c) 2023 limitless Aeronautics
+ *
+ * @author Lukas Jackson
+ *
+ * @license MIT License
+ *          Copyright (c) 2023 limitless Aeronautics
+ *          Permission is hereby granted, free of charge, to any person obtaining a copy
+ *          of this software and associated documentation files (the "Software"), to deal
+ *          in the Software without restriction, including without limitation the rights
+ *          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *          copies of the Software, and to permit persons to whom the Software is
+ *          furnished to do so, subject to the following conditions:
+ *          The above copyright notice and this permission notice shall be included in all
+ *          copies or substantial portions of the Software.
+ *          THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *          SOFTWARE.
+ */
 
-/* PTAM includes */
 #include "../statemachine/_ptam.h"
+#include "logger.hpp"
+#include "esp_timer.h"
 
-/* System includes */
 
-Loglevel_t Logger::status = DEFAULT;
-Log_Machine_State_t Logger::machine_state = NEUTRAL;
-
-Loglevel_t Logger::log_event(const std::string id, const int data)
+/**
+ * @brief Queries all required ptam registers, formats them, logs them, and returns the log
+ *
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SDD(void)
 {
-    SharedMemory &sharedMemory = SharedMemory::getInstance();
-    sharedMemory.storeInt(id, data);
-    return status = LOG_INFO;
-};
+    /* Temporary timer start*/
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
 
-Loglevel_t Logger::log_event(const Logger::flight_data_t &flight_data)
-{
-    SharedMemory &sharedMemory = SharedMemory::getInstance();
-    sharedMemory.storeMessage(flight_data);
-    return status = LOG_INFO;
+    /* Query ptam registers for required data */
+    std::string ID = obj.getLastString("stateDescript");
+    int state_data = obj.getLastInt("state");
+
+    double FLS = obj.getLastDouble("WingFL");
+
+    double FRS = obj.getLastDouble("WingFR");
+
+    double RLS = obj.getLastDouble("WingRL");
+
+    double RRS = obj.getLastDouble("WingRR");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = end_time - start_time;
+
+    std::string log_ev = "LOG_SDD";
+
+    // Build the formatted string combining format and data
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tDATA: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tWING-FL-POS: " + std::to_string(FLS) + "\n";
+    formatted_output += "\t\tWING-FR-POS: " + std::to_string(FRS) + "\n";
+    formatted_output += "\t\tWING-RL-POS: " + std::to_string(RLS) + "\n";
+    formatted_output += "\t\tWING-RR-POS: " + std::to_string(RRS) + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
 }
 
-Loglevel_t Logger::log_event(const Logger::flight_data_t flight_data, const Loglevel_t status_t)
+
+
+/**
+ * @brief Queries all required ptam registers, formats them, logs them, and returns the log
+ *
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SSL(void)
 {
-    SharedMemory &sharedMemory = SharedMemory::getInstance();
-    sharedMemory.storeMessage(flight_data);
-    return status = status_t;
+    /* Start temporary timer */
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
+
+    /* Query ptam registers */
+    std::string state = obj.getLastString("stateDescript");
+    std::string ID = "LOG_SSL_ID";
+
+    int state_data = obj.getLastInt("state");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = start_time - end_time;
+
+    /* Format and output data */
+    std::string log_ev = "LOG_SSL";
+
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tSTATE: " + state + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
 }
 
-Logger::flight_data_t Logger::create_log_message(const std::string id, const int data, const time_t &timestamp, const Log_Machine_State_t &machine_state)
+
+
+/**
+ * @brief Called when an error rises. Formats data and logs it
+ *
+ * @param ID
+ * @param exception_type
+ * @param additional_info
+ * @return std::string
+ */
+std::string Logger::EVENT_LOG_SEL(std::string ID, mars_exception_t::Type exception_type,
+                                  std::string additional_info)
 {
-    // Verify that the file exists using <filesystem>
-    SharedMemory &sharedMemory = SharedMemory::getInstance();
-    Logger::flight_data_t log_message = {id, data, timestamp, machine_state};
-    std::ofstream logFile("Logging_Results.txt");
-    if (logFile.is_open())
+    /* Set temporary timer */
+    uint64_t start_time = esp_timer_get_time();
+    SharedMemory &obj = SharedMemory::getInstance();
+
+    /* Get ptam data */
+    int state_data = obj.getLastInt("state");
+
+    uint64_t end_time = esp_timer_get_time();
+    uint64_t elapsed_time = end_time - start_time;
+
+    /* Check which routine fail occurred */
+    std::string exceptionTypeStr;
+    switch (exception_type)
     {
-
-        logFile << "\nNEW LOGGED EVENT:" << std::endl;
-        logFile << "\t{" << std::endl;
-        logFile << "\t\tID: " << id << std::endl;
-        logFile << "\t\tTIME: " << timestamp << std::endl;
-        logFile << "\t\tDATA: " << data << std::endl;
-        logFile << "\t\tMACHINE STATE: " << machine_state << std::endl;
-        logFile << "\t}\n\n" << std::endl;
-
-        logFile.close();
+    case mars_exception_t::ROUTINE_SOFT_FAIL:
+        exceptionTypeStr = "ROUTINE_SOFT_FAIL";
+        break;
+    case mars_exception_t::ROUTINE_HARD_FAIL:
+        exceptionTypeStr = "ROUTINE_HARD_FAIL";
+        break;
+    default:
+        exceptionTypeStr = "UNKNOWN";
+        break;
     }
-    else
-    {
-        /* For now, we can only return the log message if the file cannot be opened since we can't print to the terminal */
-        return log_message;
-    }
+    /* Format and output the data */
+    std::string log_ev = "LOG_SEL";
 
-    sharedMemory.storeMessage(log_message);
-    return log_message;
+    std::string formatted_output;
+    formatted_output += "\n\n" + log_ev + ":\n";
+    formatted_output += "\t{\n";
+    formatted_output += "\t\tID: " + ID + "\n";
+    formatted_output += "\t\tTIME: " + std::to_string(elapsed_time) + "\n";
+    formatted_output += "\t\tMACHINE-STATE: " + std::to_string(state_data) + "\n";
+    formatted_output += "\t\tEXCEPTION-TYPE: " + std::to_string(exception_type) + "\n";
+    formatted_output += "\t\tINFO: " + additional_info + "\n";
+    formatted_output += "\t}\n\n";
+
+    return formatted_output;
 }
-
-Loglevel_t Logger::create_log_message(flight_data_t &flight_data)
-{
-    SharedMemory &sharedMemory = SharedMemory::getInstance();
-    std::ofstream logFile("Logging_Results.txt");
-    if (logFile.is_open())
-    {
-        logFile << "\nLOG EVENT:" << std::endl;
-        logFile << "\t{" << std::endl;
-        logFile << "\t\tID: " << flight_data.id << std::endl;
-        logFile << "\t\tTIME: " << flight_data.timestamp << std::endl;
-        logFile << "\t\tDATA: " << flight_data.data << std::endl;
-        logFile << "\t\tMACHINE STATE: " << machine_state << std::endl;
-        logFile << "\t}\n\n" << std::endl;
-
-        logFile.close();
-    }
-    else
-    {
-        return status = LOG_ERROR;
-    }
-
-    sharedMemory.storeMessage(flight_data);
-    return status = LOG_INFO;
-}
-
-Log_Machine_State_t Logger::get_current_machine_state(Log_Machine_State_t machine_state) { return machine_state; }
-
-Log_Machine_State_t Logger::set_current_machine_state(Loglevel_t Loglevel)
-{
-    if (Loglevel == LOG_ERROR)
-    {
-        machine_state = STANDBY;
-    }
-    else if (Loglevel == LOG_WARNING)
-    {
-        machine_state = ARMED;
-    }
-    else if (Loglevel == LOG_INFO)
-    {
-        machine_state = ARMED;
-    }
-    else
-        machine_state = STANDBY;
-
-    return machine_state;
-}
-
-/* Getters for constructing log messages */
-
-
-time_t Logger::get_timestamp() noexcept
-{
-    std::time_t currentTime;
-    std::time(&currentTime);
-
-    char buffer[80];
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", std::localtime(&currentTime));
-
-    return currentTime;
-}
-

@@ -1,8 +1,10 @@
+
 /**
- * @file logtypes.h
- * @brief log types for logger
+ * @file unittest_logger.cpp
+ * @brief logger unit test
  *
- * Declared types for the logger and can be used as an API for other subsystems
+ * Testing various functions from the logger.cpp translation unit to verify update functionality
+ *
  *
  * @date August 18th 2023
  * @copyright Copyright (c) 2023 limitless Aeronautics
@@ -28,30 +30,26 @@
  *          SOFTWARE.
  */
 
+#include "../../statemachine/_ptam.h"
+#include "../logger.hpp"
 
-#ifndef LOGTYPES_H_
-#define LOGTYPES_H_
-
-#include<iostream>
-#include<inttypes.h>
-#include<fstream>
-#include<sstream>
-#include<string>
-#include<cstdio> // Include the C standard I/O library for printf
-#include<cinttypes> // Include for PRIu64
-
-
-/**
- * @brief mars expected return types
- *
- */
-struct mars_exception_t
+extern "C"
 {
-    enum Type {
-        ROUTINE_SOFT_FAIL,
-        ROUTINE_HARD_FAIL
-    };
-}__attribute__((packed));
+        void app_main(void)
+        {
+                printf("Made entry point...\n\n");
+                Logger Log;
+                auto result = Log.EVENT_LOG_SDD();
+                std::cout<<result;
+
+                result = Log.EVENT_LOG_SSL();
+                std::cout<<result;
 
 
-#endif /* LOGTYPES_H_ */
+                result = Log.EVENT_LOG_SEL("UAV-SEL-TEST-HARD-FAIL", mars_exception_t::ROUTINE_HARD_FAIL, "Submodule Down");
+                std::cout<<result;
+
+                result = Log.EVENT_LOG_SEL("UAV-SEL-TEST-SOFT-FAIL", mars_exception_t::ROUTINE_SOFT_FAIL, "Submodule nonresponsive");
+                std::cout<<result;
+        }
+}

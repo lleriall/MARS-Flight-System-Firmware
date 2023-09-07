@@ -12,13 +12,23 @@ This file currently contains a class submodule that will be accessed by core com
 
 ### logger.hpp functions
 
-> - log_event(const std::string id, const int data);
+> - uint8_t EVENT_LOG_SDD(void);
 
-**log_event**
+**EVENT_LOG_SDD**
 
-Stores the **Program Temporary Access Memory(PTAM)** ID, and data into a PTAM register.
-The PTAM is how various subsystems can communicate without having to directly request each other.
-This reduces access time by having the components access the data through the ID.
+Periodically ran throughout the session by an event handler to log sensor dump data.
+
+> - uint8_t EVENT_LOG_SSL(void);
+
+**EVENT_LOG_SSL**
+
+Periodically ran by the event handler to log system state logs.
+
+> - uint8_t EVENT_LOG_SEL(std::string id, mars_exception_t _param1, std::string info)
+
+**EVENT_LOG_SEL**
+
+Not ran by the event handler and is only called during errors in submodules
 
 > - get_current_machine_state(Log_Machine_State_t machine_state);
 
@@ -95,3 +105,16 @@ BYPASS enables the motors, sensors, and provides an interface via IP connection.
 
 The ARMED state is a completely autonomous state the drone is in. No control is entered by the user, hence why the state is referred to as ARMED.
 During the ARMED state, it is recommended to stay away from the drone as it is operating without an operator.
+
+
+## mars_exception_t
+
+For various log types, this enum type will return two types
+
+**ROUTINE_SOFT_FAIL**
+
+Returns -1 upon certain circumstances
+
+**ROUTINE_HARD_FAIL**
+
+Returns -2 upon certain circumstances
