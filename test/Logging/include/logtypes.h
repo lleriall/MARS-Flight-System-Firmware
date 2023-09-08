@@ -33,12 +33,11 @@
 #define LOGTYPES_H_
 
 #include<iostream>
-#include<inttypes.h>
 #include<fstream>
 #include<sstream>
 #include<string>
 #include<cstdio> // Include the C standard I/O library for printf
-#include<cinttypes> // Include for PRIu64
+#include<cstdint> // For uint types
 
 
 /**
