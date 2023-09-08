@@ -1,12 +1,9 @@
-
 /**
- * @file unittest_logger.cpp
- * @brief logger unit test
- *
- * Testing various functions from the logger.cpp translation unit to verify update functionality
+ * @file abort.h
+ * @brief UAV abort manager prototypes
  *
  *
- * @date August 18th 2023
+ * @date September 7th 2023
  * @copyright Copyright (c) 2023 limitless Aeronautics
  *
  * @author Lukas Jackson
@@ -30,31 +27,3 @@
  *          SOFTWARE.
  */
 
-#include "../../statemachine/_ptam.h"
-#include "../logger.hpp"
-
-extern "C"
-{
-        void app_main(void)
-        {
-                printf("Made entry point...\n\n");
-                Logger Log;
-                auto result = Log.EVENT_LOG_SDD();
-                uint64_t time = Log.get_event_time(result);
-                std::string ID = Log.get_event_id(result);
-                std::cout<<result<<"\n\nTime captured from callback: " << time << "\n\nID: " << ID;
-
-                result = Log.EVENT_LOG_SSL();
-                std::cout<<result;
-                time = Log.get_event_time(result);
-                ID = Log.get_event_id(result);
-                std::cout<<result<<"\n\nTime captured from callback: " << time << "\n\nID: " << ID;
-
-
-                result = Log.EVENT_LOG_SEL("UAV-SEL-TEST-HARD-FAIL", mars_exception_t::ROUTINE_HARD_FAIL, "Submodule Down");
-                std::cout<<result;
-
-                result = Log.EVENT_LOG_SEL("UAV-SEL-TEST-SOFT-FAIL", mars_exception_t::ROUTINE_SOFT_FAIL, "Submodule nonresponsive");
-                std::cout<<result;
-        }
-}

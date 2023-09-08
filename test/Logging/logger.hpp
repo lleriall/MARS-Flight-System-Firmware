@@ -62,9 +62,23 @@ public:
      * @return uint8_t
      */
     std::string EVENT_LOG_SEL(std::string ID, mars_exception_t::Type exceptionType,
-                                                            std::string additionalInfo);
+                              std::string additionalInfo);
 
+    /**
+     * @brief Get the event id from log message
+     *
+     * @param formatted_data
+     * @return std::string
+     */
+    std::string get_event_id(std::string formatted_data);
 
+    /**
+     * @brief Get the event time from log message
+     * 
+     * @param formatted_data 
+     * @return uint64_t
+     */
+    uint64_t get_event_time(std::string formatted_data);
 
 private:
 };

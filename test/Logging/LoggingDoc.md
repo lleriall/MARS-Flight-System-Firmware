@@ -1,120 +1,36 @@
 # Logging Subsystem API
 
-This writeup describes the overall, and gives a rundown of the logging subsystem.
-The logging subsystem will be a main component moving forward.
-Various components inside the core will be accessing the API of the logger to pass off
-generic messages, status updates, errors, and function results.
+This document provides an overview of the Logging Subsystem, outlining its significance and describing key components. The Logging Subsystem is a vital element within the core of the system, serving as the primary means for various components to communicate by sending generic messages, status updates, error reports, and function results.
 
+## logger.hpp
 
-# logger.hpp
+The `logger.hpp` file contains a class submodule that is accessible to core components.
 
-This file currently contains a class submodule that will be accessed by core components
+### Functions in logger.hpp
 
-### logger.hpp functions
+#### `std::string EVENT_LOG_SDD(void)`
 
-> - uint8_t EVENT_LOG_SDD(void);
+This function, `EVENT_LOG_SDD`, is designed to be periodically executed during a session by an event handler. It is responsible for logging sensor dump data.
 
-**EVENT_LOG_SDD**
+#### `std::string EVENT_LOG_SSL(void)`
 
-Periodically ran throughout the session by an event handler to log sensor dump data.
+The `EVENT_LOG_SSL` function is also intended to be periodically executed by the event handler. Its purpose is to log system state information.
 
-> - uint8_t EVENT_LOG_SSL(void);
+#### `std::string EVENT_LOG_SEL(std::string id, mars_exception_t _param1, std::string info)`
 
-**EVENT_LOG_SSL**
+The `EVENT_LOG_SEL` function serves a different purpose. It is not run by the event handler but is called only when submodules encounter errors. This function logs detailed error information, including an identifier (`id`), exception type (`mars_exception_t`), and additional information (`info`).
 
-Periodically ran by the event handler to log system state logs.
+## logtypes.h
 
-> - uint8_t EVENT_LOG_SEL(std::string id, mars_exception_t _param1, std::string info)
+The `logtypes.h` file contains various types and values used throughout the logger. It can be included directly or through the `logger.hpp` file.
 
-**EVENT_LOG_SEL**
+### mars_exception_t
 
-Not ran by the event handler and is only called during errors in submodules
+The `mars_exception_t` struct with a nested `Type` enum and is used to represent exceptions in various log types. It returns two distinct values:
 
-> - get_current_machine_state(Log_Machine_State_t machine_state);
+- **ROUTINE_SOFT_FAIL**: Indicates a soft failure under specific conditions.
+- **ROUTINE_HARD_FAIL**: Represents a hard failure under specific conditions.
 
-**get_current_machine_state**
+These values help categorize exceptions for logging purposes.
 
-The state of the machine can be altered by various subsystems or by the user at a given command or event.
-This function returns the machine's current state.
-
-> - set_current_machine_state(Loglevel_t loglevel);
-
-**set_current_machine_state**
-
-Just like **get_current_machine_state**, **set_current_machine_state** provides an interface for users and subsystems to set the machine's state
-after a given event from the system or user.
-
-
-
-
-# logtypes.h
-
-This file contains the types and values used in the logger. It can be included directly, or with the logger.hpp.
-
-## Loglevel_t
-
-Currently, this type returns 3 different values from the enumerated type:
-
-**LOG_ERROR**
-
-**LOG_WARNING**
-
-**LOG_INFO**
-
-
-Each enumerated value contains a value, with **LOG_ERROR** being 1, **LOG_WARNING** being 2, and **LOG_INFO** equalling 3.
-Users can use these values to perform various tasks and run testing.
-These values are not required to be used.
-
-## Log_Machine_State_t
-
-As of now, this type returns 4 values set at 4 through 7.
-The device, or machine, can be set automatically, or manually using various states.
-
-The machine can go through the following states:
-
-**NEUTRAL**
-
-**STANDBY**
-
-**BYPASS**
-
-**ARMED**
-
-
-
-
-**NEUTRAL**
-
-The NEUTRAL state is similar to the STANDBY state, but the difference is the lack of work being done
-during the state.
-This option is enabled by default when nothing is happing with the UAV.
-
-**STANDBY**
-
-The STANDBY state, similar to the NEUTRAL state, is responsible for maintaining general functions while the
-UAV is active
-This option is enabled when the drone is perfomring simple things such as updating, or testing mechanical components
-
-**BYPASS**
-
-During the BYPASS state, mechanical functionality of the drone is set, so various physical actions can take place such as testing and maintenance.
-BYPASS enables the motors, sensors, and provides an interface via IP connection.
-
-**ARMED**
-
-The ARMED state is a completely autonomous state the drone is in. No control is entered by the user, hence why the state is referred to as ARMED.
-During the ARMED state, it is recommended to stay away from the drone as it is operating without an operator.
-
-
-## mars_exception_t
-
-For various log types, this enum type will return two types
-
-**ROUTINE_SOFT_FAIL**
-
-Returns -1 upon certain circumstances
-
-**ROUTINE_HARD_FAIL**
-
-Returns -2 upon certain circumstances
+This documentation provides a clear understanding of the Logging Subsystem's structure, functions, and the types it uses for logging and exception handling.

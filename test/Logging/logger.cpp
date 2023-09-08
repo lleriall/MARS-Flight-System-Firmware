@@ -32,10 +32,10 @@
 #include "logger.hpp"
 #include "esp_timer.h"
 
-
 /**
  * @brief Queries all required ptam registers, formats them, logs them, and returns the log
  *
+ * @param void
  * @return std::string
  */
 std::string Logger::EVENT_LOG_SDD(void)
@@ -76,11 +76,10 @@ std::string Logger::EVENT_LOG_SDD(void)
     return formatted_output;
 }
 
-
-
 /**
  * @brief Queries all required ptam registers, formats them, logs them, and returns the log
  *
+ * @param void
  * @return std::string
  */
 std::string Logger::EVENT_LOG_SSL(void)
@@ -110,8 +109,6 @@ std::string Logger::EVENT_LOG_SSL(void)
 
     return formatted_output;
 }
-
-
 
 /**
  * @brief Called when an error rises. Formats data and logs it
@@ -160,4 +157,52 @@ std::string Logger::EVENT_LOG_SEL(std::string ID, mars_exception_t::Type excepti
     formatted_output += "\t}\n\n";
 
     return formatted_output;
+}
+
+/**
+ * @brief Parses a log to return the ID of the specific event
+ *
+ * @param formatted_data
+ * @return std::string
+ */
+std::string Logger::get_event_id(std::string formatted_data)
+{
+    std::string eventID = ""; // Default value if not found
+
+    size_t start = formatted_data.find("ID: ");
+    if (start != std::string::npos)
+    {
+        start += 4; // Move to the start of the actual ID (skip "ID: ")
+        size_t end = formatted_data.find("\n", start);
+        if (end != std::string::npos)
+        {
+            std::string ID = formatted_data.substr(start, end - start);
+            eventID = ID;
+        }
+    }
+    return eventID;
+}
+
+/**
+ * @brief Parses a log to return the time of the specific event
+ *
+ * @param formatted_data
+ * @return uint64_t
+ */
+uint64_t Logger::get_event_time(std::string formatted_data)
+{
+    uint64_t eventTime = 0;
+
+    size_t start = formatted_data.find("TIME: ");
+    if (start != std::string::npos)
+    {
+        start += 6;
+        size_t end = formatted_data.find("\n", start);
+        if (end != std::string::npos)
+        {
+            std::string timeStr = formatted_data.substr(start, end - start);
+            eventTime = std::stoull(timeStr);
+        }
+    }
+    return eventTime;
 }
